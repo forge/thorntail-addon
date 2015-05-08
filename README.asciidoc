@@ -1,0 +1,48 @@
+== wildfly-swarm-addon
+:idprefix: id_ 
+This addon provides *standalone* functionality, and *exports services* for use in other addons. 
+        
+=== Depends on
+[options="header"]
+|===
+|Addon |Exported |Optional
+
+|ui
+|yes
+|no
+
+|dependencies
+|yes
+|no
+
+|maven
+|yes
+|no
+|===
+
+== Setup
+
+This Addon requires the following installation steps.
+
+=== Add configuration to pom.xml 
+
+To use this addon, you must add it as a dependency in the *pom.xml* of your `forge-addon` classified artifact:
+[source,xml]
+----
+<dependency>
+   <groupId>org.jboss.forge.addon</groupId>
+   <artifactId>wildfly-swarm-addon</artifactId>
+   <classifier>forge-addon</classifier>
+   <version>${version}</version>
+</dependency>
+----
+== Features
+Wildfly-Swarm Setup command:: 
+Just type the following command if you're in shell. It should read Wildfly-Swarm: Setup if you're in a GUI environment:  
++
+[source,java]
+----
+wildfly-swarm-setup
+----
++
+And that's it! The wildfly swarm maven plugin will be installed. 
