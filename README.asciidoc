@@ -1,7 +1,16 @@
 == wildfly-swarm-addon
 :idprefix: id_ 
 This addon provides *standalone* functionality, and *exports services* for use in other addons. 
-        
+
+=== Installation
+
+From Forge CLI:
+
+[source,shell]
+----
+addon-install-from-git --url https://github.com/forge/wildfly-swarm-addon.git
+----
+
 === Depends on
 [options="header"]
 |===
