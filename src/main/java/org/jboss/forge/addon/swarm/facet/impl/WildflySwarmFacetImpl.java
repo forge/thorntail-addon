@@ -37,8 +37,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
 		DependencyBuilder jaxrsDependency = DependencyBuilder.create()
 				.setGroupId("org.wildfly.swarm")
 				.setArtifactId("wildfly-swarm-jaxrs")
-				.setVersion("${version.wildfly-swarm}")
-				.setScopeType("provided");
+				.setVersion("${version.wildfly-swarm}");
 		DependencyFacet facet = getFaceted().getFacet(DependencyFacet.class);
 		facet.addDirectDependency(jaxrsDependency);
 
@@ -51,8 +50,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
 				.create()
 				.setCoordinate(PLUGIN_COORDINATE)
 				.addExecution(
-						ExecutionBuilder.create().setPhase("package")
-								.addGoal("create"));
+						ExecutionBuilder.create().addGoal("package"));
 
 		pluginFacet.addPlugin(plugin);
 	}
@@ -62,7 +60,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
 		Model pom = maven.getModel();
 		Properties properties = pom.getProperties();
 		// TODO: Fetch the latest version
-		properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, "1.0.0.Alpha1");
+		properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, "1.0.0.Alpha2");
 		maven.setModel(pom);
 	}
 
