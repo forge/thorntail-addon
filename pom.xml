@@ -10,8 +10,8 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.forge>2.16.0.Final</version.forge>
-		<version.furnace>2.16.0.Final</version.furnace>
+		<version.forge>2.16.1.Final</version.forge>
+		<version.furnace>2.16.1.Final</version.furnace>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -45,6 +45,17 @@
 			<groupId>org.jboss.forge.addon</groupId>
 			<artifactId>ui</artifactId>
 			<classifier>forge-addon</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.forge.addon</groupId>
+			<artifactId>ui-test-harness</artifactId>
+			<classifier>forge-addon</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.forge.addon</groupId>
+			<artifactId>shell-test-harness</artifactId>
+			<classifier>forge-addon</classifier>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.forge.addon</groupId>
