@@ -6,11 +6,14 @@ import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
+import org.jboss.forge.addon.swarm.config.WildflySwarmConfigurationBuilder;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
+import org.jboss.forge.addon.ui.input.UIInput;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
+import org.jboss.forge.addon.ui.metadata.WithAttributes;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
@@ -19,46 +22,69 @@ import org.jboss.forge.addon.ui.util.Metadata;
  * The Wildfly-Swarm: Setup command
  * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
-public class WildflySwarmSetupCommand extends AbstractProjectCommand {
+public class WildflySwarmSetupCommand extends AbstractProjectCommand
+{
 
-	@Inject
-	private FacetFactory facetFactory;
+   @Inject
+   private FacetFactory facetFactory;
 
-	@Inject
-	private ProjectFactory projectFactory;
+   @Inject
+   @WithAttributes(label = "Http Port", description = "HTTP Port Wildfly will listen to")
+   private UIInput<Integer> httpPort;
 
-	@Override
-	public UICommandMetadata getMetadata(UIContext context) {
-		return Metadata.forCommand(getClass()).name("Wildfly-Swarm: Setup");
-	}
+   @Inject
+   @WithAttributes(label = "Context Path", description = "The context path of the web application")
+   private UIInput<String> contextPath;
 
-	@Override
-	protected ProjectFactory getProjectFactory() {
-		return projectFactory;
-	}
+   @Inject
+   @WithAttributes(label = "Port Offset", description = "HTTP Port offset")
+   private UIInput<Integer> portOffset;
 
-	@Override
-	protected boolean isProjectRequired() {
-		return true;
-	}
+   @Inject
+   private ProjectFactory projectFactory;
 
-	// @Override
-	// public boolean isEnabled(UIContext context) {
-	// return super.isEnabled(context)
-	// && !getSelectedProject(context).hasFacet(
-	// WildflySwarmFacet.class);
-	// }
+   @Override
+   public UICommandMetadata getMetadata(UIContext context)
+   {
+      return Metadata.forCommand(getClass()).name("Wildfly-Swarm: Setup");
+   }
 
-	@Override
-	public Result execute(UIExecutionContext context) throws Exception {
-		Project project = getSelectedProject(context);
-		facetFactory.install(project, WildflySwarmFacet.class);
-		return Results.success("Wildfly Swarm is now set up! Enjoy!");
-	}
+   @Override
+   protected ProjectFactory getProjectFactory()
+   {
+      return projectFactory;
+   }
 
-	@Override
-	public void initializeUI(UIBuilder builder) throws Exception {
-		// No inputs so far
-	}
+   @Override
+   protected boolean isProjectRequired()
+   {
+      return true;
+   }
+
+   // @Override
+   // public boolean isEnabled(UIContext context) {
+   // return super.isEnabled(context)
+   // && !getSelectedProject(context).hasFacet(
+   // WildflySwarmFacet.class);
+   // }
+
+   @Override
+   public Result execute(UIExecutionContext context) throws Exception
+   {
+      Project project = getSelectedProject(context);
+      WildflySwarmConfigurationBuilder builder = WildflySwarmConfigurationBuilder.create();
+      builder.contextPath(contextPath.getValue()).httpPort(httpPort.getValue()).portOffset(portOffset.getValue());
+      WildflySwarmFacet facet = facetFactory.create(project, WildflySwarmFacet.class);
+      facet.setConfiguration(builder);
+      facetFactory.install(project, facet);
+      return Results.success("Wildfly Swarm is now set up! Enjoy!");
+   }
+
+   @Override
+   public void initializeUI(UIBuilder builder) throws Exception
+   {
+      builder.add(httpPort).add(contextPath).add(portOffset);
+   }
 }

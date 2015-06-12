@@ -17,7 +17,7 @@ public interface WildflySwarmConfiguration
    /**
     * @return the HTTP port for this microservice
     */
-   int getHttpPort();
+   Integer getHttpPort();
 
    /**
     * @return the context path for this microservice
@@ -27,5 +27,5 @@ public interface WildflySwarmConfiguration
    /**
     * @return the port offset for this microservice
     */
-   int getPortOffset();
+   Integer getPortOffset();
 }

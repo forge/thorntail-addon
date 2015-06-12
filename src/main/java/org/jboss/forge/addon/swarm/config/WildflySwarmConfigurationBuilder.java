@@ -14,8 +14,8 @@ package org.jboss.forge.addon.swarm.config;
  */
 public class WildflySwarmConfigurationBuilder implements WildflySwarmConfiguration
 {
-   private int httpPort;
-   private int portOffset;
+   private Integer httpPort;
+   private Integer portOffset;
    private String contextPath;
 
    public static WildflySwarmConfigurationBuilder create()
@@ -35,13 +35,13 @@ public class WildflySwarmConfigurationBuilder implements WildflySwarmConfigurati
 
    }
 
-   public WildflySwarmConfigurationBuilder httpPort(int httpPort)
+   public WildflySwarmConfigurationBuilder httpPort(Integer httpPort)
    {
       this.httpPort = httpPort;
       return this;
    }
 
-   public WildflySwarmConfigurationBuilder portOffset(int portOffset)
+   public WildflySwarmConfigurationBuilder portOffset(Integer portOffset)
    {
       this.portOffset = portOffset;
       return this;
@@ -54,7 +54,7 @@ public class WildflySwarmConfigurationBuilder implements WildflySwarmConfigurati
    }
 
    @Override
-   public int getHttpPort()
+   public Integer getHttpPort()
    {
       return this.httpPort;
    }
@@ -66,7 +66,7 @@ public class WildflySwarmConfigurationBuilder implements WildflySwarmConfigurati
    }
 
    @Override
-   public int getPortOffset()
+   public Integer getPortOffset()
    {
       return this.portOffset;
    }
