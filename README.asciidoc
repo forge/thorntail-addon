@@ -1,4 +1,6 @@
-== wildfly-swarm-addon
+== Wildfly-Swarm addon for JBoss Forge 2
+image:https://travis-ci.org/forge/wildfly-swarm-addon.svg?branch=master["Build Status", link="https://travis-ci.org/forge/wildfly-swarm-addon"]
+
 :idprefix: id_ 
 This addon provides *standalone* functionality, and *exports services* for use in other addons. 
 
@@ -20,7 +22,7 @@ addon-install-from-git --url https://github.com/forge/wildfly-swarm-addon.git
 |yes
 |no
 
-|dependencies
+|projects
 |yes
 |no
 
