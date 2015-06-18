@@ -4,4 +4,7 @@ jdk:
   - oraclejdk8
 
 notifications:
-  irc: chat.freenode.net#forge
+  irc:
+    channels:
+      - "chat.freenode.net#forge"
+    use_notice: true
