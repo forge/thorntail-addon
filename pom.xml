@@ -7,7 +7,7 @@
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.forge.addon</groupId>
-   <artifactId>wildfly-swarm-addon</artifactId>
+   <artifactId>wildfly-swarm</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <properties>
       <maven.compiler.source>1.7</maven.compiler.source>
