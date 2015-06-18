@@ -60,7 +60,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
 		Model pom = maven.getModel();
 		Properties properties = pom.getProperties();
 		// TODO: Fetch the latest version
-		properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, "1.0.0.Alpha2");
+		properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, "1.0.0.Alpha3");
 		maven.setModel(pom);
 	}
 
