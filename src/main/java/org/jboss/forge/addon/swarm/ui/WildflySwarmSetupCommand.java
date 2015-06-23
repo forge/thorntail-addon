@@ -16,6 +16,7 @@ import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.metadata.WithAttributes;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
+import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 
 /**
@@ -48,7 +49,7 @@ public class WildflySwarmSetupCommand extends AbstractProjectCommand
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.forCommand(getClass()).name("Wildfly-Swarm: Setup");
+      return Metadata.forCommand(getClass()).name("Wildfly-Swarm: Setup").category(Categories.create("Wildfly-Swarm"));
    }
 
    @Override
@@ -62,13 +63,6 @@ public class WildflySwarmSetupCommand extends AbstractProjectCommand
    {
       return true;
    }
-
-   // @Override
-   // public boolean isEnabled(UIContext context) {
-   // return super.isEnabled(context)
-   // && !getSelectedProject(context).hasFacet(
-   // WildflySwarmFacet.class);
-   // }
 
    @Override
    public Result execute(UIExecutionContext context) throws Exception
