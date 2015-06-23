@@ -32,7 +32,7 @@ public class WildflySwarmSetupCommand extends AbstractProjectCommand
    private FacetFactory facetFactory;
 
    @Inject
-   @WithAttributes(label = "Http Port", description = "HTTP Port Wildfly will listen to", defaultValue = "8080")
+   @WithAttributes(label = "HTTP Port", description = "HTTP Port Wildfly will listen to")
    private UIInput<Integer> httpPort;
 
    @Inject
@@ -40,7 +40,7 @@ public class WildflySwarmSetupCommand extends AbstractProjectCommand
    private UIInput<String> contextPath;
 
    @Inject
-   @WithAttributes(label = "Port Offset", description = "HTTP Port offset")
+   @WithAttributes(label = "HTTP Port Offset", description = "HTTP Port offset")
    private UIInput<Integer> portOffset;
 
    @Inject

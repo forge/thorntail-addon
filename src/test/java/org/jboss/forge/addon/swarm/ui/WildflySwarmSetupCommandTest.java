@@ -2,7 +2,10 @@ package org.jboss.forge.addon.swarm.ui;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -73,7 +76,7 @@ public class WildflySwarmSetupCommandTest
          assertTrue(controller.getCommand() instanceof WildflySwarmSetupCommand);
          UICommandMetadata metadata = controller.getMetadata();
          assertEquals("Wildfly-Swarm: Setup", metadata.getName());
-         assertEquals("Uncategorized", metadata.getCategory().getName());
+         assertEquals("Wildfly-Swarm", metadata.getCategory().getName());
          assertNull(metadata.getCategory().getSubCategory());
          assertEquals(3, controller.getInputs().size());
          assertFalse(controller.hasInput("dummy"));
