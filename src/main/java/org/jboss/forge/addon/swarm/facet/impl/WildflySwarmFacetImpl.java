@@ -26,7 +26,7 @@ import org.jboss.forge.furnace.util.Strings;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
-public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
+public class WildflySwarmFacetImpl extends AbstractFacet<Project>implements
          WildflySwarmFacet
 {
 
@@ -104,7 +104,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
       Model pom = maven.getModel();
       Properties properties = pom.getProperties();
       // TODO: Fetch the latest version
-      properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, "1.0.0.Alpha3");
+      properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, "1.0.0.Alpha4");
       maven.setModel(pom);
    }
 
