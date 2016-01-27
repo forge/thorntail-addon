@@ -157,7 +157,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project>implements
    public List<String> getFractionList()
    {
       Dependency dependency = dependencyResolver.resolveArtifact(DependencyQueryBuilder.create(
-            CoordinateBuilder.create().setGroupId("org.wildfly.swarm").setArtifactId("wildfly-swarm-fraction-list")
+            CoordinateBuilder.create().setGroupId("org.wildfly.swarm").setArtifactId("fraction-list")
                   .setVersion("1.0.0.Alpha6").setPackaging("txt")));
 
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
