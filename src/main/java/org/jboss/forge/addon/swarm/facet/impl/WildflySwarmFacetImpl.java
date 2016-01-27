@@ -158,14 +158,12 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project>implements
    {
       Dependency dependency = dependencyResolver.resolveArtifact(DependencyQueryBuilder.create(
             CoordinateBuilder.create().setGroupId("org.wildfly.swarm").setArtifactId("wildfly-swarm-fraction-list")
-                  .setVersion("1.0.0.Alpha6-SNAPSHOT").setPackaging("txt")));
+                  .setVersion("1.0.0.Alpha6").setPackaging("txt")));
 
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
-      Scanner s;
       List<String> list = new ArrayList<String>();
-      try {
-         s = new Scanner(dependency.getArtifact().getUnderlyingResourceObject());
+      try(Scanner s = new Scanner(dependency.getArtifact().getUnderlyingResourceObject())) {
          while (s.hasNextLine()) {
             String currentFraction = s.nextLine();
             if (!alreadyInstalled(currentFraction.split(":")[1], pom.getDependencies())) {
@@ -173,7 +171,6 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project>implements
             }
 
          }
-         s.close();
       } catch (FileNotFoundException | DependencyException e) {
          // TODO do some proper error handling
          e.printStackTrace();
@@ -183,9 +180,8 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project>implements
 
    private boolean alreadyInstalled(String artifactId, List<org.apache.maven.model.Dependency> dependencies)
    {
-      Iterator<org.apache.maven.model.Dependency> iterator = dependencies.iterator();
-      while (iterator.hasNext()) {
-         if (iterator.next().getArtifactId().equals(artifactId)) {
+      for (org.apache.maven.model.Dependency dep : dependencies){
+         if (dep.getArtifactId().equals(artifactId)) {
             return true;
          }
       }

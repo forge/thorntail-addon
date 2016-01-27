@@ -4,22 +4,27 @@ import javax.inject.Inject;
 
 import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.facets.FacetNotFoundException;
+import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
+import org.jboss.forge.addon.ui.command.PrerequisiteCommandsProvider;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.input.InputComponentFactory;
 import org.jboss.forge.addon.ui.input.UISelectMany;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
+import org.jboss.forge.addon.ui.result.NavigationResult;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
+import org.jboss.forge.addon.ui.result.navigation.NavigationResultBuilder;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 
-public class WildflySwarmAddFractionCommand extends AbstractProjectCommand {
+@FacetConstraint(WildflySwarmFacet.class)
+public class WildflySwarmAddFractionCommand extends AbstractProjectCommand implements PrerequisiteCommandsProvider {
 
    @Inject
    private FacetFactory facetFactory;
@@ -70,16 +75,22 @@ public class WildflySwarmAddFractionCommand extends AbstractProjectCommand {
 
    private WildflySwarmFacet getFacet(Project project)
    {
-      WildflySwarmFacet facet;
-      try {
-         facet = project.getFacet(WildflySwarmFacet.class);
-      } catch (FacetNotFoundException exception) {
-         facet = facetFactory.create(project, WildflySwarmFacet.class);
+      return project.getFacet(WildflySwarmFacet.class);
+   }
+   
+   @Override
+   public NavigationResult getPrerequisiteCommands(UIContext context)
+   {
+      NavigationResultBuilder builder = NavigationResultBuilder.create();
+      Project project = getSelectedProject(context);
+      if (project != null)
+      {
+         if (!project.hasFacet(WildflySwarmFacet.class))
+         {
+            builder.add(WildflySwarmSetupCommand.class);
+         }
       }
-      if (!facet.isInstalled()) {
-         facet.install();
-      }
-      return facet;
+      return builder.build();
    }
 
 }
