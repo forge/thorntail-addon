@@ -65,7 +65,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project>implements
    {
       DependencyBuilder swarmDependency = DependencyBuilder.create()
                .setGroupId("org.wildfly.swarm")
-               .setArtifactId("wildfly-swarm-jaxrs")
+               .setArtifactId("jaxrs")
                .setVersion("${version.wildfly-swarm}");
       DependencyFacet facet = getFaceted().getFacet(DependencyFacet.class);
       facet.addDirectDependency(swarmDependency);
@@ -146,7 +146,8 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project>implements
       Iterator<String> iterator = selectedFractions.iterator();
       while (iterator.hasNext()) {
          String[] parts = iterator.next().split(":");
-         Dependency dependency = DependencyBuilder.create(parts[0]).setArtifactId(parts[1])
+         String artifactId = parts[1].split(" ")[0];
+         Dependency dependency = DependencyBuilder.create(parts[0]).setArtifactId(artifactId)
                .setVersion("${version.wildfly-swarm}");
          DependencyFacet facet = getFaceted().getFacet(DependencyFacet.class);
          facet.addDirectDependency(dependency);
@@ -166,8 +167,8 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project>implements
       try(Scanner s = new Scanner(dependency.getArtifact().getUnderlyingResourceObject())) {
          while (s.hasNextLine()) {
             String currentFraction = s.nextLine();
-            if (!alreadyInstalled(currentFraction.split(":")[1], pom.getDependencies())) {
-               list.add(currentFraction);
+            if (!alreadyInstalled(currentFraction.split(":")[1].split(" ")[0], pom.getDependencies())) {
+               list.add(currentFraction.split(" ")[0]);
             }
 
          }
