@@ -1,4 +1,4 @@
-== Wildfly-Swarm addon for JBoss Forge 2
+== Wildfly-Swarm addon for JBoss Forge
 image:https://travis-ci.org/forge/wildfly-swarm-addon.svg?branch=master["Build Status", link="https://travis-ci.org/forge/wildfly-swarm-addon"]
 
 :idprefix: id_ 
