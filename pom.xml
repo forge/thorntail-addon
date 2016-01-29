@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <parent>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-parent</artifactId>
-      <version>17</version>
+      <version>19</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.forge.addon</groupId>
    <artifactId>wildfly-swarm</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <properties>
-      <maven.compiler.source>1.7</maven.compiler.source>
-      <maven.compiler.target>1.7</maven.compiler.target>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <version.forge>2.16.1.Final</version.forge>
+      <version.forge>3.0.0.Beta4</version.forge>
+      <version.wildlfy.swarm>1.0.0.Alpha6</version.wildlfy.swarm>
    </properties>
    <dependencyManagement>
       <dependencies>
@@ -24,9 +26,18 @@
             <type>pom</type>
             <scope>import</scope>
          </dependency>
+         <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>fraction-list</artifactId>
+            <version>${version.wildlfy.swarm}</version>
+         </dependency>
       </dependencies>
    </dependencyManagement>
    <dependencies>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>fraction-list</artifactId>
+      </dependency>
       <dependency>
          <groupId>org.jboss.forge.furnace.container</groupId>
          <artifactId>cdi</artifactId>
@@ -71,6 +82,7 @@
          <scope>test</scope>
       </dependency>
    </dependencies>
+
    <build>
       <finalName>wildfly-swarm-addon</finalName>
       <plugins>
@@ -89,12 +101,46 @@
                </execution>
             </executions>
          </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <inherited>true</inherited>
+            <configuration>
+               <preparationGoals>clean install</preparationGoals>
+               <releaseProfiles>gpg-sign,jboss-release</releaseProfiles>
+               <tagNameFormat>@{project.version}</tagNameFormat>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.3</version>
+            <extensions>true</extensions>
+            <configuration>
+               <autoReleaseAfterClose>true</autoReleaseAfterClose>
+               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+               <serverId>ossrh</serverId>
+            </configuration>
+         </plugin>
       </plugins>
    </build>
+
    <scm>
       <connection>scm:git:git://github.com/forge/wildfly-swarm-addon.git</connection>
       <developerConnection>scm:git:git@github.com:forge/wildfly-swarm-addon.git</developerConnection>
       <url>http://github.com/forge/wildfly-swarm-addon</url>
       <tag>HEAD</tag>
    </scm>
+
+   <distributionManagement>
+      <snapshotRepository>
+         <id>ossrh</id>
+         <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+         <id>ossrh</id>
+         <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+   </distributionManagement>
+
 </project>

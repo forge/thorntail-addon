@@ -1,9 +1,10 @@
 package org.jboss.forge.addon.swarm.ui;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 
-import org.jboss.forge.addon.facets.FacetFactory;
-import org.jboss.forge.addon.facets.FacetNotFoundException;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
@@ -22,43 +23,52 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.result.navigation.NavigationResultBuilder;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
+import org.jboss.forge.furnace.util.Lists;
+import org.wildfly.swarm.fractionlist.FractionDescriptor;
 
 @FacetConstraint(WildflySwarmFacet.class)
-public class WildflySwarmAddFractionCommand extends AbstractProjectCommand implements PrerequisiteCommandsProvider {
-
-   @Inject
-   private FacetFactory facetFactory;
-
+public class WildflySwarmAddFractionCommand extends AbstractProjectCommand implements PrerequisiteCommandsProvider
+{
    @Inject
    private ProjectFactory projectFactory;
 
-   @Inject
-   private InputComponentFactory factory;
-
-   private UISelectMany<String> fractionElements;
+   private UISelectMany<FractionDescriptor> fractionElements;
 
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
       return Metadata.forCommand(getClass()).name("Wildfly-Swarm: Add Fraction")
-            .category(Categories.create("Wildfly-Swarm")).description("Add one or more fractions. Installed fractions have been filtered out.");
+               .category(Categories.create("Wildfly-Swarm"))
+               .description("Add one or more fractions. Installed fractions have been filtered out.");
    }
 
    @Override
    public void initializeUI(UIBuilder builder) throws Exception
    {
-      fractionElements = factory.createSelectMany("fractions", String.class).setLabel("Fraction List")
-            .setDescription("Fraction list");
+      InputComponentFactory factory = builder.getInputComponentFactory();
+      fractionElements = factory.createSelectMany("fractions", FractionDescriptor.class)
+               .setRequired(true)
+               .setLabel("Fraction List")
+               .setDescription("Fraction list");
 
-      fractionElements.setValueChoices(getFacet(getSelectedProject(builder)).getFractionList());
+      Project project = getSelectedProject(builder);
+      WildflySwarmFacet facet = getFacet(project);
+      fractionElements.setValueChoices(facet.getFractionList());
       builder.add(fractionElements);
    }
 
    @Override
    public Result execute(UIExecutionContext context) throws Exception
    {
-      getFacet(getSelectedProject(context)).installFractions(fractionElements.getValue());
-      return Results.success("Command 'add fraction' successfully executed!");
+      Project project = getSelectedProject(context);
+      WildflySwarmFacet facet = getFacet(project);
+      List<FractionDescriptor> fractions = Lists.toList(fractionElements.getValue());
+      facet.installFractions(fractions);
+      List<String> artifactIds = fractions.stream().map((desc) -> desc.getArtifactId())
+               .collect(Collectors.toList());
+      return Results.success("Wildfly Swarm Fractions '"
+               + artifactIds
+               + "' were successfully added to the project descriptor");
    }
 
    @Override
@@ -77,7 +87,7 @@ public class WildflySwarmAddFractionCommand extends AbstractProjectCommand imple
    {
       return project.getFacet(WildflySwarmFacet.class);
    }
-   
+
    @Override
    public NavigationResult getPrerequisiteCommands(UIContext context)
    {
