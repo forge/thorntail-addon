@@ -115,11 +115,6 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
       maven.setModel(pom);
    }
 
-   public static void main(String[] args)
-   {
-      System.out.println(Versions.getImplementationVersionFor(FractionList.class));
-   }
-
    @Override
    public boolean isInstalled()
    {
