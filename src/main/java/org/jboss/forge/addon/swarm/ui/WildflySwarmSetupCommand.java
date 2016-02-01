@@ -1,23 +1,19 @@
 package org.jboss.forge.addon.swarm.ui;
 
-import javax.inject.Inject;
-
 import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.projects.ProjectFactory;
-import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.swarm.config.WildflySwarmConfigurationBuilder;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
+import org.jboss.forge.addon.ui.input.InputComponentFactory;
 import org.jboss.forge.addon.ui.input.UIInput;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
-import org.jboss.forge.addon.ui.metadata.WithAttributes;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
-import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
+import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
 
 /**
  * The Wildfly-Swarm: Setup command
@@ -25,43 +21,30 @@ import org.jboss.forge.addon.ui.util.Metadata;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
-public class WildflySwarmSetupCommand extends AbstractProjectCommand
+public class WildflySwarmSetupCommand extends AbstractWildflySwarmCommand
 {
-
-   @Inject
-   private FacetFactory facetFactory;
-
-   @Inject
-   @WithAttributes(label = "HTTP Port", description = "HTTP Port Wildfly will listen to")
    private UIInput<Integer> httpPort;
-
-   @Inject
-   @WithAttributes(label = "Context Path", description = "The context path of the web application")
    private UIInput<String> contextPath;
-
-   @Inject
-   @WithAttributes(label = "HTTP Port Offset", description = "HTTP Port offset")
    private UIInput<Integer> portOffset;
 
-   @Inject
-   private ProjectFactory projectFactory;
+   @Override
+   public void initializeUI(UIBuilder builder) throws Exception
+   {
+      InputComponentFactory inputFactory = builder.getInputComponentFactory();
+      httpPort = inputFactory.createInput("httpPort", Integer.class)
+               .setLabel("HTTP Port").setDescription("HTTP Port Wildfly will listen to");
+      contextPath = inputFactory.createInput("contextPath", String.class)
+               .setLabel("Context Path").setDescription("The context path of the web application");
+      portOffset = inputFactory.createInput("portOffset", Integer.class)
+               .setLabel("HTTP Port Offset").setDescription("HTTP Port Offset");
+      builder.add(httpPort).add(contextPath).add(portOffset);
+   }
 
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.forCommand(getClass()).name("Wildfly-Swarm: Setup").category(Categories.create("Wildfly-Swarm"));
-   }
-
-   @Override
-   protected ProjectFactory getProjectFactory()
-   {
-      return projectFactory;
-   }
-
-   @Override
-   protected boolean isProjectRequired()
-   {
-      return true;
+      return Metadata.from(super.getMetadata(context), getClass()).name("Wildfly-Swarm: Setup")
+               .description("Setup Wildfly Swarm in your web application");
    }
 
    @Override
@@ -70,15 +53,10 @@ public class WildflySwarmSetupCommand extends AbstractProjectCommand
       Project project = getSelectedProject(context);
       WildflySwarmConfigurationBuilder builder = WildflySwarmConfigurationBuilder.create();
       builder.contextPath(contextPath.getValue()).httpPort(httpPort.getValue()).portOffset(portOffset.getValue());
+      FacetFactory facetFactory = SimpleContainer.getServices(getClass().getClassLoader(), FacetFactory.class).get();
       WildflySwarmFacet facet = facetFactory.create(project, WildflySwarmFacet.class);
       facet.setConfiguration(builder);
       facetFactory.install(project, facet);
       return Results.success("Wildfly Swarm is now set up! Enjoy!");
-   }
-
-   @Override
-   public void initializeUI(UIBuilder builder) throws Exception
-   {
-      builder.add(httpPort).add(contextPath).add(portOffset);
    }
 }

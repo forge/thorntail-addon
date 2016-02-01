@@ -3,12 +3,8 @@ package org.jboss.forge.addon.swarm.ui;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.projects.ProjectFactory;
-import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
 import org.jboss.forge.addon.ui.command.PrerequisiteCommandsProvider;
 import org.jboss.forge.addon.ui.context.UIBuilder;
@@ -21,24 +17,19 @@ import org.jboss.forge.addon.ui.result.NavigationResult;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.result.navigation.NavigationResultBuilder;
-import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.util.Lists;
 import org.wildfly.swarm.fractionlist.FractionDescriptor;
 
 @FacetConstraint(WildflySwarmFacet.class)
-public class WildflySwarmAddFractionCommand extends AbstractProjectCommand implements PrerequisiteCommandsProvider
+public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand implements PrerequisiteCommandsProvider
 {
-   @Inject
-   private ProjectFactory projectFactory;
-
    private UISelectMany<FractionDescriptor> fractionElements;
 
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.forCommand(getClass()).name("Wildfly-Swarm: Add Fraction")
-               .category(Categories.create("Wildfly-Swarm"))
+      return Metadata.from(super.getMetadata(context), getClass()).name("Wildfly-Swarm: Add Fraction")
                .description("Add one or more fractions. Installed fractions have been filtered out.");
    }
 
@@ -69,18 +60,6 @@ public class WildflySwarmAddFractionCommand extends AbstractProjectCommand imple
       return Results.success("Wildfly Swarm Fractions '"
                + artifactIds
                + "' were successfully added to the project descriptor");
-   }
-
-   @Override
-   protected ProjectFactory getProjectFactory()
-   {
-      return projectFactory;
-   }
-
-   @Override
-   protected boolean isProjectRequired()
-   {
-      return true;
    }
 
    private WildflySwarmFacet getFacet(Project project)

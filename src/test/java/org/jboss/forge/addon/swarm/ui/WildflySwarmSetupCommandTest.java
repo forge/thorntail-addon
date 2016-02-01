@@ -10,9 +10,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.inject.Inject;
-
-import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.addon.maven.plugins.MavenPluginAdapter;
 import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
@@ -29,9 +26,9 @@ import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.test.UITestHarness;
-import org.jboss.forge.arquillian.AddonDependencies;
-import org.jboss.forge.arquillian.archive.AddonArchive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.forge.furnace.Furnace;
+import org.jboss.forge.furnace.addons.AddonRegistry;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,29 +37,29 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class WildflySwarmSetupCommandTest
 {
-
-   @Deployment
-   @AddonDependencies
-   public static AddonArchive getDeployment()
-   {
-      return ShrinkWrap.create(AddonArchive.class).addBeansXML();
-   }
-
-   @Inject
    private ProjectFactory projectFactory;
-
-   @Inject
    private UITestHarness uiTestHarness;
-
-   @Inject
    private ShellTest shellTest;
 
    private Project project;
 
    @Before
-   public void setUp()
+   public void setUp() throws Exception
    {
+      AddonRegistry addonRegistry = Furnace.instance(getClass().getClassLoader()).getAddonRegistry();
+      projectFactory = addonRegistry.getServices(ProjectFactory.class).get();
+      uiTestHarness = addonRegistry.getServices(UITestHarness.class).get();
+      shellTest = addonRegistry.getServices(ShellTest.class).get();
       project = projectFactory.createTempProject();
+   }
+
+   @After
+   public void tearDown() throws Exception
+   {
+      if (shellTest != null)
+      {
+         shellTest.close();
+      }
    }
 
    @Test
