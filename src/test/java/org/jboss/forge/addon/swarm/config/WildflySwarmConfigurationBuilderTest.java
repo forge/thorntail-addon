@@ -25,8 +25,8 @@ public class WildflySwarmConfigurationBuilderTest
       Assert.assertNotNull(builder);
       builder.contextPath("/context").httpPort(80).portOffset(100);
       Assert.assertEquals("/context", builder.getContextPath());
-      Assert.assertEquals(new Integer(80), builder.getHttpPort());
-      Assert.assertEquals(new Integer(100), builder.getPortOffset());
+      Assert.assertEquals(Integer.valueOf(80), builder.getHttpPort());
+      Assert.assertEquals(Integer.valueOf(100), builder.getPortOffset());
    }
 
 }
