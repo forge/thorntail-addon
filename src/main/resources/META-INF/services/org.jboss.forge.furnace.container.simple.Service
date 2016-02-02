@@ -1,5 +1,3 @@
-org.jboss.forge.addon.swarm.convert.FractionDescriptorToStringConverterGenerator
-org.jboss.forge.addon.swarm.convert.FractionDescriptorConverterGenerator
 org.jboss.forge.addon.swarm.facet.impl.WildflySwarmFacetImpl
 org.jboss.forge.addon.swarm.ui.WildflySwarmAddFractionCommand
 org.jboss.forge.addon.swarm.ui.WildflySwarmSetupCommand

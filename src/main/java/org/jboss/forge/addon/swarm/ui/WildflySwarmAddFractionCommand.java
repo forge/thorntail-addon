@@ -40,7 +40,8 @@ public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand 
       fractionElements = factory.createSelectMany("fractions", FractionDescriptor.class)
                .setRequired(true)
                .setLabel("Fraction List")
-               .setDescription("Fraction list");
+               .setDescription("Fraction list")
+               .setItemLabelConverter(descriptor -> descriptor.getArtifactId());
 
       Project project = getSelectedProject(builder);
       WildflySwarmFacet facet = getFacet(project);
@@ -55,7 +56,7 @@ public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand 
       WildflySwarmFacet facet = getFacet(project);
       List<FractionDescriptor> fractions = Lists.toList(fractionElements.getValue());
       facet.installFractions(fractions);
-      List<String> artifactIds = fractions.stream().map((desc) -> desc.getArtifactId())
+      List<String> artifactIds = fractions.stream().map(descriptor -> descriptor.getArtifactId())
                .collect(Collectors.toList());
       return Results.success("Wildfly Swarm Fractions '"
                + artifactIds
