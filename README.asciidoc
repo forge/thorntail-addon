@@ -64,10 +64,11 @@ You can install Wildfly Swarm Fractions by using the command `Wildfly-Swarm: Add
 [source,java]
 ----
 [demo]$ wildfly-swarm-add-fraction --fractions 
-bean-validation      ee                   infinispan           jaxrs-weld           jolokia              mail                 remoting             topology             undertow             
-connector            ejb-remote           jaxrs-jaxb           jca                  keycloak             messaging            ribbon               topology-jgroups     webservices          
-container            hawkular             jaxrs-jsonp          jgroups              logging              msc                  ribbon-secured       topology-webapp      weld                 
-datasources          hibernate-validator  jaxrs-multipart      jmx                  logstash             naming               security             transactions         
+bean-validation      ejb                  jaxrs-jaxb           jgroups              keycloak             msc                  security             undertow             
+connector            ejb-remote           jaxrs-jsonp          jmx                  logging              naming               topology             webservices          
+container            hawkular             jaxrs-multipart      jolokia              logstash             remoting             topology-jgroups     weld                 
+datasources          hibernate-validator  jaxrs-weld           jpa                  mail                 ribbon               topology-webapp      
+ee                   infinispan           jca                  jsf                  messaging            ribbon-secured       transactions         
 
 ----
 +
