@@ -57,3 +57,17 @@ wildfly-swarm-setup
 ----
 +
 And that's it! The wildfly swarm maven plugin will be installed. 
+
+Wildfly-Swarm Add Fraction::
+You can install Wildfly Swarm Fractions by using the command `Wildfly-Swarm: Add Fraction`: 
++
+[source,java]
+----
+[demo]$ wildfly-swarm-add-fraction --fractions 
+bean-validation      ee                   hibernate-validator  jaxrs-multipart      jmx                  keycloak             messaging            ribbon               transactions         
+connector            ejb                  infinispan           jaxrs-weld           jolokia              logging              msc                  ribbon-secured       undertow             
+container            ejb-remote           jaxrs-jaxb           jca                  jpa                  logstash             naming               ribbon-webapp        webservices          
+datasources          hawkular             jaxrs-jsonp          jgroups              jsf                  mail                 remoting             security             weld                 
+----
++
+You can choose any fraction you want to install. Installed fractions are not listed.
