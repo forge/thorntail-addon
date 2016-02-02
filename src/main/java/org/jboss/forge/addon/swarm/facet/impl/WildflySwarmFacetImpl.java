@@ -21,6 +21,7 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.swarm.FractionListInstance;
+import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.config.WildflySwarmConfiguration;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
 import org.jboss.forge.furnace.util.Strings;
@@ -52,19 +53,8 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
    {
       addSwarmVersionProperty();
       addMavenPlugin();
-      addDependencies();
+      Swarm.updateFractions(getFaceted());
       return isInstalled();
-   }
-
-   private void addDependencies()
-   {
-      DependencyBuilder swarmDependency = DependencyBuilder.create()
-               .setGroupId("org.wildfly.swarm")
-               .setArtifactId("jaxrs")
-               .setVersion("${version.wildfly-swarm}");
-      DependencyFacet facet = getFaceted().getFacet(DependencyFacet.class);
-      facet.addDirectDependency(swarmDependency);
-
    }
 
    private void addMavenPlugin()
