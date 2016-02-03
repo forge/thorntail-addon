@@ -52,19 +52,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
    {
       addSwarmVersionProperty();
       addMavenPlugin();
-      addDependencies();
       return isInstalled();
-   }
-
-   private void addDependencies()
-   {
-      DependencyBuilder swarmDependency = DependencyBuilder.create()
-               .setGroupId("org.wildfly.swarm")
-               .setArtifactId("jaxrs")
-               .setVersion("${version.wildfly-swarm}");
-      DependencyFacet facet = getFaceted().getFacet(DependencyFacet.class);
-      facet.addDirectDependency(swarmDependency);
-
    }
 
    private void addMavenPlugin()
@@ -157,7 +145,19 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
       return FractionListInstance.INSTANCE.getFractionDescriptors()
                .stream()
                .filter((descriptor) -> !alreadyInstalled(descriptor.getArtifactId(), dependencies))
-               .collect(Collectors.<FractionDescriptor> toList());
+               .collect(Collectors.toList());
+   }
+
+   @Override
+   public List<FractionDescriptor> getInstalledFractionList()
+   {
+      MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
+      Model pom = maven.getModel();
+      List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
+      return FractionListInstance.INSTANCE.getFractionDescriptors()
+               .stream()
+               .filter((descriptor) -> alreadyInstalled(descriptor.getArtifactId(), dependencies))
+               .collect(Collectors.toList());
    }
 
    private String getWildflySwarmVersion()

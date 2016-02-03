@@ -21,4 +21,6 @@ public interface WildflySwarmFacet extends ProjectFacet
    void installFractions(Iterable<FractionDescriptor> selectedFractions);
 
    List<FractionDescriptor> getFractionList();
+
+   List<FractionDescriptor> getInstalledFractionList();
 }
