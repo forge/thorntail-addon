@@ -7,6 +7,8 @@
 
 package org.jboss.forge.addon.swarm;
 
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -91,20 +93,24 @@ public class Swarm
       }
    };
 
-   public static void updateFractions(Project project)
+   public static Set<FractionDescriptor> updateFractions(Project project)
    {
+      Set<FractionDescriptor> fractionDescriptors = Collections.emptySet();
       if (project.hasFacet(WildflySwarmFacet.class))
       {
          WildflySwarmFacet wildflySwarmFacet = project.getFacet(WildflySwarmFacet.class);
-         Set<FractionDescriptor> fractionDescriptors = getFractionDescriptorsFor(project);
+         fractionDescriptors = getFractionDescriptorsFor(project);
+         // Remove the already installed fractions
+         fractionDescriptors.removeAll(wildflySwarmFacet.getInstalledFractionList());
          wildflySwarmFacet.installFractions(fractionDescriptors);
       }
+      return fractionDescriptors;
    }
 
    public static Set<FractionDescriptor> getFractionDescriptorsFor(Project project)
    {
       Set<JavaEEFacet> facets = Sets.toSet(project.getFacets(JavaEEFacet.class));
-      return facets.stream().map(specToFraction).filter((desc) -> desc != null).collect(Collectors.toSet());
+      return facets.stream().map(specToFraction).filter(Objects::nonNull).collect(Collectors.toSet());
    }
 
 }
