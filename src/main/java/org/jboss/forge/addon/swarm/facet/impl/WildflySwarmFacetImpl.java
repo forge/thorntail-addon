@@ -11,6 +11,7 @@ import org.jboss.forge.addon.dependencies.builder.CoordinateBuilder;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
+import org.jboss.forge.addon.maven.plugins.Configuration;
 import org.jboss.forge.addon.maven.plugins.ConfigurationBuilder;
 import org.jboss.forge.addon.maven.plugins.ConfigurationElementBuilder;
 import org.jboss.forge.addon.maven.plugins.ExecutionBuilder;
@@ -67,28 +68,24 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
                         ExecutionBuilder.create().addGoal("package"));
 
       // Plugin configuration
-      ConfigurationBuilder builder = ConfigurationBuilder.create();
-
+      ConfigurationElementBuilder properties = ConfigurationElementBuilder.create().setName("properties");
       if (!Strings.isNullOrEmpty(getConfiguration().getContextPath()))
       {
-         builder.addConfigurationElement(ConfigurationElementBuilder.create().setName("contextPath")
-                  .setText(getConfiguration().getContextPath()));
+         properties.addChild("swarm.context.path").setText(getConfiguration().getContextPath());
       }
       else
       {
-         builder.addConfigurationElement(ConfigurationElementBuilder.create().setName("contextPath")
-                  .setText(metadataFacet.getProjectName()));
+         properties.addChild("swarm.context.path").setText(metadataFacet.getProjectName());
       }
       if (getConfiguration().getHttpPort() != null && getConfiguration().getHttpPort() != 0)
       {
-         builder.addConfigurationElement(ConfigurationElementBuilder.create().setName("httpPort")
-                  .setText(getConfiguration().getHttpPort().toString()));
+         properties.addChild("swarm.http.port").setText(getConfiguration().getHttpPort().toString());
       }
       if (getConfiguration().getPortOffset() != null && getConfiguration().getPortOffset() != 0)
       {
-         builder.addConfigurationElement(ConfigurationElementBuilder.create().setName("portOffset")
-                  .setText(getConfiguration().getPortOffset().toString()));
+         properties.addChild("swarm.port.offset").setText(getConfiguration().getPortOffset().toString());
       }
+      Configuration builder = ConfigurationBuilder.create().addConfigurationElement(properties);
       plugin.setConfiguration(builder);
 
       pluginFacet.addPlugin(plugin);
@@ -167,14 +164,7 @@ public class WildflySwarmFacetImpl extends AbstractFacet<Project> implements
 
    private boolean alreadyInstalled(String artifactId, List<org.apache.maven.model.Dependency> dependencies)
    {
-      for (org.apache.maven.model.Dependency dep : dependencies)
-      {
-         if (dep.getArtifactId().equals(artifactId))
-         {
-            return true;
-         }
-      }
-      return false;
+      return dependencies.stream().anyMatch((dep) -> dep.getArtifactId().equals(artifactId));
    }
 
 }

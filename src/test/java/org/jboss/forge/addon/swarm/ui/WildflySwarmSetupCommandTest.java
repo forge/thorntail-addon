@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.forge.addon.maven.plugins.Configuration;
+import org.jboss.forge.addon.maven.plugins.ConfigurationElement;
 import org.jboss.forge.addon.maven.plugins.MavenPluginAdapter;
 import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.Project;
@@ -123,7 +125,8 @@ public class WildflySwarmSetupCommandTest
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
-         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("contextPath").getText());
+         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("properties")
+                  .getChildByName("swarm.context.path").getText());
       }
    }
 
@@ -160,10 +163,12 @@ public class WildflySwarmSetupCommandTest
                   .getEffectivePlugin(WildflySwarmFacetImpl.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
-         Assert.assertEquals(3, swarmPlugin.getConfig().listConfigurationElements().size());
-         Assert.assertEquals("4242", swarmPlugin.getConfig().getConfigurationElement("httpPort").getText());
-         Assert.assertEquals("root", swarmPlugin.getConfig().getConfigurationElement("contextPath").getText());
-         Assert.assertEquals("42", swarmPlugin.getConfig().getConfigurationElement("portOffset").getText());
+         Configuration config = swarmPlugin.getConfig();
+         ConfigurationElement configurationProps = config.getConfigurationElement("properties");
+         Assert.assertEquals(3, configurationProps.getChildren().size());
+         Assert.assertEquals("4242", configurationProps.getChildByName("swarm.http.port").getText());
+         Assert.assertEquals("root", configurationProps.getChildByName("swarm.context.path").getText());
+         Assert.assertEquals("42", configurationProps.getChildByName("swarm.port.offset").getText());
       }
    }
 
@@ -201,7 +206,8 @@ public class WildflySwarmSetupCommandTest
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
-         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("contextPath").getText());
+         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("properties")
+                  .getChildByName("swarm.context.path").getText());
       }
    }
 
@@ -238,7 +244,8 @@ public class WildflySwarmSetupCommandTest
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
-         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("contextPath").getText());
+         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("properties")
+                  .getChildByName("swarm.context.path").getText());
       }
    }
 }
