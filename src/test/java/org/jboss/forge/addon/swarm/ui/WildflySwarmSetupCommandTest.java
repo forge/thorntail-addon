@@ -19,7 +19,6 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.shell.test.ShellTest;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
-import org.jboss.forge.addon.swarm.facet.impl.WildflySwarmFacetImpl;
 import org.jboss.forge.addon.ui.command.AbstractCommandExecutionListener;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -121,7 +120,7 @@ public class WildflySwarmSetupCommandTest
          Assert.assertTrue(facet.isInstalled());
 
          MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildflySwarmFacetImpl.PLUGIN_COORDINATE);
+                  .getEffectivePlugin(WildflySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
@@ -160,7 +159,7 @@ public class WildflySwarmSetupCommandTest
          Assert.assertTrue(facet.isInstalled());
 
          MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildflySwarmFacetImpl.PLUGIN_COORDINATE);
+                  .getEffectivePlugin(WildflySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Configuration config = swarmPlugin.getConfig();
@@ -202,7 +201,7 @@ public class WildflySwarmSetupCommandTest
          Assert.assertTrue(facet.isInstalled());
 
          MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildflySwarmFacetImpl.PLUGIN_COORDINATE);
+                  .getEffectivePlugin(WildflySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
@@ -240,7 +239,7 @@ public class WildflySwarmSetupCommandTest
          Assert.assertTrue(facet.isInstalled());
 
          MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildflySwarmFacetImpl.PLUGIN_COORDINATE);
+                  .getEffectivePlugin(WildflySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());

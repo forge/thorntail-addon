@@ -1,3 +1,3 @@
-org.jboss.forge.addon.swarm.facet.impl.WildflySwarmFacetImpl
+org.jboss.forge.addon.swarm.facet.WildflySwarmFacet
 org.jboss.forge.addon.swarm.ui.WildflySwarmAddFractionCommand
 org.jboss.forge.addon.swarm.ui.WildflySwarmSetupCommand
