@@ -132,6 +132,7 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
       return FractionListInstance.INSTANCE.getFractionDescriptors()
                .stream()
                .filter((descriptor) -> !alreadyInstalled(descriptor.getArtifactId(), dependencies))
+               .sorted((o1, o2) -> o1.getArtifactId().compareTo(o2.getArtifactId()))
                .collect(Collectors.toList());
    }
 
