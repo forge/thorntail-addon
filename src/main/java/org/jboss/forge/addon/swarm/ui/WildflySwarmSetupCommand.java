@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
+import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.config.WildflySwarmConfigurationBuilder;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
@@ -36,11 +37,15 @@ public class WildflySwarmSetupCommand extends AbstractWildflySwarmCommand
    @Override
    public void initializeUI(UIBuilder builder) throws Exception
    {
+      Project project = getSelectedProject(builder);
+      String projectName = project.getFacet(MetadataFacet.class).getProjectName();
       InputComponentFactory inputFactory = builder.getInputComponentFactory();
       httpPort = inputFactory.createInput("httpPort", Integer.class)
                .setLabel("HTTP Port").setDescription("HTTP Port Wildfly will listen to");
       contextPath = inputFactory.createInput("contextPath", String.class)
-               .setLabel("Context Path").setDescription("The context path of the web application");
+               .setLabel("Context Path").setDescription("The context path of the web application")
+               .setDefaultValue(projectName);
+
       portOffset = inputFactory.createInput("portOffset", Integer.class)
                .setLabel("HTTP Port Offset").setDescription("HTTP Port Offset");
       builder.add(httpPort).add(contextPath).add(portOffset);

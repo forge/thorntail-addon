@@ -21,7 +21,6 @@ import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
-import org.jboss.forge.addon.projects.facets.MetadataFacet;
 import org.jboss.forge.addon.swarm.FractionListInstance;
 import org.jboss.forge.addon.swarm.config.WildflySwarmConfiguration;
 import org.jboss.forge.furnace.util.Strings;
@@ -57,7 +56,6 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
 
    private void addMavenPlugin()
    {
-      MetadataFacet metadataFacet = getFaceted().getFacet(MetadataFacet.class);
       MavenPluginFacet pluginFacet = getFaceted().getFacet(MavenPluginFacet.class);
 
       MavenPluginBuilder plugin = MavenPluginBuilder
@@ -68,21 +66,18 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
 
       // Plugin configuration
       ConfigurationElementBuilder properties = ConfigurationElementBuilder.create().setName("properties");
-      if (!Strings.isNullOrEmpty(getConfiguration().getContextPath()))
+      WildflySwarmConfiguration swarmConfig = getConfiguration();
+      if (!Strings.isNullOrEmpty(swarmConfig.getContextPath()))
       {
-         properties.addChild("swarm.context.path").setText(getConfiguration().getContextPath());
+         properties.addChild("swarm.context.path").setText(swarmConfig.getContextPath());
       }
-      else
+      if (swarmConfig.getHttpPort() != null && swarmConfig.getHttpPort() != 0)
       {
-         properties.addChild("swarm.context.path").setText(metadataFacet.getProjectName());
+         properties.addChild("swarm.http.port").setText(swarmConfig.getHttpPort().toString());
       }
-      if (getConfiguration().getHttpPort() != null && getConfiguration().getHttpPort() != 0)
+      if (swarmConfig.getPortOffset() != null && swarmConfig.getPortOffset() != 0)
       {
-         properties.addChild("swarm.http.port").setText(getConfiguration().getHttpPort().toString());
-      }
-      if (getConfiguration().getPortOffset() != null && getConfiguration().getPortOffset() != 0)
-      {
-         properties.addChild("swarm.port.offset").setText(getConfiguration().getPortOffset().toString());
+         properties.addChild("swarm.port.offset").setText(swarmConfig.getPortOffset().toString());
       }
       Configuration builder = ConfigurationBuilder.create().addConfigurationElement(properties);
       plugin.setConfiguration(builder);

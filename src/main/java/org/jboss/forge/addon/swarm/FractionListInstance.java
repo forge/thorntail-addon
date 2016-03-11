@@ -16,5 +16,6 @@ import org.wildfly.swarm.fractionlist.FractionList;
 public interface FractionListInstance
 {
    public static final String DEFAULT_FRACTION_GROUPID = "org.wildfly.swarm";
+   // TODO: Remove when upgrading swarm
    public static final FractionList INSTANCE = new FractionList();
 }
