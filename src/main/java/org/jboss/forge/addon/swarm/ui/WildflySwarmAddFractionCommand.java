@@ -6,23 +6,20 @@ import java.util.stream.Collectors;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
-import org.jboss.forge.addon.ui.command.PrerequisiteCommandsProvider;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.input.InputComponentFactory;
 import org.jboss.forge.addon.ui.input.UISelectMany;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
-import org.jboss.forge.addon.ui.result.NavigationResult;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
-import org.jboss.forge.addon.ui.result.navigation.NavigationResultBuilder;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.util.Lists;
 import org.wildfly.swarm.fractionlist.FractionDescriptor;
 
 @FacetConstraint(WildflySwarmFacet.class)
-public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand implements PrerequisiteCommandsProvider
+public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand
 {
    private UISelectMany<FractionDescriptor> fractionElements;
 
@@ -44,7 +41,7 @@ public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand 
                .setItemLabelConverter(descriptor -> descriptor.getArtifactId());
 
       Project project = getSelectedProject(builder);
-      WildflySwarmFacet facet = getFacet(project);
+      WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
       fractionElements.setValueChoices(facet.getFractionList());
       builder.add(fractionElements);
    }
@@ -53,7 +50,7 @@ public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand 
    public Result execute(UIExecutionContext context) throws Exception
    {
       Project project = getSelectedProject(context);
-      WildflySwarmFacet facet = getFacet(project);
+      WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
       List<FractionDescriptor> fractions = Lists.toList(fractionElements.getValue());
       facet.installFractions(fractions);
       List<String> artifactIds = fractions.stream().map(descriptor -> descriptor.getArtifactId())
@@ -62,25 +59,4 @@ public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand 
                + artifactIds
                + "' were successfully added to the project descriptor");
    }
-
-   private WildflySwarmFacet getFacet(Project project)
-   {
-      return project.getFacet(WildflySwarmFacet.class);
-   }
-
-   @Override
-   public NavigationResult getPrerequisiteCommands(UIContext context)
-   {
-      NavigationResultBuilder builder = NavigationResultBuilder.create();
-      Project project = getSelectedProject(context);
-      if (project != null)
-      {
-         if (!project.hasFacet(WildflySwarmFacet.class))
-         {
-            builder.add(WildflySwarmSetupCommand.class);
-         }
-      }
-      return builder.build();
-   }
-
 }

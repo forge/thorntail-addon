@@ -21,7 +21,7 @@ import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
-import org.jboss.forge.addon.swarm.FractionListInstance;
+import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.config.WildflySwarmConfiguration;
 import org.jboss.forge.furnace.util.Strings;
 import org.jboss.forge.furnace.versions.Versions;
@@ -129,7 +129,7 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
-      return FractionListInstance.INSTANCE.getFractionDescriptors()
+      return Swarm.getFractionList().getFractionDescriptors()
                .stream()
                .filter((descriptor) -> !alreadyInstalled(descriptor.getArtifactId(), dependencies))
                .sorted((o1, o2) -> o1.getArtifactId().compareTo(o2.getArtifactId()))
@@ -141,7 +141,7 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
-      return FractionListInstance.INSTANCE.getFractionDescriptors()
+      return Swarm.getFractionList().getFractionDescriptors()
                .stream()
                .filter((descriptor) -> alreadyInstalled(descriptor.getArtifactId(), dependencies))
                .collect(Collectors.toList());

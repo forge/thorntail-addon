@@ -50,9 +50,8 @@ public class SwarmTest
       facetFactory.install(project, JMSFacet_2_0.class);
       Set<FractionDescriptor> fractionDescriptors = Swarm.getFractionDescriptorsFor(project);
       Assert.assertThat(fractionDescriptors.size(), is(1));
-      Assert.assertThat(fractionDescriptors, hasItem(
-               FractionListInstance.INSTANCE.getFractionDescriptor(FractionListInstance.DEFAULT_FRACTION_GROUPID,
-                        "messaging")));
+      Assert.assertThat(fractionDescriptors,
+               hasItem(Swarm.getFractionList().getFractionDescriptor(Swarm.DEFAULT_FRACTION_GROUPID, "messaging")));
    }
 
 }
