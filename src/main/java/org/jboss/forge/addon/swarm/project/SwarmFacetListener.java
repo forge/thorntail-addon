@@ -17,6 +17,7 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.Projects;
 import org.jboss.forge.addon.swarm.Swarm;
+import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
 import org.jboss.forge.addon.ui.command.AbstractCommandExecutionListener;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -56,12 +57,15 @@ public class SwarmFacetListener extends AbstractCommandExecutionListener impleme
                      .getServices(getClass().getClassLoader(), ProjectFactory.class)
                      .get();
             Project project = Projects.getSelectedProject(projectFactory, context.getUIContext());
-            Set<FractionDescriptor> newFractions = Swarm.updateFractions(project);
-            UIOutput output = context.getUIContext().getProvider().getOutput();
-            PrintStream out = output.out();
-            for (FractionDescriptor fractionDescriptor : newFractions)
+            if (project.hasFacet(WildflySwarmFacet.class))
             {
-               output.info(out, "Installed Wildfly Swarm Fraction: " + fractionDescriptor.getArtifactId());
+               Set<FractionDescriptor> newFractions = Swarm.updateFractions(project);
+               UIOutput output = context.getUIContext().getProvider().getOutput();
+               PrintStream out = output.out();
+               for (FractionDescriptor fractionDescriptor : newFractions)
+               {
+                  output.info(out, "Installed Wildfly Swarm Fraction: " + fractionDescriptor.getArtifactId());
+               }
             }
          }
       }
