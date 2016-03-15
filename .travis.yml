@@ -6,6 +6,5 @@ jdk:
 notifications:
   irc:
     channels:
-      - "chat.freenode.net#forge"
       - "chat.freenode.net#wildfly-swarm"
     use_notice: true
