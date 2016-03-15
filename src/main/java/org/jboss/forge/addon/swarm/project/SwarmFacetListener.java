@@ -25,7 +25,7 @@ import org.jboss.forge.addon.ui.output.UIOutput;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.furnace.container.simple.EventListener;
 import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
-import org.wildfly.swarm.fractionlist.FractionDescriptor;
+import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
  *
@@ -64,7 +64,7 @@ public class SwarmFacetListener extends AbstractCommandExecutionListener impleme
                PrintStream out = output.out();
                for (FractionDescriptor fractionDescriptor : newFractions)
                {
-                  output.info(out, "Installed Wildfly Swarm Fraction: " + fractionDescriptor.getArtifactId());
+                  output.info(out, "Installed Wildfly Swarm Fraction: " + fractionDescriptor.artifactId());
                }
             }
          }

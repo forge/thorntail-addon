@@ -25,8 +25,8 @@ import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.config.WildflySwarmConfiguration;
 import org.jboss.forge.furnace.util.Strings;
 import org.jboss.forge.furnace.versions.Versions;
-import org.wildfly.swarm.fractionlist.FractionDescriptor;
 import org.wildfly.swarm.fractionlist.FractionList;
+import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
  * The Wildfly-Swarm Facet
@@ -46,12 +46,26 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
             .setArtifactId("wildfly-swarm-plugin")
             .setVersion("${version.wildfly-swarm}");
 
+   public static final Dependency BOM_DEPENDENCY = DependencyBuilder
+            .create().setGroupId("org.wildfly.swarm")
+            .setArtifactId("bom")
+            .setVersion("${version.wildfly-swarm}")
+            .setPackaging("pom")
+            .setScopeType("import");
+
    @Override
    public boolean install()
    {
       addSwarmVersionProperty();
+      addSwarmBOM();
       addMavenPlugin();
       return isInstalled();
+   }
+
+   private void addSwarmBOM()
+   {
+      DependencyFacet dependencyFacet = getFaceted().getFacet(DependencyFacet.class);
+      dependencyFacet.addDirectManagedDependency(BOM_DEPENDENCY);
    }
 
    private void addMavenPlugin()
@@ -113,12 +127,12 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
 
    public void installFractions(Iterable<FractionDescriptor> selectedFractions)
    {
+      addSwarmBOM();
       for (FractionDescriptor descriptor : selectedFractions)
       {
          Dependency dependency = DependencyBuilder.create()
-                  .setGroupId(descriptor.getGroupId())
-                  .setArtifactId(descriptor.getArtifactId())
-                  .setVersion("${version.wildfly-swarm}");
+                  .setGroupId(descriptor.groupId())
+                  .setArtifactId(descriptor.artifactId());
          DependencyFacet facet = getFaceted().getFacet(DependencyFacet.class);
          facet.addDirectDependency(dependency);
       }
@@ -131,8 +145,8 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
       return Swarm.getFractionList().getFractionDescriptors()
                .stream()
-               .filter((descriptor) -> !alreadyInstalled(descriptor.getArtifactId(), dependencies))
-               .sorted((o1, o2) -> o1.getArtifactId().compareTo(o2.getArtifactId()))
+               .filter((descriptor) -> !alreadyInstalled(descriptor.artifactId(), dependencies))
+               .sorted((o1, o2) -> o1.artifactId().compareTo(o2.artifactId()))
                .collect(Collectors.toList());
    }
 
@@ -143,7 +157,7 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
       return Swarm.getFractionList().getFractionDescriptors()
                .stream()
-               .filter((descriptor) -> alreadyInstalled(descriptor.getArtifactId(), dependencies))
+               .filter((descriptor) -> alreadyInstalled(descriptor.artifactId(), dependencies))
                .collect(Collectors.toList());
    }
 

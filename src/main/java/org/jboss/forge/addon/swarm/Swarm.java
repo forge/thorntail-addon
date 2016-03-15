@@ -27,8 +27,8 @@ import org.jboss.forge.addon.javaee.validation.ValidationFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
 import org.jboss.forge.furnace.util.Sets;
-import org.wildfly.swarm.fractionlist.FractionDescriptor;
 import org.wildfly.swarm.fractionlist.FractionList;
+import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
  *
@@ -37,50 +37,48 @@ import org.wildfly.swarm.fractionlist.FractionList;
 public class Swarm
 {
    public static final String DEFAULT_FRACTION_GROUPID = "org.wildfly.swarm";
-   // TODO: Remove when upgrading swarm
-   private static final FractionList FRACTION_LIST = new FractionList();
 
    private static final Function<JavaEEFacet, FractionDescriptor> specToFraction = (facet) -> {
 
       if (facet instanceof JPAFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "jpa");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "jpa");
       }
       else if (facet instanceof ValidationFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "bean-validation");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "bean-validation");
       }
       else if (facet instanceof FacesFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "jsf");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "jsf");
       }
       else if (facet instanceof EJBFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "ejb");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "ejb");
       }
       else if (facet instanceof CDIFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "weld");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "weld");
       }
       else if (facet instanceof JMSFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "messaging");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "messaging");
       }
       else if (facet instanceof ServletFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "undertow");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "undertow");
       }
       else if (facet instanceof JAXWSFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "webservices");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "webservices");
       }
       else if (facet instanceof JTAFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "transactions");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "transactions");
       }
       else if (facet instanceof RestFacet)
       {
-         return FRACTION_LIST.getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "jaxrs");
+         return getFractionList().getFractionDescriptor(DEFAULT_FRACTION_GROUPID, "jaxrs");
       }
       else
       {
@@ -104,7 +102,7 @@ public class Swarm
 
    public static FractionList getFractionList()
    {
-      return FRACTION_LIST;
+      return FractionList.get();
    }
 
    public static Set<FractionDescriptor> getFractionDescriptorsFor(Project project)

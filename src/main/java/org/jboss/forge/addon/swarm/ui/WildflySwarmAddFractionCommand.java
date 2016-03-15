@@ -16,7 +16,7 @@ import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.util.Lists;
-import org.wildfly.swarm.fractionlist.FractionDescriptor;
+import org.wildfly.swarm.tools.FractionDescriptor;
 
 @FacetConstraint(WildflySwarmFacet.class)
 public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand
@@ -38,7 +38,7 @@ public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand
                .setRequired(true)
                .setLabel("Fraction List")
                .setDescription("Fraction list")
-               .setItemLabelConverter(descriptor -> descriptor.getArtifactId());
+               .setItemLabelConverter(descriptor -> descriptor.artifactId());
 
       Project project = getSelectedProject(builder);
       WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
@@ -53,7 +53,7 @@ public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand
       WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
       List<FractionDescriptor> fractions = Lists.toList(fractionElements.getValue());
       facet.installFractions(fractions);
-      List<String> artifactIds = fractions.stream().map(descriptor -> descriptor.getArtifactId())
+      List<String> artifactIds = fractions.stream().map(descriptor -> descriptor.artifactId())
                .collect(Collectors.toList());
       return Results.success("Wildfly Swarm Fractions '"
                + artifactIds

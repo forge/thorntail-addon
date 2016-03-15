@@ -20,7 +20,7 @@ import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
-import org.wildfly.swarm.fractionlist.FractionDescriptor;
+import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
  * The Wildfly-Swarm: Setup command
@@ -74,7 +74,7 @@ public class WildflySwarmSetupCommand extends AbstractWildflySwarmCommand
       PrintStream out = output.out();
       for (FractionDescriptor fractionDescriptor : newFractions)
       {
-         output.info(out, "Installed Wildfly Swarm Fraction: " + fractionDescriptor.getArtifactId());
+         output.info(out, "Installed Wildfly Swarm Fraction: " + fractionDescriptor.artifactId());
       }
       return Results.success("Wildfly Swarm is now set up! Enjoy!");
    }
