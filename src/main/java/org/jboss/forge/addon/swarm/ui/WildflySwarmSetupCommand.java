@@ -1,12 +1,8 @@
 package org.jboss.forge.addon.swarm.ui;
 
-import java.io.PrintStream;
-import java.util.Set;
-
 import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
-import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.config.WildflySwarmConfigurationBuilder;
 import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
@@ -15,12 +11,10 @@ import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.input.InputComponentFactory;
 import org.jboss.forge.addon.ui.input.UIInput;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
-import org.jboss.forge.addon.ui.output.UIOutput;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
-import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
  * The Wildfly-Swarm: Setup command
@@ -68,14 +62,6 @@ public class WildflySwarmSetupCommand extends AbstractWildflySwarmCommand
       WildflySwarmFacet facet = facetFactory.create(project, WildflySwarmFacet.class);
       facet.setConfiguration(builder);
       facetFactory.install(project, facet);
-      // Update fractions
-      Set<FractionDescriptor> newFractions = Swarm.updateFractions(project);
-      UIOutput output = context.getUIContext().getProvider().getOutput();
-      PrintStream out = output.out();
-      for (FractionDescriptor fractionDescriptor : newFractions)
-      {
-         output.info(out, "Installed Wildfly Swarm Fraction: " + fractionDescriptor.artifactId());
-      }
       return Results.success("Wildfly Swarm is now set up! Enjoy!");
    }
 }
