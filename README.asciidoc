@@ -49,7 +49,7 @@ To use this addon, you must add it as a dependency in the *pom.xml* of your `for
 </dependency>
 ----
 == Features
-Wildfly-Swarm Setup command:: 
+Setup command:: 
 Just type the following command if you're in shell. It should read Wildfly-Swarm: Setup if you're in a GUI environment:  
 +
 [source,java]
@@ -59,7 +59,7 @@ wildfly-swarm-setup
 +
 And that's it! The wildfly swarm maven plugin will be installed. 
 
-Wildfly-Swarm Add Fraction::
+Add Fraction::
 You can install Wildfly Swarm Fractions by using the command `Wildfly-Swarm: Add Fraction`: 
 +
 [source,java]
@@ -74,3 +74,9 @@ ee                   infinispan           jca                  jsf              
 ----
 +
 You can choose any fraction you want to install. Installed fractions are not listed.
+
+Wildfly-Swarm: Detect Fraction::
+This will run a fraction analyzer algorithm and list the missing fractions. You can add them to your project by specifying the `--depend` parameter 
+
+Wildfly-Swarm List Fractions::
+This will list all the available fractions 
