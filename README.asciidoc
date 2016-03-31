@@ -75,8 +75,8 @@ ee                   infinispan           jca                  jsf              
 +
 You can choose any fraction you want to install. Installed fractions are not listed.
 
-Wildfly-Swarm: Detect Fraction::
+Detect Fractions::
 This will run a fraction analyzer algorithm and list the missing fractions. You can add them to your project by specifying the `--depend` parameter 
 
-Wildfly-Swarm List Fractions::
+List Fractions::
 This will list all the available fractions 
