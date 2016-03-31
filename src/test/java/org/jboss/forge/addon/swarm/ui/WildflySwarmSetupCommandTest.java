@@ -66,12 +66,12 @@ public class WildflySwarmSetupCommandTest
    @Test
    public void checkCommandMetadata() throws Exception
    {
-      try (CommandController controller = uiTestHarness.createCommandController(WildflySwarmSetupCommand.class,
+      try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
       {
          controller.initialize();
          // Checks the command metadata
-         assertTrue(controller.getCommand() instanceof WildflySwarmSetupCommand);
+         assertTrue(controller.getCommand() instanceof SetupCommand);
          UICommandMetadata metadata = controller.getMetadata();
          assertEquals("Wildfly-Swarm: Setup", metadata.getName());
          assertEquals("Wildfly-Swarm", metadata.getCategory().getName());
@@ -97,7 +97,7 @@ public class WildflySwarmSetupCommandTest
    @Test
    public void testWildflySwarmSetup() throws Exception
    {
-      try (CommandController controller = uiTestHarness.createCommandController(WildflySwarmSetupCommand.class,
+      try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
       {
          controller.initialize();
@@ -132,7 +132,7 @@ public class WildflySwarmSetupCommandTest
    @Test
    public void testWildflySwarmSetupWithParameters() throws Exception
    {
-      try (CommandController controller = uiTestHarness.createCommandController(WildflySwarmSetupCommand.class,
+      try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
       {
          controller.initialize();
@@ -174,7 +174,7 @@ public class WildflySwarmSetupCommandTest
    @Test
    public void testWildflySwarmSetupWithNullParameters() throws Exception
    {
-      try (CommandController controller = uiTestHarness.createCommandController(WildflySwarmSetupCommand.class,
+      try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
       {
          controller.initialize();
@@ -213,7 +213,7 @@ public class WildflySwarmSetupCommandTest
    @Test
    public void testWildflySwarmSetupWithZeroParameters() throws Exception
    {
-      try (CommandController controller = uiTestHarness.createCommandController(WildflySwarmSetupCommand.class,
+      try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
       {
          controller.initialize();

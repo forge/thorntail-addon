@@ -19,7 +19,7 @@ import org.jboss.forge.furnace.util.Lists;
 import org.wildfly.swarm.tools.FractionDescriptor;
 
 @FacetConstraint(WildflySwarmFacet.class)
-public class WildflySwarmAddFractionCommand extends AbstractWildflySwarmCommand
+public class AddFractionCommand extends AbstractWildflySwarmCommand
 {
    private UISelectMany<FractionDescriptor> fractionElements;
 

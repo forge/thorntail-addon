@@ -22,7 +22,7 @@ import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
-public class WildflySwarmSetupCommand extends AbstractWildflySwarmCommand
+public class SetupCommand extends AbstractWildflySwarmCommand
 {
    private UIInput<Integer> httpPort;
    private UIInput<String> contextPath;

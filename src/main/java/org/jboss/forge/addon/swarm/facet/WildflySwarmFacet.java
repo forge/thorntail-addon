@@ -81,7 +81,7 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
       // Plugin configuration
       ConfigurationElementBuilder properties = ConfigurationElementBuilder.create().setName("properties");
       WildflySwarmConfiguration swarmConfig = getConfiguration();
-      if (!Strings.isNullOrEmpty(swarmConfig.getContextPath()))
+      if (!Strings.isNullOrEmpty(swarmConfig.getContextPath()) && !"/".equals(swarmConfig.getContextPath()))
       {
          properties.addChild("swarm.context.path").setText(swarmConfig.getContextPath());
       }
@@ -93,9 +93,11 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
       {
          properties.addChild("swarm.port.offset").setText(swarmConfig.getPortOffset().toString());
       }
-      Configuration builder = ConfigurationBuilder.create().addConfigurationElement(properties);
-      plugin.setConfiguration(builder);
-
+      if (properties.hasChildren())
+      {
+         Configuration builder = ConfigurationBuilder.create().addConfigurationElement(properties);
+         plugin.setConfiguration(builder);
+      }
       pluginFacet.addPlugin(plugin);
    }
 
@@ -127,14 +129,17 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
 
    public void installFractions(Iterable<FractionDescriptor> selectedFractions)
    {
+      DependencyFacet facet = getFaceted().getFacet(DependencyFacet.class);
       addSwarmBOM();
       for (FractionDescriptor descriptor : selectedFractions)
       {
          Dependency dependency = DependencyBuilder.create()
                   .setGroupId(descriptor.groupId())
                   .setArtifactId(descriptor.artifactId());
-         DependencyFacet facet = getFaceted().getFacet(DependencyFacet.class);
-         facet.addDirectDependency(dependency);
+         if (!facet.hasEffectiveDependency(dependency))
+         {
+            facet.addDirectDependency(dependency);
+         }
       }
    }
 
