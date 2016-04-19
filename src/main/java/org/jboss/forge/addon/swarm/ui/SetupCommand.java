@@ -2,7 +2,7 @@ package org.jboss.forge.addon.swarm.ui;
 
 import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.projects.facets.MetadataFacet;
+import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
@@ -32,16 +32,27 @@ public class SetupCommand extends AbstractWildFlySwarmCommand
    public void initializeUI(UIBuilder builder) throws Exception
    {
       Project project = getSelectedProject(builder);
-      String projectName = project.getFacet(MetadataFacet.class).getProjectName();
       InputComponentFactory inputFactory = builder.getInputComponentFactory();
+
       httpPort = inputFactory.createInput("httpPort", Integer.class)
-               .setLabel("HTTP Port").setDescription("HTTP Port Wildfly will listen to");
+               .setLabel("HTTP Port").setDescription("HTTP Port Wildfly will listen to")
+               .setDefaultValue(WildFlySwarmConfiguration.HTTP_PORT_DEFAULT_VALUE);
+
       contextPath = inputFactory.createInput("contextPath", String.class)
                .setLabel("Context Path").setDescription("The context path of the web application")
-               .setDefaultValue(projectName);
+               .setDefaultValue(WildFlySwarmConfiguration.CONTEXT_PATH_DEFAULT_VALUE);
 
       portOffset = inputFactory.createInput("portOffset", Integer.class)
-               .setLabel("HTTP Port Offset").setDescription("HTTP Port Offset");
+               .setLabel("HTTP Port Offset").setDescription("HTTP Port Offset")
+               .setDefaultValue(WildFlySwarmConfiguration.PORT_OFFSET_DEFAULT_VALUE);
+
+      project.getFacetAsOptional(WildFlySwarmFacet.class)
+               .ifPresent((facet) -> {
+                  WildFlySwarmConfiguration config = facet.getConfiguration();
+                  httpPort.setDefaultValue(config.getHttpPort());
+                  contextPath.setDefaultValue(config.getContextPath());
+                  portOffset.setDefaultValue(config.getPortOffset());
+               });
       builder.add(httpPort).add(contextPath).add(portOffset);
    }
 
@@ -59,9 +70,17 @@ public class SetupCommand extends AbstractWildFlySwarmCommand
       WildFlySwarmConfigurationBuilder builder = WildFlySwarmConfigurationBuilder.create();
       builder.contextPath(contextPath.getValue()).httpPort(httpPort.getValue()).portOffset(portOffset.getValue());
       FacetFactory facetFactory = SimpleContainer.getServices(getClass().getClassLoader(), FacetFactory.class).get();
-      WildFlySwarmFacet facet = facetFactory.create(project, WildFlySwarmFacet.class);
-      facet.setConfiguration(builder);
-      facetFactory.install(project, facet);
+      if (project.hasFacet(WildFlySwarmFacet.class))
+      {
+         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
+         facet.setConfiguration(builder);
+      }
+      else
+      {
+         WildFlySwarmFacet facet = facetFactory.create(project, WildFlySwarmFacet.class);
+         facet.setConfiguration(builder);
+         facetFactory.install(project, facet);
+      }
       return Results.success("WildFly Swarm is now set up! Enjoy!");
    }
 }

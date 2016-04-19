@@ -24,10 +24,8 @@ import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
-import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
-import org.jboss.forge.furnace.util.Strings;
 import org.jboss.forge.furnace.versions.Versions;
 import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
@@ -42,6 +40,8 @@ import org.wildfly.swarm.tools.FractionDescriptor;
 public class WildFlySwarmFacet extends AbstractFacet<Project> implements ProjectFacet
 {
    private WildFlySwarmConfiguration configuration = WildFlySwarmConfigurationBuilder.create();
+
+   public static final String DEFAULT_FRACTION_GROUPID = "org.wildfly.swarm";
 
    public static final Coordinate PLUGIN_COORDINATE = CoordinateBuilder
             .create().setGroupId("org.wildfly.swarm")
@@ -67,54 +67,6 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       return isInstalled();
    }
 
-   private void addSwarmBOM()
-   {
-      DependencyFacet dependencyFacet = getFaceted().getFacet(DependencyFacet.class);
-      dependencyFacet.addDirectManagedDependency(BOM_DEPENDENCY);
-   }
-
-   private void addMavenPlugin()
-   {
-      MavenPluginFacet pluginFacet = getFaceted().getFacet(MavenPluginFacet.class);
-
-      MavenPluginBuilder plugin = MavenPluginBuilder
-               .create()
-               .setCoordinate(PLUGIN_COORDINATE)
-               .addExecution(
-                        ExecutionBuilder.create().addGoal("package"));
-
-      // Plugin configuration
-      ConfigurationElementBuilder properties = ConfigurationElementBuilder.create().setName("properties");
-      WildFlySwarmConfiguration swarmConfig = getConfiguration();
-      if (!Strings.isNullOrEmpty(swarmConfig.getContextPath()) && !"/".equals(swarmConfig.getContextPath()))
-      {
-         properties.addChild("swarm.context.path").setText(swarmConfig.getContextPath());
-      }
-      if (swarmConfig.getHttpPort() != null && swarmConfig.getHttpPort() != 0)
-      {
-         properties.addChild("swarm.http.port").setText(swarmConfig.getHttpPort().toString());
-      }
-      if (swarmConfig.getPortOffset() != null && swarmConfig.getPortOffset() != 0)
-      {
-         properties.addChild("swarm.port.offset").setText(swarmConfig.getPortOffset().toString());
-      }
-      if (properties.hasChildren())
-      {
-         Configuration builder = ConfigurationBuilder.create().addConfigurationElement(properties);
-         plugin.setConfiguration(builder);
-      }
-      pluginFacet.addPlugin(plugin);
-   }
-
-   private void addSwarmVersionProperty()
-   {
-      MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
-      Model pom = maven.getModel();
-      Properties properties = pom.getProperties();
-      properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, getWildflySwarmVersion());
-      maven.setModel(pom);
-   }
-
    @Override
    public boolean isInstalled()
    {
@@ -130,20 +82,32 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
    public WildFlySwarmFacet setConfiguration(WildFlySwarmConfiguration configuration)
    {
       this.configuration = configuration;
+      if (isInstalled())
+      {
+         updatePluginConfiguration();
+      }
       return this;
    }
 
+   /**
+    * Can only be called after this facet has been installed. Otherwise do nothing
+    * 
+    * TODO: Store in a field to perform change during installation?
+    */
    public WildFlySwarmFacet setMainClass(String className)
    {
       MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
       MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
-      Configuration config = plugin.getConfig();
-      config.removeConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
-      config.addConfigurationElement(
-               ConfigurationElementBuilder.create().setName(MAIN_CLASS_CONFIGURATION_ELEMENT).setText(className));
-      MavenPluginAdapter newPlugin = new MavenPluginAdapter(plugin);
-      newPlugin.setConfig(config);
-      facet.updatePlugin(newPlugin);
+      if (plugin != null)
+      {
+         Configuration config = plugin.getConfig();
+         config.removeConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
+         config.addConfigurationElement(
+                  ConfigurationElementBuilder.create().setName(MAIN_CLASS_CONFIGURATION_ELEMENT).setText(className));
+         MavenPluginAdapter newPlugin = new MavenPluginAdapter(plugin);
+         newPlugin.setConfig(config);
+         facet.updatePlugin(newPlugin);
+      }
       return this;
    }
 
@@ -176,7 +140,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
-      return Swarm.getFractionList().getFractionDescriptors()
+      return FractionList.get().getFractionDescriptors()
                .stream()
                .filter((descriptor) -> !alreadyInstalled(descriptor.artifactId(), dependencies))
                .sorted((o1, o2) -> o1.artifactId().compareTo(o2.artifactId()))
@@ -188,10 +152,62 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
-      return Swarm.getFractionList().getFractionDescriptors()
+      return FractionList.get().getFractionDescriptors()
                .stream()
                .filter((descriptor) -> alreadyInstalled(descriptor.artifactId(), dependencies))
                .collect(Collectors.toList());
+   }
+
+   private void addSwarmVersionProperty()
+   {
+      MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
+      Model pom = maven.getModel();
+      Properties properties = pom.getProperties();
+      properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, getWildflySwarmVersion());
+      maven.setModel(pom);
+   }
+
+   private void addSwarmBOM()
+   {
+      DependencyFacet dependencyFacet = getFaceted().getFacet(DependencyFacet.class);
+      dependencyFacet.addDirectManagedDependency(BOM_DEPENDENCY);
+   }
+
+   private void addMavenPlugin()
+   {
+      MavenPluginFacet pluginFacet = getFaceted().getFacet(MavenPluginFacet.class);
+
+      MavenPluginBuilder plugin = MavenPluginBuilder
+               .create()
+               .setCoordinate(PLUGIN_COORDINATE)
+               .addExecution(
+                        ExecutionBuilder.create().addGoal("package"));
+
+      // Plugin configuration
+      ConfigurationElementBuilder properties = configuration.toConfigurationElementBuilder();
+      if (properties.hasChildren())
+      {
+         Configuration builder = ConfigurationBuilder.create().addConfigurationElement(properties);
+         plugin.setConfiguration(builder);
+      }
+      pluginFacet.addPlugin(plugin);
+   }
+
+   private void updatePluginConfiguration()
+   {
+      MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
+      MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
+
+      MavenPluginAdapter adapter = new MavenPluginAdapter(plugin);
+      ConfigurationElementBuilder properties = configuration.toConfigurationElementBuilder();
+      Configuration config = adapter.getConfig();
+      config.removeConfigurationElement("properties");
+      if (properties.hasChildren())
+      {
+         config.addConfigurationElement(properties);
+      }
+      adapter.setConfig(config);
+      facet.updatePlugin(adapter);
    }
 
    private String getWildflySwarmVersion()

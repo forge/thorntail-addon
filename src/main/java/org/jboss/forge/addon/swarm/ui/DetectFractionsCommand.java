@@ -16,7 +16,6 @@ import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.resource.DirectoryResource;
-import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -106,7 +105,7 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
          packaging.createBuilder().build(output.out(), output.err());
          progressMonitor.worked(1);
       }
-      FractionList fractionList = Swarm.getFractionList();
+      FractionList fractionList = FractionList.get();
       FractionUsageAnalyzer fua = new FractionUsageAnalyzer(fractionList,
                value.getUnderlyingResourceObject());
       Set<FractionDescriptor> detectedFractions = fua.detectNeededFractions();

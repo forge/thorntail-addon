@@ -12,7 +12,6 @@ import java.io.PrintStream;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
-import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -21,6 +20,7 @@ import org.jboss.forge.addon.ui.output.UIOutput;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
+import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
@@ -42,7 +42,7 @@ public class ListFractionsCommand extends AbstractWildFlySwarmCommand
    {
       UIOutput output = executionContext.getUIContext().getProvider().getOutput();
       PrintStream out = output.out();
-      for (FractionDescriptor fraction : Swarm.getFractionList().getFractionDescriptors())
+      for (FractionDescriptor fraction : FractionList.get().getFractionDescriptors())
       {
          out.println(fraction.toString());
       }

@@ -123,9 +123,7 @@ public class SetupCommandTest
                   .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
-         Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
-         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("properties")
-                  .getChildByName("swarm.context.path").getText());
+         Assert.assertEquals(0, swarmPlugin.getConfig().listConfigurationElements().size());
       }
    }
 
@@ -204,9 +202,7 @@ public class SetupCommandTest
                   .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
-         Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
-         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("properties")
-                  .getChildByName("swarm.context.path").getText());
+         Assert.assertEquals(0, swarmPlugin.getConfig().listConfigurationElements().size());
       }
    }
 
@@ -242,9 +238,7 @@ public class SetupCommandTest
                   .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
-         Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
-         Assert.assertEquals("empty-project", swarmPlugin.getConfig().getConfigurationElement("properties")
-                  .getChildByName("swarm.context.path").getText());
+         Assert.assertEquals(0, swarmPlugin.getConfig().listConfigurationElements().size());
       }
    }
 }
