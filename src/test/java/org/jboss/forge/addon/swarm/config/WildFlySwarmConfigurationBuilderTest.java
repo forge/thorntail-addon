@@ -11,17 +11,17 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test class for {@link WildflySwarmConfigurationBuilder}
+ * Test class for {@link WildFlySwarmConfigurationBuilder}
  * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class WildflySwarmConfigurationBuilderTest
+public class WildFlySwarmConfigurationBuilderTest
 {
 
    @Test
    public void testCreate()
    {
-      WildflySwarmConfigurationBuilder builder = WildflySwarmConfigurationBuilder.create();
+      WildFlySwarmConfigurationBuilder builder = WildFlySwarmConfigurationBuilder.create();
       Assert.assertNotNull(builder);
       builder.contextPath("/context").httpPort(80).portOffset(100);
       Assert.assertEquals("/context", builder.getContextPath());

@@ -11,7 +11,7 @@ import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.building.BuildException;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
-import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
+import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
@@ -24,13 +24,13 @@ import org.jboss.forge.addon.ui.util.Metadata;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@FacetConstraint(WildflySwarmFacet.class)
-public class RunCommand extends AbstractWildflySwarmCommand
+@FacetConstraint(WildFlySwarmFacet.class)
+public class RunCommand extends AbstractWildFlySwarmCommand
 {
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("Wildfly-Swarm: Run")
+      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly-Swarm: Run")
                .description("Run the project using the 'wildfly-swarm:run' maven plugin");
    }
 

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
+import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -18,15 +18,15 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.util.Lists;
 import org.wildfly.swarm.tools.FractionDescriptor;
 
-@FacetConstraint(WildflySwarmFacet.class)
-public class AddFractionCommand extends AbstractWildflySwarmCommand
+@FacetConstraint(WildFlySwarmFacet.class)
+public class AddFractionCommand extends AbstractWildFlySwarmCommand
 {
    private UISelectMany<FractionDescriptor> fractionElements;
 
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("Wildfly-Swarm: Add Fraction")
+      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly-Swarm: Add Fraction")
                .description("Add one or more fractions. Installed fractions have been filtered out.");
    }
 
@@ -41,7 +41,7 @@ public class AddFractionCommand extends AbstractWildflySwarmCommand
                .setItemLabelConverter(descriptor -> descriptor.artifactId());
 
       Project project = getSelectedProject(builder);
-      WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
+      WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
       fractionElements.setValueChoices(facet.getFractionList());
       builder.add(fractionElements);
    }
@@ -50,7 +50,7 @@ public class AddFractionCommand extends AbstractWildflySwarmCommand
    public Result execute(UIExecutionContext context) throws Exception
    {
       Project project = getSelectedProject(context);
-      WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
+      WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
       List<FractionDescriptor> fractions = Lists.toList(fractionElements.getValue());
       facet.installFractions(fractions);
       List<String> artifactIds = fractions.stream().map(descriptor -> descriptor.artifactId())

@@ -19,12 +19,12 @@ import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public abstract class AbstractWildflySwarmCommand extends AbstractProjectCommand
+public abstract class AbstractWildFlySwarmCommand extends AbstractProjectCommand
 {
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.forCommand(getClass()).category(Categories.create("Wildfly-Swarm"));
+      return Metadata.forCommand(getClass()).category(Categories.create("WildFly-Swarm"));
    }
 
    @Override

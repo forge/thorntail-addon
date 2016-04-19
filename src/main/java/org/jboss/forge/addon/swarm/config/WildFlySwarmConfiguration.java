@@ -12,7 +12,7 @@ package org.jboss.forge.addon.swarm.config;
  * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public interface WildflySwarmConfiguration
+public interface WildFlySwarmConfiguration
 {
    /**
     * @return the HTTP port for this microservice

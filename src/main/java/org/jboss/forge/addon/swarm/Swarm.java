@@ -10,7 +10,7 @@ package org.jboss.forge.addon.swarm;
 import java.util.Collection;
 
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
+import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
 
@@ -29,7 +29,7 @@ public class Swarm
 
    public static Collection<FractionDescriptor> getFractionDescriptorsFor(Project project)
    {
-      WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
+      WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
       return facet.getInstalledFractionList();
    }
 

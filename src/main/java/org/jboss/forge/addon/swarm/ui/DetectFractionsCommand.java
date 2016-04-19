@@ -17,7 +17,7 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.swarm.Swarm;
-import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
+import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -37,8 +37,8 @@ import org.wildfly.swarm.tools.FractionUsageAnalyzer;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@FacetConstraint({ WildflySwarmFacet.class, MavenFacet.class, PackagingFacet.class })
-public class DetectFractionsCommand extends AbstractWildflySwarmCommand
+@FacetConstraint({ WildFlySwarmFacet.class, MavenFacet.class, PackagingFacet.class })
+public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
 {
    private UIInput<DirectoryResource> inputDir;
    private UIInput<Boolean> build;
@@ -47,7 +47,7 @@ public class DetectFractionsCommand extends AbstractWildflySwarmCommand
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("Wildfly-Swarm: Detect Fractions")
+      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly-Swarm: Detect Fractions")
                .description("Detect the needed fractions for the current project");
    }
 
@@ -115,7 +115,7 @@ public class DetectFractionsCommand extends AbstractWildflySwarmCommand
       if (depend.getValue() && detectedFractions.size() > 0)
       {
          progressMonitor.setTaskName("Adding missing fractions as project dependencies...");
-         WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
+         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
          detectedFractions.removeAll(facet.getInstalledFractionList());
          // detectedFractions.remove(fractionList.getFractionDescriptor(Swarm.DEFAULT_FRACTION_GROUPID, "container"));
          if (detectedFractions.isEmpty())

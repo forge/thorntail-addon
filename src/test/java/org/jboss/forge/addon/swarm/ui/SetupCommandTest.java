@@ -18,7 +18,7 @@ import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.shell.test.ShellTest;
-import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
+import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.command.AbstractCommandExecutionListener;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -36,7 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class WildflySwarmSetupCommandTest
+public class SetupCommandTest
 {
    private ProjectFactory projectFactory;
    private UITestHarness uiTestHarness;
@@ -73,8 +73,8 @@ public class WildflySwarmSetupCommandTest
          // Checks the command metadata
          assertTrue(controller.getCommand() instanceof SetupCommand);
          UICommandMetadata metadata = controller.getMetadata();
-         assertEquals("Wildfly-Swarm: Setup", metadata.getName());
-         assertEquals("Wildfly-Swarm", metadata.getCategory().getName());
+         assertEquals("WildFly-Swarm: Setup", metadata.getName());
+         assertEquals("WildFly-Swarm", metadata.getCategory().getName());
          assertNull(metadata.getCategory().getSubCategory());
          assertEquals(3, controller.getInputs().size());
          assertFalse(controller.hasInput("dummy"));
@@ -91,7 +91,7 @@ public class WildflySwarmSetupCommandTest
       Result result = shellTest.execute(("wildfly-swarm-setup"), 10, TimeUnit.SECONDS);
 
       Assert.assertThat(result, not(instanceOf(Failed.class)));
-      Assert.assertTrue(project.hasFacet(WildflySwarmFacet.class));
+      Assert.assertTrue(project.hasFacet(WildFlySwarmFacet.class));
    }
 
    @Test
@@ -108,7 +108,7 @@ public class WildflySwarmSetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("Wildfly Swarm is now set up! Enjoy!"))
+               if (result.getMessage().equals("WildFly Swarm is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
@@ -116,11 +116,11 @@ public class WildflySwarmSetupCommandTest
          });
          controller.execute();
          Assert.assertTrue(flag.get());
-         WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
+         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
          Assert.assertTrue(facet.isInstalled());
 
          MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildflySwarmFacet.PLUGIN_COORDINATE);
+                  .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
@@ -147,7 +147,7 @@ public class WildflySwarmSetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("Wildfly Swarm is now set up! Enjoy!"))
+               if (result.getMessage().equals("WildFly Swarm is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
@@ -155,11 +155,11 @@ public class WildflySwarmSetupCommandTest
          });
          controller.execute();
          Assert.assertTrue(flag.get());
-         WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
+         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
          Assert.assertTrue(facet.isInstalled());
 
          MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildflySwarmFacet.PLUGIN_COORDINATE);
+                  .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Configuration config = swarmPlugin.getConfig();
@@ -189,7 +189,7 @@ public class WildflySwarmSetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("Wildfly Swarm is now set up! Enjoy!"))
+               if (result.getMessage().equals("WildFly Swarm is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
@@ -197,11 +197,11 @@ public class WildflySwarmSetupCommandTest
          });
          controller.execute();
          Assert.assertTrue(flag.get());
-         WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
+         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
          Assert.assertTrue(facet.isInstalled());
 
          MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildflySwarmFacet.PLUGIN_COORDINATE);
+                  .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());
@@ -227,7 +227,7 @@ public class WildflySwarmSetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("Wildfly Swarm is now set up! Enjoy!"))
+               if (result.getMessage().equals("WildFly Swarm is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
@@ -235,11 +235,11 @@ public class WildflySwarmSetupCommandTest
          });
          controller.execute();
          Assert.assertTrue(flag.get());
-         WildflySwarmFacet facet = project.getFacet(WildflySwarmFacet.class);
+         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
          Assert.assertTrue(facet.isInstalled());
 
          MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildflySwarmFacet.PLUGIN_COORDINATE);
+                  .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
          Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
          Assert.assertEquals(1, swarmPlugin.getExecutions().size());
          Assert.assertEquals(1, swarmPlugin.getConfig().listConfigurationElements().size());

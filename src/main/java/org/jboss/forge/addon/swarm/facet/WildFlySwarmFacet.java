@@ -22,7 +22,7 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.swarm.Swarm;
-import org.jboss.forge.addon.swarm.config.WildflySwarmConfiguration;
+import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
 import org.jboss.forge.furnace.util.Strings;
 import org.jboss.forge.furnace.versions.Versions;
 import org.wildfly.swarm.fractionlist.FractionList;
@@ -35,9 +35,9 @@ import org.wildfly.swarm.tools.FractionDescriptor;
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
 @FacetConstraint(MavenFacet.class)
-public class WildflySwarmFacet extends AbstractFacet<Project> implements ProjectFacet
+public class WildFlySwarmFacet extends AbstractFacet<Project> implements ProjectFacet
 {
-   private WildflySwarmConfiguration configuration;
+   private WildFlySwarmConfiguration configuration;
 
    private static final String WILDFLY_SWARM_VERSION_PROPERTY = "version.wildfly-swarm";
 
@@ -80,7 +80,7 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
 
       // Plugin configuration
       ConfigurationElementBuilder properties = ConfigurationElementBuilder.create().setName("properties");
-      WildflySwarmConfiguration swarmConfig = getConfiguration();
+      WildFlySwarmConfiguration swarmConfig = getConfiguration();
       if (!Strings.isNullOrEmpty(swarmConfig.getContextPath()) && !"/".equals(swarmConfig.getContextPath()))
       {
          properties.addChild("swarm.context.path").setText(swarmConfig.getContextPath());
@@ -117,12 +117,12 @@ public class WildflySwarmFacet extends AbstractFacet<Project> implements Project
       return facet.hasPlugin(PLUGIN_COORDINATE);
    }
 
-   public WildflySwarmConfiguration getConfiguration()
+   public WildFlySwarmConfiguration getConfiguration()
    {
       return configuration;
    }
 
-   public void setConfiguration(WildflySwarmConfiguration configuration)
+   public void setConfiguration(WildFlySwarmConfiguration configuration)
    {
       this.configuration = configuration;
    }

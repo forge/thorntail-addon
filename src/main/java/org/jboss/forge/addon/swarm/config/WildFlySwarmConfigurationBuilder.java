@@ -8,46 +8,46 @@
 package org.jboss.forge.addon.swarm.config;
 
 /**
- * A builder for {@link WildflySwarmConfiguration}
+ * A builder for {@link WildFlySwarmConfiguration}
  * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class WildflySwarmConfigurationBuilder implements WildflySwarmConfiguration
+public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfiguration
 {
    private Integer httpPort;
    private Integer portOffset;
    private String contextPath;
 
-   public static WildflySwarmConfigurationBuilder create()
+   public static WildFlySwarmConfigurationBuilder create()
    {
-      return new WildflySwarmConfigurationBuilder();
+      return new WildFlySwarmConfigurationBuilder();
    }
 
-   public static WildflySwarmConfigurationBuilder create(WildflySwarmConfiguration config)
+   public static WildFlySwarmConfigurationBuilder create(WildFlySwarmConfiguration config)
    {
-      WildflySwarmConfigurationBuilder builder = new WildflySwarmConfigurationBuilder();
+      WildFlySwarmConfigurationBuilder builder = new WildFlySwarmConfigurationBuilder();
       builder.contextPath(config.getContextPath()).httpPort(config.getHttpPort()).portOffset(config.getPortOffset());
       return builder;
    }
 
-   private WildflySwarmConfigurationBuilder()
+   private WildFlySwarmConfigurationBuilder()
    {
 
    }
 
-   public WildflySwarmConfigurationBuilder httpPort(Integer httpPort)
+   public WildFlySwarmConfigurationBuilder httpPort(Integer httpPort)
    {
       this.httpPort = httpPort;
       return this;
    }
 
-   public WildflySwarmConfigurationBuilder portOffset(Integer portOffset)
+   public WildFlySwarmConfigurationBuilder portOffset(Integer portOffset)
    {
       this.portOffset = portOffset;
       return this;
    }
 
-   public WildflySwarmConfigurationBuilder contextPath(String contextPath)
+   public WildFlySwarmConfigurationBuilder contextPath(String contextPath)
    {
       this.contextPath = contextPath;
       return this;

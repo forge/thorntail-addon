@@ -13,7 +13,7 @@ import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.swarm.Swarm;
-import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
+import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
@@ -27,13 +27,13 @@ import org.wildfly.swarm.tools.FractionDescriptor;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@FacetConstraint({ WildflySwarmFacet.class, MavenFacet.class, PackagingFacet.class })
-public class ListFractionsCommand extends AbstractWildflySwarmCommand
+@FacetConstraint({ WildFlySwarmFacet.class, MavenFacet.class, PackagingFacet.class })
+public class ListFractionsCommand extends AbstractWildFlySwarmCommand
 {
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("Wildfly-Swarm: List Fractions")
+      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly-Swarm: List Fractions")
                .description("List all the available fractions");
    }
 

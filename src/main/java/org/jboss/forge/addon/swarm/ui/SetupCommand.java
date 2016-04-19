@@ -3,8 +3,8 @@ package org.jboss.forge.addon.swarm.ui;
 import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;
-import org.jboss.forge.addon.swarm.config.WildflySwarmConfigurationBuilder;
-import org.jboss.forge.addon.swarm.facet.WildflySwarmFacet;
+import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
+import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -22,7 +22,7 @@ import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
-public class SetupCommand extends AbstractWildflySwarmCommand
+public class SetupCommand extends AbstractWildFlySwarmCommand
 {
    private UIInput<Integer> httpPort;
    private UIInput<String> contextPath;
@@ -48,20 +48,20 @@ public class SetupCommand extends AbstractWildflySwarmCommand
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("Wildfly-Swarm: Setup")
-               .description("Setup Wildfly Swarm in your web application");
+      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly-Swarm: Setup")
+               .description("Setup WildFly Swarm in your web application");
    }
 
    @Override
    public Result execute(UIExecutionContext context) throws Exception
    {
       Project project = getSelectedProject(context);
-      WildflySwarmConfigurationBuilder builder = WildflySwarmConfigurationBuilder.create();
+      WildFlySwarmConfigurationBuilder builder = WildFlySwarmConfigurationBuilder.create();
       builder.contextPath(contextPath.getValue()).httpPort(httpPort.getValue()).portOffset(portOffset.getValue());
       FacetFactory facetFactory = SimpleContainer.getServices(getClass().getClassLoader(), FacetFactory.class).get();
-      WildflySwarmFacet facet = facetFactory.create(project, WildflySwarmFacet.class);
+      WildFlySwarmFacet facet = facetFactory.create(project, WildFlySwarmFacet.class);
       facet.setConfiguration(builder);
       facetFactory.install(project, facet);
-      return Results.success("Wildfly Swarm is now set up! Enjoy!");
+      return Results.success("WildFly Swarm is now set up! Enjoy!");
    }
 }
