@@ -65,11 +65,12 @@ You can install Wildfly Swarm Fractions by using the command `Wildfly-Swarm: Add
 [source,java]
 ----
 [demo]$ wildfly-swarm-add-fraction --fractions 
-bean-validation      ejb                  jaxrs-jaxb           jgroups              keycloak             msc                  security             undertow             
-connector            ejb-remote           jaxrs-jsonp          jmx                  logging              naming               topology             webservices          
-container            hawkular             jaxrs-multipart      jolokia              logstash             remoting             topology-jgroups     weld                 
-datasources          hibernate-validator  jaxrs-weld           jpa                  mail                 ribbon               topology-webapp      
-ee                   infinispan           jca                  jsf                  messaging            ribbon-secured       transactions         
+batch-jberet         ejb                  jaxrs                jca                  keycloak             messaging            ribbon-secured       topology             undertow             
+bean-validation      ejb-remote           jaxrs-cdi            jgroups              keycloak-server      monitor              security             topology-consul      webservices          
+cdi                  hibernate-search     jaxrs-jaxb           jmx                  logging              msc                  spring               topology-jgroups     
+connector            hibernate-validator  jaxrs-jsonp          jolokia              logstash             naming               spring-rest          topology-openshift   
+datasources          infinispan           jaxrs-multipart      jpa                  mail                 remoting             swagger              topology-webapp      
+ee                   io                   jaxrs-validator      jsf                  management           ribbon               swagger-webapp       transactions         
 
 ----
 +
