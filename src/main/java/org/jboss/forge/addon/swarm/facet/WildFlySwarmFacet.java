@@ -13,8 +13,11 @@ import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.maven.plugins.Configuration;
 import org.jboss.forge.addon.maven.plugins.ConfigurationBuilder;
+import org.jboss.forge.addon.maven.plugins.ConfigurationElement;
 import org.jboss.forge.addon.maven.plugins.ConfigurationElementBuilder;
 import org.jboss.forge.addon.maven.plugins.ExecutionBuilder;
+import org.jboss.forge.addon.maven.plugins.MavenPlugin;
+import org.jboss.forge.addon.maven.plugins.MavenPluginAdapter;
 import org.jboss.forge.addon.maven.plugins.MavenPluginBuilder;
 import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
@@ -23,13 +26,14 @@ import org.jboss.forge.addon.projects.ProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.swarm.Swarm;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
+import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
 import org.jboss.forge.furnace.util.Strings;
 import org.jboss.forge.furnace.versions.Versions;
 import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
- * The Wildfly-Swarm Facet
+ * The WildFly Swarm Facet
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
@@ -37,9 +41,7 @@ import org.wildfly.swarm.tools.FractionDescriptor;
 @FacetConstraint(MavenFacet.class)
 public class WildFlySwarmFacet extends AbstractFacet<Project> implements ProjectFacet
 {
-   private WildFlySwarmConfiguration configuration;
-
-   private static final String WILDFLY_SWARM_VERSION_PROPERTY = "version.wildfly-swarm";
+   private WildFlySwarmConfiguration configuration = WildFlySwarmConfigurationBuilder.create();
 
    public static final Coordinate PLUGIN_COORDINATE = CoordinateBuilder
             .create().setGroupId("org.wildfly.swarm")
@@ -52,6 +54,9 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
             .setVersion("${version.wildfly-swarm}")
             .setPackaging("pom")
             .setScopeType("import");
+
+   private static final String MAIN_CLASS_CONFIGURATION_ELEMENT = "mainClass";
+   private static final String WILDFLY_SWARM_VERSION_PROPERTY = "version.wildfly-swarm";
 
    @Override
    public boolean install()
@@ -122,9 +127,32 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       return configuration;
    }
 
-   public void setConfiguration(WildFlySwarmConfiguration configuration)
+   public WildFlySwarmFacet setConfiguration(WildFlySwarmConfiguration configuration)
    {
       this.configuration = configuration;
+      return this;
+   }
+
+   public WildFlySwarmFacet setMainClass(String className)
+   {
+      MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
+      MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
+      Configuration config = plugin.getConfig();
+      config.removeConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
+      config.addConfigurationElement(
+               ConfigurationElementBuilder.create().setName(MAIN_CLASS_CONFIGURATION_ELEMENT).setText(className));
+      MavenPluginAdapter newPlugin = new MavenPluginAdapter(plugin);
+      newPlugin.setConfig(config);
+      facet.updatePlugin(newPlugin);
+      return this;
+   }
+
+   public String getMainClass()
+   {
+      MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
+      MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
+      ConfigurationElement configElem = plugin.getConfig().getConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
+      return configElem == null ? null : configElem.getText();
    }
 
    public void installFractions(Iterable<FractionDescriptor> selectedFractions)
