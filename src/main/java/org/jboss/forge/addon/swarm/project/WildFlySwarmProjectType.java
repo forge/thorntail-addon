@@ -55,7 +55,7 @@ public class WildFlySwarmProjectType extends AbstractProjectType
    @Override
    public String getType()
    {
-      return "WildFly Swarm Microservice (WAR+JAR)";
+      return "WildFly Swarm Microservice (WAR + JAR)";
    }
 
    @Override
