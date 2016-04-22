@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
+import org.jboss.forge.addon.projects.Projects;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -40,9 +41,8 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
                .setLabel("Fraction List")
                .setDescription("Fraction list")
                .setItemLabelConverter(descriptor -> descriptor.artifactId());
-
-      Project project = getSelectedProject(builder);
-      if (project.hasFacet(WildFlySwarmFacet.class))
+      Project project = Projects.getSelectedProject(getProjectFactory(), builder.getUIContext());
+      if (project != null && project.hasFacet(WildFlySwarmFacet.class))
       {
          WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
          fractionElements.setValueChoices(facet.getFractionList());
