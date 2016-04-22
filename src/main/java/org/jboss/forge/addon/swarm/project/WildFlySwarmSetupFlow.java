@@ -7,13 +7,31 @@
 
 package org.jboss.forge.addon.swarm.project;
 
-import org.jboss.forge.addon.swarm.ui.AbstractSetupCommand;
+import org.jboss.forge.addon.swarm.ui.SetupCommand;
+import org.jboss.forge.addon.ui.context.UIExecutionContext;
+import org.jboss.forge.addon.ui.context.UINavigationContext;
+import org.jboss.forge.addon.ui.result.NavigationResult;
+import org.jboss.forge.addon.ui.result.Result;
+import org.jboss.forge.addon.ui.result.Results;
+import org.jboss.forge.addon.ui.result.navigation.NavigationResultBuilder;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 /**
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class WildFlySwarmSetupFlow extends AbstractSetupCommand implements UIWizardStep
+public class WildFlySwarmSetupFlow implements UIWizardStep
 {
+
+   @Override
+   public NavigationResult next(UINavigationContext context) throws Exception
+   {
+      return NavigationResultBuilder.create().add(SetupCommand.class).build();
+   }
+
+   @Override
+   public Result execute(UIExecutionContext context) throws Exception
+   {
+      return Results.success();
+   }
 }
