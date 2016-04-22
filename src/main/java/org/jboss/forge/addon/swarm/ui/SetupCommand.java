@@ -8,12 +8,15 @@ import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
+import org.jboss.forge.addon.ui.context.UINavigationContext;
 import org.jboss.forge.addon.ui.input.InputComponentFactory;
 import org.jboss.forge.addon.ui.input.UIInput;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
+import org.jboss.forge.addon.ui.result.NavigationResult;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
+import org.jboss.forge.addon.ui.wizard.UIWizard;
 import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
 
 /**
@@ -22,7 +25,7 @@ import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
-public class SetupCommand extends AbstractWildFlySwarmCommand
+public class SetupCommand extends AbstractWildFlySwarmCommand implements UIWizard
 {
    private UIInput<Integer> httpPort;
    private UIInput<String> contextPath;
@@ -82,5 +85,12 @@ public class SetupCommand extends AbstractWildFlySwarmCommand
          facetFactory.install(project, facet);
       }
       return Results.success("WildFly Swarm is now set up! Enjoy!");
+   }
+
+   @Override
+   @SuppressWarnings("unchecked")
+   public NavigationResult next(UINavigationContext context) throws Exception
+   {
+      return context.navigateTo(AddFractionCommand.class);
    }
 }
