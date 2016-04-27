@@ -71,4 +71,12 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
       }
       return Results.success();
    }
+
+   /**
+    * @return the fractionElements
+    */
+   public UISelectMany<FractionDescriptor> getFractionElements()
+   {
+      return fractionElements;
+   }
 }
