@@ -106,8 +106,8 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
          progressMonitor.worked(1);
       }
       FractionList fractionList = FractionList.get();
-      FractionUsageAnalyzer fua = new FractionUsageAnalyzer(fractionList,
-               value.getUnderlyingResourceObject());
+      FractionUsageAnalyzer fua = new FractionUsageAnalyzer(fractionList);
+      fua.source(value.getUnderlyingResourceObject());
       Set<FractionDescriptor> detectedFractions = fua.detectNeededFractions();
       output.info(output.out(), "Detected fractions: " + detectedFractions);
       progressMonitor.worked(1);
