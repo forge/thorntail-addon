@@ -12,6 +12,7 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.building.BuildException;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.ui.UIProvider;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
@@ -55,4 +56,9 @@ public class RunCommand extends AbstractWildFlySwarmCommand
       return Results.success();
    }
 
+   @Override public boolean isEnabled(UIContext context)
+   {
+      UIProvider provider = context.getProvider();
+      return super.isEnabled(context) && !provider.isGUI() && !provider.isEmbedded();
+   }
 }
