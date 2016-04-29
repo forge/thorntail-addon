@@ -13,6 +13,7 @@ import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.ui.UIProvider;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
@@ -39,13 +40,13 @@ public class ListFractionsCommand extends AbstractWildFlySwarmCommand
    @Override
    public Result execute(UIExecutionContext executionContext) throws Exception
    {
-      UIOutput output = executionContext.getUIContext().getProvider().getOutput();
+      UIProvider provider = executionContext.getUIContext().getProvider();
+      UIOutput output = provider.getOutput();
       PrintStream out = output.out();
       for (FractionDescriptor fraction : WildFlySwarmFacet.getAllFractionDescriptors())
       {
-         // String msg = String.format("%s: %s (%s)", fraction.getArtifactId(), fraction.getName(),
-         // fraction.getDescription());
-         String msg = fraction.toString();
+         String msg = String.format("%s: %s (%s)", fraction.getArtifactId(), fraction.getName(),
+                  fraction.getDescription());
          out.println(msg);
       }
       return Results.success();

@@ -28,8 +28,8 @@ import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
 import org.jboss.forge.furnace.versions.Versions;
-import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
+import org.wildfly.swarm.tools.FractionList;
 import org.wildfly.swarm.tools.FractionUsageAnalyzer;
 
 /**
@@ -162,7 +162,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
 
    private static org.wildfly.swarm.tools.FractionList getFractionList()
    {
-      return FractionList.get();
+      return TempFractionList.get();
    }
 
    public static Collection<FractionDescriptor> getAllFractionDescriptors()

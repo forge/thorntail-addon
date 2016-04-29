@@ -1,5 +1,6 @@
 package org.jboss.forge.addon.swarm.ui;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.input.InputComponentFactory;
+import org.jboss.forge.addon.ui.input.UIInput;
 import org.jboss.forge.addon.ui.input.UISelectMany;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.result.Result;
@@ -23,6 +25,7 @@ import org.wildfly.swarm.tools.FractionDescriptor;
 public class AddFractionCommand extends AbstractWildFlySwarmCommand
 {
    private UISelectMany<FractionDescriptor> fractionElements;
+   private UIInput<Boolean> showInternal;
 
    @Override
    public UICommandMetadata getMetadata(UIContext context)
@@ -36,21 +39,37 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
    {
       InputComponentFactory factory = builder.getInputComponentFactory();
       fractionElements = factory.createSelectMany("fractions", FractionDescriptor.class)
-               .setRequired(false)
                .setLabel("Fraction List")
-               .setDescription("Fraction list")
-               .setItemLabelConverter(FractionDescriptor::getArtifactId);
-      Project project = Projects.getSelectedProject(getProjectFactory(), builder.getUIContext());
-      if (project != null && project.hasFacet(WildFlySwarmFacet.class))
+               .setDescription("Fraction list");
+
+      showInternal = factory.createInput("showInternal", Boolean.class)
+               .setLabel("Show Internal Fractions?")
+               .setDescription("Display internal fractions");
+
+      if (builder.getUIContext().getProvider().isGUI())
       {
-         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
-         fractionElements.setValueChoices(facet.getFractions());
+         fractionElements.setItemLabelConverter((f) -> String.format("%s - %s", f.getName(), f.getDescription()));
       }
       else
       {
-         fractionElements.setValueChoices(WildFlySwarmFacet.getAllFractionDescriptors());
+         fractionElements.setItemLabelConverter(FractionDescriptor::getArtifactId);
       }
-      builder.add(fractionElements);
+      Project project = Projects.getSelectedProject(getProjectFactory(), builder.getUIContext());
+      final Collection<FractionDescriptor> fractions;
+      if (project != null && project.hasFacet(WildFlySwarmFacet.class))
+      {
+         fractions = project.getFacet(WildFlySwarmFacet.class).getFractions();
+      }
+      else
+      {
+         fractions = WildFlySwarmFacet.getAllFractionDescriptors();
+      }
+      final List<FractionDescriptor> nonInternalfractions = fractions.stream()
+               .filter(f -> !f.isInternal())
+               .collect(Collectors.toList());
+      fractionElements.setValueChoices(() -> (showInternal.getValue()) ? fractions : nonInternalfractions);
+
+      builder.add(fractionElements).add(showInternal);
    }
 
    @Override
