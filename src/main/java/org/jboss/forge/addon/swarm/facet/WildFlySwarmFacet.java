@@ -1,5 +1,6 @@
 package org.jboss.forge.addon.swarm.facet;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
 import org.jboss.forge.furnace.versions.Versions;
 import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
+import org.wildfly.swarm.tools.FractionUsageAnalyzer;
 
 /**
  * The WildFly Swarm Facet
@@ -135,27 +137,42 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       }
    }
 
-   public List<FractionDescriptor> getFractionList()
+   public List<FractionDescriptor> getFractions()
    {
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
-      return FractionList.get().getFractionDescriptors()
+      return getFractionList().getFractionDescriptors()
                .stream()
                .filter((descriptor) -> !alreadyInstalled(descriptor.artifactId(), dependencies))
                .sorted((o1, o2) -> o1.artifactId().compareTo(o2.artifactId()))
                .collect(Collectors.toList());
    }
 
-   public List<FractionDescriptor> getInstalledFractionList()
+   public List<FractionDescriptor> getInstalledFractions()
    {
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
-      return FractionList.get().getFractionDescriptors()
+      return getFractionList().getFractionDescriptors()
                .stream()
                .filter((descriptor) -> alreadyInstalled(descriptor.artifactId(), dependencies))
                .collect(Collectors.toList());
+   }
+
+   private static org.wildfly.swarm.tools.FractionList getFractionList()
+   {
+      return FractionList.get();
+   }
+
+   public static Collection<FractionDescriptor> getAllFractionDescriptors()
+   {
+      return getFractionList().getFractionDescriptors();
+   }
+
+   public static FractionUsageAnalyzer getFractionUsageAnalyzer()
+   {
+      return new FractionUsageAnalyzer(getFractionList());
    }
 
    private void addSwarmVersionProperty()

@@ -28,7 +28,6 @@ import org.jboss.forge.addon.ui.progress.UIProgressMonitor;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
-import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
 import org.wildfly.swarm.tools.FractionUsageAnalyzer;
 
@@ -105,8 +104,7 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
          packaging.createBuilder().build(output.out(), output.err());
          progressMonitor.worked(1);
       }
-      FractionList fractionList = FractionList.get();
-      FractionUsageAnalyzer fua = new FractionUsageAnalyzer(fractionList);
+      FractionUsageAnalyzer fua = WildFlySwarmFacet.getFractionUsageAnalyzer();
       fua.source(value.getUnderlyingResourceObject());
       Set<FractionDescriptor> detectedFractions = fua.detectNeededFractions();
       output.info(output.out(), "Detected fractions: " + detectedFractions);
@@ -115,7 +113,7 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
       {
          progressMonitor.setTaskName("Adding missing fractions as project dependencies...");
          WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
-         detectedFractions.removeAll(facet.getInstalledFractionList());
+         detectedFractions.removeAll(facet.getInstalledFractions());
          // detectedFractions.remove(fractionList.getFractionDescriptor(Swarm.DEFAULT_FRACTION_GROUPID, "container"));
          if (detectedFractions.isEmpty())
          {

@@ -20,7 +20,6 @@ import org.jboss.forge.addon.ui.output.UIOutput;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
-import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
@@ -42,10 +41,10 @@ public class ListFractionsCommand extends AbstractWildFlySwarmCommand
    {
       UIOutput output = executionContext.getUIContext().getProvider().getOutput();
       PrintStream out = output.out();
-      for (FractionDescriptor fraction : FractionList.get().getFractionDescriptors())
+      for (FractionDescriptor fraction : WildFlySwarmFacet.getAllFractionDescriptors())
       {
-//         String msg = String.format("%s: %s (%s)", fraction.getArtifactId(), fraction.getName(),
-//                  fraction.getDescription());
+         // String msg = String.format("%s: %s (%s)", fraction.getArtifactId(), fraction.getName(),
+         // fraction.getDescription());
          String msg = fraction.toString();
          out.println(msg);
       }

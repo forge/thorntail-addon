@@ -17,7 +17,6 @@ import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.util.Lists;
-import org.wildfly.swarm.fractionlist.FractionList;
 import org.wildfly.swarm.tools.FractionDescriptor;
 
 @FacetConstraint(WildFlySwarmFacet.class)
@@ -45,11 +44,11 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
       if (project != null && project.hasFacet(WildFlySwarmFacet.class))
       {
          WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
-         fractionElements.setValueChoices(facet.getFractionList());
+         fractionElements.setValueChoices(facet.getFractions());
       }
       else
       {
-         fractionElements.setValueChoices(FractionList.get().getFractionDescriptors());
+         fractionElements.setValueChoices(WildFlySwarmFacet.getAllFractionDescriptors());
       }
       builder.add(fractionElements);
    }
