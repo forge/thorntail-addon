@@ -25,7 +25,6 @@ import org.wildfly.swarm.tools.FractionDescriptor;
 public class AddFractionCommand extends AbstractWildFlySwarmCommand
 {
    private UISelectMany<FractionDescriptor> fractionElements;
-   private UIInput<Boolean> showInternal;
 
    @Override
    public UICommandMetadata getMetadata(UIContext context)
@@ -41,10 +40,6 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
       fractionElements = factory.createSelectMany("fractions", FractionDescriptor.class)
                .setLabel("Fraction List")
                .setDescription("Fraction list");
-
-      showInternal = factory.createInput("showInternal", Boolean.class)
-               .setLabel("Show Internal Fractions?")
-               .setDescription("Display internal fractions");
 
       if (builder.getUIContext().getProvider().isGUI())
       {
@@ -67,9 +62,9 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
       final List<FractionDescriptor> nonInternalfractions = fractions.stream()
                .filter(f -> !f.isInternal())
                .collect(Collectors.toList());
-      fractionElements.setValueChoices(() -> (showInternal.getValue()) ? fractions : nonInternalfractions);
+      fractionElements.setValueChoices(nonInternalfractions);
 
-      builder.add(fractionElements).add(showInternal);
+      builder.add(fractionElements);
    }
 
    @Override
