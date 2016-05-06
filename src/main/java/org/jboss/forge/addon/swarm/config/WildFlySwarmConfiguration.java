@@ -53,13 +53,13 @@ public interface WildFlySwarmConfiguration
          properties.addChild(WildFlySwarmConfiguration.CONTEXT_PATH_PROPERTY).setText(getContextPath());
       }
       if (getHttpPort() != null && getHttpPort() != 0
-               && getHttpPort() != WildFlySwarmConfiguration.HTTP_PORT_DEFAULT_VALUE)
+               && !getHttpPort().equals(WildFlySwarmConfiguration.HTTP_PORT_DEFAULT_VALUE))
       {
          properties.addChild(WildFlySwarmConfiguration.HTTP_PORT_PROPERTY)
                   .setText(getHttpPort().toString());
       }
       if (getPortOffset() != null
-               && getPortOffset() != WildFlySwarmConfiguration.PORT_OFFSET_DEFAULT_VALUE)
+               && !getPortOffset().equals(WildFlySwarmConfiguration.PORT_OFFSET_DEFAULT_VALUE))
       {
          properties.addChild(WildFlySwarmConfiguration.PORT_OFFSET_PROPERTY)
                   .setText(getPortOffset().toString());
