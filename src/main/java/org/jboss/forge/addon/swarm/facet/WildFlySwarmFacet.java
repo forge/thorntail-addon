@@ -127,8 +127,8 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       for (FractionDescriptor descriptor : selectedFractions)
       {
          Dependency dependency = DependencyBuilder.create()
-                  .setGroupId(descriptor.groupId())
-                  .setArtifactId(descriptor.artifactId());
+                  .setGroupId(descriptor.getGroupId())
+                  .setArtifactId(descriptor.getArtifactId());
          if (!facet.hasEffectiveDependency(dependency))
          {
             facet.addDirectDependency(dependency);
@@ -143,8 +143,8 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
       return getFractionList().getFractionDescriptors()
                .stream()
-               .filter((descriptor) -> !alreadyInstalled(descriptor.artifactId(), dependencies))
-               .sorted((o1, o2) -> o1.artifactId().compareTo(o2.artifactId()))
+               .filter((descriptor) -> !alreadyInstalled(descriptor.getArtifactId(), dependencies))
+               .sorted((o1, o2) -> o1.getArtifactId().compareTo(o2.getArtifactId()))
                .collect(Collectors.toList());
    }
 
@@ -155,13 +155,13 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
       return getFractionList().getFractionDescriptors()
                .stream()
-               .filter((descriptor) -> alreadyInstalled(descriptor.artifactId(), dependencies))
+               .filter((descriptor) -> alreadyInstalled(descriptor.getArtifactId(), dependencies))
                .collect(Collectors.toList());
    }
 
    private static org.wildfly.swarm.tools.FractionList getFractionList()
    {
-      return TempFractionList.get();
+      return org.wildfly.swarm.fractionlist.FractionList.get();
    }
 
    public static Collection<FractionDescriptor> getAllFractionDescriptors()
