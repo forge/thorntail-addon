@@ -7,8 +7,7 @@
 
 package org.jboss.forge.addon.swarm.config;
 
-import org.jboss.forge.addon.maven.plugins.ConfigurationElementBuilder;
-import org.jboss.forge.furnace.util.Strings;
+import org.jboss.forge.addon.maven.plugins.Configuration;
 
 /**
  * The configuration for the Wildfly Swarm plugin
@@ -26,6 +25,9 @@ public interface WildFlySwarmConfiguration
    public static final String PORT_OFFSET_PROPERTY = "swarm.port.offset";
    public static final Integer PORT_OFFSET_DEFAULT_VALUE = 0;
 
+   public static final String MAIN_CLASS_CONFIGURATION_ELEMENT = "mainClass";
+   public static final String MAIN_CLASS_DEFAULT_VALUE = "org.wildfly.swarm.Swarm";
+
    /**
     * @return the HTTP port for this microservice
     */
@@ -42,29 +44,12 @@ public interface WildFlySwarmConfiguration
    Integer getPortOffset();
 
    /**
-    * @param properties
+    * @return the main class for this microservice
     */
-   public default ConfigurationElementBuilder toConfigurationElementBuilder()
-   {
-      ConfigurationElementBuilder properties = ConfigurationElementBuilder.create().setName("properties");
-      if (!Strings.isNullOrEmpty(getContextPath()) && !"/".equals(getContextPath())
-               && !WildFlySwarmConfiguration.CONTEXT_PATH_DEFAULT_VALUE.equals(getContextPath()))
-      {
-         properties.addChild(WildFlySwarmConfiguration.CONTEXT_PATH_PROPERTY).setText(getContextPath());
-      }
-      if (getHttpPort() != null && getHttpPort() != 0
-               && !getHttpPort().equals(WildFlySwarmConfiguration.HTTP_PORT_DEFAULT_VALUE))
-      {
-         properties.addChild(WildFlySwarmConfiguration.HTTP_PORT_PROPERTY)
-                  .setText(getHttpPort().toString());
-      }
-      if (getPortOffset() != null
-               && !getPortOffset().equals(WildFlySwarmConfiguration.PORT_OFFSET_DEFAULT_VALUE))
-      {
-         properties.addChild(WildFlySwarmConfiguration.PORT_OFFSET_PROPERTY)
-                  .setText(getPortOffset().toString());
-      }
-      return properties;
-   }
+   String getMainClass();
 
+   /**
+    * @param configuration apply this configuration to the given {@link Configuration}
+    */
+   void apply(Configuration configuration);
 }

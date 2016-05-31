@@ -14,8 +14,6 @@ import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.maven.plugins.Configuration;
 import org.jboss.forge.addon.maven.plugins.ConfigurationBuilder;
-import org.jboss.forge.addon.maven.plugins.ConfigurationElement;
-import org.jboss.forge.addon.maven.plugins.ConfigurationElementBuilder;
 import org.jboss.forge.addon.maven.plugins.ExecutionBuilder;
 import org.jboss.forge.addon.maven.plugins.MavenPlugin;
 import org.jboss.forge.addon.maven.plugins.MavenPluginAdapter;
@@ -56,7 +54,6 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
             .setPackaging("pom")
             .setScopeType("import");
 
-   private static final String MAIN_CLASS_CONFIGURATION_ELEMENT = "mainClass";
    private static final String WILDFLY_SWARM_VERSION_PROPERTY = "version.wildfly-swarm";
 
    @Override
@@ -77,6 +74,12 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
 
    public WildFlySwarmConfiguration getConfiguration()
    {
+      if (configuration == null)
+      {
+         MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
+         MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
+         configuration = WildFlySwarmConfigurationBuilder.create(plugin.getConfig());
+      }
       return configuration;
    }
 
@@ -85,39 +88,9 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       this.configuration = configuration;
       if (isInstalled())
       {
-         updatePluginConfiguration();
+         updatePluginConfiguration(configuration);
       }
       return this;
-   }
-
-   /**
-    * Can only be called after this facet has been installed. Otherwise do nothing
-    * 
-    * TODO: Store in a field to perform change during installation?
-    */
-   public WildFlySwarmFacet setMainClass(String className)
-   {
-      MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
-      MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
-      if (plugin != null)
-      {
-         Configuration config = plugin.getConfig();
-         config.removeConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
-         config.addConfigurationElement(
-                  ConfigurationElementBuilder.create().setName(MAIN_CLASS_CONFIGURATION_ELEMENT).setText(className));
-         MavenPluginAdapter newPlugin = new MavenPluginAdapter(plugin);
-         newPlugin.setConfig(config);
-         facet.updatePlugin(newPlugin);
-      }
-      return this;
-   }
-
-   public String getMainClass()
-   {
-      MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
-      MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
-      ConfigurationElement configElem = plugin.getConfig().getConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
-      return configElem == null ? null : configElem.getText();
    }
 
    public void installFractions(Iterable<FractionDescriptor> selectedFractions)
@@ -200,28 +173,23 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
                         ExecutionBuilder.create().addGoal("package"));
 
       // Plugin configuration
-      ConfigurationElementBuilder properties = configuration.toConfigurationElementBuilder();
-      if (properties.hasChildren())
+      Configuration builder = ConfigurationBuilder.create();
+      getConfiguration().apply(builder);
+      if (builder.hasConfigurationElements())
       {
-         Configuration builder = ConfigurationBuilder.create().addConfigurationElement(properties);
          plugin.setConfiguration(builder);
       }
       pluginFacet.addPlugin(plugin);
    }
 
-   private void updatePluginConfiguration()
+   private void updatePluginConfiguration(WildFlySwarmConfiguration configuration)
    {
       MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
       MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
 
       MavenPluginAdapter adapter = new MavenPluginAdapter(plugin);
-      ConfigurationElementBuilder properties = configuration.toConfigurationElementBuilder();
       Configuration config = adapter.getConfig();
-      config.removeConfigurationElement("properties");
-      if (properties.hasChildren())
-      {
-         config.addConfigurationElement(properties);
-      }
+      configuration.apply(config);
       adapter.setConfig(config);
       facet.updatePlugin(adapter);
    }

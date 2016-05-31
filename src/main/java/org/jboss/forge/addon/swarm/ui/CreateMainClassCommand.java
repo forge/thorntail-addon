@@ -11,6 +11,7 @@ import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.parser.java.ui.AbstractJavaSourceCommand;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
+import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -83,7 +84,9 @@ public class CreateMainClassCommand extends AbstractJavaSourceCommand<JavaClassS
       method.setBody(body.toString());
 
       WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
-      facet.setMainClass(source.getQualifiedName());
+      WildFlySwarmConfigurationBuilder newConfig = WildFlySwarmConfigurationBuilder.create(facet.getConfiguration());
+      newConfig.mainClass(source.getQualifiedName());
+      facet.setConfiguration(newConfig);
       return source;
    }
 

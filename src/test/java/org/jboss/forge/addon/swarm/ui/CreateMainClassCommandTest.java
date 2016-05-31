@@ -112,7 +112,7 @@ public class CreateMainClassCommandTest
       JavaResource javaResource = project.getFacet(JavaSourceFacet.class).getJavaResource("org.example.Main");
       Assert.assertTrue(javaResource.exists());
       WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
-      Assert.assertEquals("org.example.Main", facet.getMainClass());
+      Assert.assertEquals("org.example.Main", facet.getConfiguration().getMainClass());
    }
 
 }
