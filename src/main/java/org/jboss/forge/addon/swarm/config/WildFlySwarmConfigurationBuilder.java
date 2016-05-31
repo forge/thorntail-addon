@@ -44,12 +44,28 @@ public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfigurati
    public static WildFlySwarmConfigurationBuilder create(Configuration config)
    {
       WildFlySwarmConfigurationBuilder builder = new WildFlySwarmConfigurationBuilder();
-      ConfigurationElement mainClassElem = config.getConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
+      ConfigurationElement mainClassElem = null;
+      try
+      {
+         mainClassElem = config.getConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
+      }
+      catch (RuntimeException e)
+      {
+         // Do nothing
+      }
       if (mainClassElem != null)
       {
          builder.mainClass(mainClassElem.getText());
       }
-      ConfigurationElement propertiesElem = config.getConfigurationElement("properties");
+      ConfigurationElement propertiesElem = null;
+      try
+      {
+         propertiesElem = config.getConfigurationElement("properties");
+      }
+      catch (RuntimeException e)
+      {
+         // Do nothing
+      }
       if (propertiesElem != null)
       {
          try
