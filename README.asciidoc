@@ -80,4 +80,13 @@ Detect Fractions::
 This will run a fraction analyzer algorithm and list the missing fractions. You can add them to your project by specifying the `--depend` parameter 
 
 List Fractions::
-This will list all the available fractions 
+This will list all the available fractions
+
+WildFly Swarm Project type:: 
+Allows creating a project with the Swarm maven plugin in place
+
+Create Main Class:: 
+Creates a Java Class with a main() method containing some basic code to boot Swarm and configure it in the swarm maven plugin.
+
+Run:: 
+Builds and executes the current swarmed project (in command line mode only so far) and will block the UI until Ctrl+C is pressed.
