@@ -1,6 +1,7 @@
 == Wildfly-Swarm addon for JBoss Forge
 image:https://travis-ci.org/forge/wildfly-swarm-addon.svg?branch=master["Build Status", link="https://travis-ci.org/forge/wildfly-swarm-addon"]
 image:http://img.shields.io/:license-EPL-blue.svg["License", link="https://www.eclipse.org/legal/epl-v10.html"]
+image:https://maven-badges.herokuapp.com/maven-central/org.jboss.forge.addon/wildfly-swarm/badge.svg["Maven Central", link="https://maven-badges.herokuapp.com/maven-central/org.jboss.forge.addon/wildfly-swarm"]
 
 :idprefix: id_ 
 This addon provides *standalone* functionality, and *exports services* for use in other addons. 
