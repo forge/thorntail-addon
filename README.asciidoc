@@ -33,22 +33,6 @@ addon-install-from-git --url https://github.com/forge/wildfly-swarm-addon.git
 |no
 |===
 
-== Setup
-
-This Addon requires the following installation steps.
-
-=== Add configuration to pom.xml 
-
-To use this addon, you must add it as a dependency in the *pom.xml* of your `forge-addon` classified artifact:
-[source,xml]
-----
-<dependency>
-   <groupId>org.jboss.forge.addon</groupId>
-   <artifactId>wildfly-swarm-addon</artifactId>
-   <classifier>forge-addon</classifier>
-   <version>${version}</version>
-</dependency>
-----
 == Features
 Setup command:: 
 Just type the following command if you're in shell. It should read Wildfly-Swarm: Setup if you're in a GUI environment:  
