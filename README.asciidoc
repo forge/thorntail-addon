@@ -52,7 +52,7 @@ wildfly-swarm-setup
 And that's it! The wildfly swarm maven plugin will be installed. 
 
 WildFly Swarm Project type:: 
-If you are creating a new project, you caAllows creating a project with the Swarm maven plugin in place
+If you are creating a new project, you can choose the `wildfly-swarm` project type directly and avoid the `wildfly-swarm-setup` command
 
 [source,shell]
 ----
