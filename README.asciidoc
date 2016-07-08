@@ -6,6 +6,8 @@ image:https://maven-badges.herokuapp.com/maven-central/org.jboss.forge.addon/wil
 :idprefix: id_ 
 This addon provides *standalone* functionality, and *exports services* for use in other addons. 
 
+video::ebcnOopZFWs[youtube]
+
 === Installation
 
 From Forge CLI:
@@ -33,6 +35,7 @@ addon-install-from-git --url https://github.com/forge/wildfly-swarm-addon.git
 |no
 |===
 
+
 == Features
 Setup command:: 
 Just type the following command if you're in shell. It should read Wildfly-Swarm: Setup if you're in a GUI environment:  
@@ -43,6 +46,17 @@ wildfly-swarm-setup
 ----
 +
 And that's it! The wildfly swarm maven plugin will be installed. 
+
+WildFly Swarm Project type:: 
+If you are creating a new project, you caAllows creating a project with the Swarm maven plugin in place
+
+[source,shell]
+----
+[tmp]$ project-new --named demo --type wildfly-swarm --stack JAVA_EE_7 
+***SUCCESS*** Project named 'demo' has been created.
+***SUCCESS*** Stack 'Java EE 7' installed in project
+***SUCCESS*** WildFly Swarm is now set up! Enjoy!
+----
 
 Add Fraction::
 You can install Wildfly Swarm Fractions by using the command `Wildfly-Swarm: Add Fraction`: 
@@ -64,14 +78,230 @@ You can choose any fraction you want to install. Installed fractions are not lis
 Detect Fractions::
 This will run a fraction analyzer algorithm and list the missing fractions. You can add them to your project by specifying the `--depend` parameter 
 
+[source,shell]
+----
+[demo]$ rest-new-endpoint --named MyEndpoint
+***SUCCESS*** JAX-RS has been installed.
+***SUCCESS*** REST org.demo.rest.MyEndpoint was created
+
+[MyEndpoint.java]$ wildfly-swarm-detect-fractions --depend --build 
+***INFO*** Detecting fractions 	[1/3] ...
+***INFO*** Building the project... 	[1/3] ...
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building demo 1.0.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ demo ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ demo ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ demo ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to /tmp/demo/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ demo ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ demo ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ demo ---
+[INFO] 
+[INFO] --- maven-war-plugin:2.6:war (default-war) @ demo ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [demo] in [/tmp/demo/target/demo]
+[INFO] Processing war project
+[INFO] Copying webapp resources [/tmp/demo/src/main/webapp]
+[INFO] Webapp assembled in [93 msecs]
+[INFO] Building war: /tmp/demo/target/demo.war
+[INFO] 
+[INFO] --- wildfly-swarm-plugin:1.0.0.Final:package (default) @ demo ---
+[INFO] Scanning for needed WildFly Swarm fractions with mode: when_missing
+[INFO] Detected fractions: jaxrs:1.0.2.Final
+[INFO] Adding fractions: container:1.0.2.Final, ee:1.0.2.Final, io:1.0.2.Final, jaxrs:1.0.2.Final, naming:1.0.2.Final, security:1.0.2.Final, undertow:1.0.2.Final
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ demo ---
+[INFO] Installing /tmp/demo/target/demo.war to /home/ggastald/.m2/repository/org/demo/demo/1.0.0-SNAPSHOT/demo-1.0.0-SNAPSHOT.war
+[INFO] Installing /tmp/demo/pom.xml to /home/ggastald/.m2/repository/org/demo/demo/1.0.0-SNAPSHOT/demo-1.0.0-SNAPSHOT.pom
+[INFO] Installing /tmp/demo/target/demo-swarm.jar to /home/ggastald/.m2/repository/org/demo/demo/1.0.0-SNAPSHOT/demo-1.0.0-SNAPSHOT-swarm.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 13.808 s
+[INFO] Finished at: 2016-07-08T14:14:13-03:00
+[INFO] Final Memory: 80M/859M
+[INFO] ------------------------------------------------------------------------
+***INFO*** Detected fractions: [org.wildfly.swarm:jaxrs:1.0.2.Final]
+***INFO*** Adding missing fractions as project dependencies... 	[3/3] ...
+***INFO*** Installing the following dependencies: [org.wildfly.swarm:jaxrs:1.0.2.Final]
+----
+
 List Fractions::
 This will list all the available fractions
 
-WildFly Swarm Project type:: 
-Allows creating a project with the Swarm maven plugin in place
+[source,shell]
+----
+[MyEndpoint.java]$ wildfly-swarm-list-fractions 
+batch-jberet: Batch (Java EE Batch with JBeret)
+bean-validation: Bean Validation (Define constraints on object models with annotations)
+camel-cdi: Camel CDI :: Main (Camel CDI Integration)
+camel-core: Camel Core :: Main (WildFly Swarm Camel Integration)
+camel-cxf: Camel CXF :: Main (Camel CXF Integration)
+camel-ejb: Camel EJB :: Main (Camel EJB Integration)
+camel-jaxb: Camel JAXB :: Main (Camel JAXB Integration)
+camel-jms: Camel JMS :: Main (Camel JMS Integration)
+camel-jmx: Camel JMX :: Main (Camel JMX Integration)
+camel-jpa: Camel JPA :: Main (Camel JPA Integration)
+camel-mail: Camel Mail :: Main (Camel Mail Integration)
+camel-other: Camel Other :: Main (Integration of all other supported components)
+camel-undertow: Camel Undertow :: Main (WildFly Swarm Camel Integration)
+cdi: CDI (CDI with Weld)
+connector: WildFly Swarm: Connector (WildFly Swarm: Connector)
+container: WildFly Swarm: Container (WildFly Swarm: Container)
+datasources: Datasources (Datasources for installing database drivers, etc)
+ee: WildFly Swarm: EE (WildFly Swarm: EE)
+ejb: EJB (Use EJBs in your application)
+ejb-remote: EJB Remote (Access EJBs in remote containers)
+hibernate-search: Hibernate Search (Hibernate Search transparently indexes your objects and offers fast regular, full-text and geolocation search. Ease of use and easy clustering are core.)
+hibernate-validator: Hibernate Validator (Validation annotations going beyond Bean Validation)
+hystrix: Hystrix (Latency and Fault Tolerance, such as Circuit Breaker, with Hystrix from Netflix OSS)
+infinispan: Infinispan (Distributed in-memory key/value store)
+io: WildFly Swarm: IO (WildFly Swarm: IO)
+javafx: JavaFX (For using JavaFX classes in your application.)
+jaxrs: JAX-RS (RESTful Web Services with RESTEasy)
+jaxrs-cdi: JAX-RS with CDI (Provide CDI injection into RESTful services)
+jaxrs-jaxb: JAX-RS with JAXB (Add JAXB binding support for RESTful services)
+jaxrs-jsonp: JAX-RS with JSON-P (Enable JSON-P interchange format for RESTful services)
+jaxrs-multipart: JAX-RS with Multipart (Multipart support for RESTful services)
+jaxrs-validator: JAX-RS with Validation (Validation support for RESTful services)
+jca: JCA (Java EE Connector Architecture)
+jgroups: JGroups (Reliable messaging for creating a cluster)
+jmx: JMX (Expose resources as MBeans)
+jolokia: Jolokia (Deploys the jolokia.war to activate JMX-HTTP bridge as an alternative to JSR-160 connectors)
+jpa: JPA (Java Persistence API with Hibernate and H2 datasource)
+jpa-mysql: MySQL JPA (Java Persistence API with Hibernate and MySQL datasource)
+jpa-postgresql: PostgreSQL JPA (Java Persistence API with Hibernate and PostgreSQL datasource)
+jsf: JSF (Java Server Faces for developing UIs)
+keycloak: Keycloak (Securing your RESTful services)
+keycloak-server: Keycloak Server (Running Keycloak in an uber jar)
+logging: Logging (Customizing the Logging for WildFly)
+logstash: Logstash (Write log entries to Logstash for use in ELK stack)
+mail: Mail (Java Mail API for messaging)
+management: Management (Enables WildFly management capabilities)
+messaging: Messaging (JMS Messaging with ActiveMQ)
+monitor: Monitor (Health endpoints for your application)
+msc: MSC (WildFly Swarm: MSC)
+naming: Naming (WildFly Swarm: Naming)
+remoting: Remoting (Connecting to remote containers)
+resource-adapters: Resource Adapters (Resource Adapters deployed with .rar files)
+ribbon: Ribbon (Client side load balancing with Netflix Ribbon)
+ribbon-secured: Ribbon Secured (Provides security token propagation across invocations when using Netflix Ribbon and Keycloak)
+security: Security (WildFly Swarm: Security)
+spring: Spring (Develop Spring applications)
+spring-rest: Spring WebMVC (RESTful services with Spring WebMVC)
+swagger: Swagger (Generate swagger.json for all JAX-RS endpoints in your application)
+swagger-webapp: Swagger Webapp (UI for Swagger to visualize the generated swagger.json)
+topology: Topology (WildFly Swarm: Topology)
+topology-consul: Hashicorp Consul (Service Discovery with Hashicorp Consul)
+topology-jgroups: JGroups (Utilizes JGroups as a Service Registry that is discoverable)
+topology-openshift: OpenShift (Service Discovery with OpenShift)
+topology-webapp: Topology UI (Server-Sent Events of instances being added/removed from cluster)
+transactions: Transactions (JTA distributed transactions with Narayana)
+undertow: Undertow (Servlet Container with Undertow)
+webservices: Web Services (Web Services with CXF)
+----
 
 Create Main Class:: 
 Creates a Java Class with a main() method containing some basic code to boot Swarm and configure it in the swarm maven plugin.
 
+[source,shell]
+----
+[MyEndpoint.java]$ wildfly-swarm-new-main-class 
+***SUCCESS*** Main Class org.demo.Main was created
+[Main.java]$ cat -c .
+package org.demo;
+
+import org.wildfly.swarm.Swarm;
+
+public class Main {
+
+	public static void main(String[] args) throws Exception {
+		Swarm swarm = new Swarm();
+		swarm.start();
+		swarm.deploy();
+	}
+}
+----
+
 Run:: 
 Builds and executes the current swarmed project (in command line mode only so far) and will block the UI until Ctrl+C is pressed.
+
+[source,shell]
+----
+[Main.java]$ wildfly-swarm-run 
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building demo 1.0.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> wildfly-swarm-plugin:1.0.0.Final:run (default-cli) > package @ demo >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ demo ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ demo ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 3 source files to /tmp/demo/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ demo ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ demo ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ demo ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-war-plugin:2.6:war (default-war) @ demo ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [demo] in [/tmp/demo/target/demo]
+[INFO] Processing war project
+[INFO] Copying webapp resources [/tmp/demo/src/main/webapp]
+[INFO] Webapp assembled in [107 msecs]
+[INFO] Building war: /tmp/demo/target/demo.war
+[INFO] 
+[INFO] --- wildfly-swarm-plugin:1.0.0.Final:package (default) @ demo ---
+[INFO] 
+[INFO] <<< wildfly-swarm-plugin:1.0.0.Final:run (default-cli) < package @ demo <<<
+[INFO] 
+[INFO] --- wildfly-swarm-plugin:1.0.0.Final:run (default-cli) @ demo ---
+[INFO] Starting .war
+Dependencies not bundled, will resolve from local M2REPO
+14:17:06,738 INFO  [org.jboss.msc] (main) JBoss MSC version 1.2.6.Final
+14:17:07,046 INFO  [org.jboss.as] (MSC service thread 1-7) WFLYSRV0049: WildFly Core 2.0.10.Final "Kenny" starting
+14:17:07,966 INFO  [org.jboss.as.naming] (ServerService Thread Pool -- 13) WFLYNAM0001: Activating Naming Subsystem
+14:17:07,975 INFO  [org.jboss.as.security] (ServerService Thread Pool -- 15) WFLYSEC0002: Activating Security Subsystem
+14:17:07,976 INFO  [org.wildfly.extension.io] (ServerService Thread Pool -- 11) WFLYIO001: Worker 'default' has auto-configured to 8 core threads with 64 task threads based on your 4 available processors
+14:17:07,983 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-2) WFLYUT0003: Undertow 1.3.15.Final starting
+14:17:07,983 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 10) WFLYUT0003: Undertow 1.3.15.Final starting
+14:17:07,990 INFO  [org.jboss.as.security] (MSC service thread 1-6) WFLYSEC0001: Current PicketBox version=4.9.4.Final
+14:17:08,102 INFO  [org.jboss.as.naming] (MSC service thread 1-1) WFLYNAM0003: Starting Naming Service
+14:17:08,153 INFO  [org.xnio] (MSC service thread 1-7) XNIO version 3.3.4.Final
+14:17:08,190 INFO  [org.xnio.nio] (MSC service thread 1-7) XNIO NIO Implementation Version 3.3.4.Final
+14:17:08,311 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-8) WFLYUT0012: Started server default-server.
+14:17:08,784 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: WildFly Core 2.0.10.Final "Kenny" started in 2068ms - Started 63 of 75 services (14 services are lazy, passive or on-demand)
+14:17:08,923 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-3) WFLYUT0006: Undertow HTTP listener default listening on [0:0:0:0:0:0:0:0]:8080
+14:17:09,412 INFO  [org.wildfly.swarm.runtime.deployer] (main) deploying demo.war
+14:17:09,454 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-5) WFLYSRV0027: Starting deployment of "demo.war" (runtime-name: "demo.war")
+14:17:10,039 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-8) WFLYUT0018: Host default-host starting
+14:17:10,587 INFO  [org.jboss.resteasy.resteasy_jaxrs.i18n] (ServerService Thread Pool -- 6) RESTEASY002225: Deploying javax.ws.rs.core.Application: class org.demo.rest.RestApplication
+14:17:10,639 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 6) WFLYUT0021: Registered web context: /
+14:17:10,744 INFO  [org.jboss.as.server] (main) WFLYSRV0010: Deployed "demo.war" (runtime-name : "demo.war")
+----
