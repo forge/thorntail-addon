@@ -49,7 +49,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
 
    public static final Dependency BOM_DEPENDENCY = DependencyBuilder
             .create().setGroupId("org.wildfly.swarm")
-            .setArtifactId("bom")
+            .setArtifactId("bom-all")
             .setVersion("${version.wildfly-swarm}")
             .setPackaging("pom")
             .setScopeType("import");
