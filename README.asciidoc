@@ -68,12 +68,14 @@ You can install Wildfly Swarm Fractions by using the command `Wildfly-Swarm: Add
 [source,java]
 ----
 [demo]$ wildfly-swarm-add-fraction --fractions 
-batch-jberet         ejb                  jaxrs                jca                  keycloak             messaging            ribbon-secured       topology             undertow             
-bean-validation      ejb-remote           jaxrs-cdi            jgroups              keycloak-server      monitor              security             topology-consul      webservices          
-cdi                  hibernate-search     jaxrs-jaxb           jmx                  logging              msc                  spring               topology-jgroups     
-connector            hibernate-validator  jaxrs-jsonp          jolokia              logstash             naming               spring-rest          topology-openshift   
-datasources          infinispan           jaxrs-multipart      jpa                  mail                 remoting             swagger              topology-webapp      
-ee                   io                   jaxrs-validator      jsf                  management           ribbon               swagger-webapp       transactions         
+arquillian           camel-jms            datasources          javafx               jdr                  logging              monitor              swagger              vertx                
+batch-jberet         camel-jmx            ejb                  jaxrs                jgroups              logstash             mysql                swagger-webapp       webservices          
+bean-validation      camel-jpa            ejb-remote           jaxrs-cdi            jmx                  mail                 postgresql           topology-consul      
+camel-cdi            camel-mail           h2                   jaxrs-jaxb           jolokia              management           remoting             topology-jgroups     
+camel-core           camel-other          hibernate-search     jaxrs-jsonp          jpa                  management-console   resource-adapters    topology-openshift   
+camel-cxf            camel-undertow       hibernate-validator  jaxrs-multipart      jsf                  messaging            ribbon               topology-webapp      
+camel-ejb            cdi                  hystrix              jaxrs-validator      keycloak             microprofile         ribbon-secured       transactions         
+camel-jaxb           cdi-ext              infinispan           jca                  keycloak-server      mod_cluster          spring               undertow             
 
 ----
 +
@@ -151,31 +153,35 @@ This will list all the available fractions
 [source,shell]
 ----
 [MyEndpoint.java]$ wildfly-swarm-list-fractions 
+arquillian: Arquillian (Arquillian)
 batch-jberet: Batch (Java EE Batch with JBeret)
 bean-validation: Bean Validation (Define constraints on object models with annotations)
-camel-cdi: Camel CDI :: Main (Camel CDI Integration)
-camel-core: Camel Core :: Main (WildFly Swarm Camel Integration)
-camel-cxf: Camel CXF :: Main (Camel CXF Integration)
-camel-ejb: Camel EJB :: Main (Camel EJB Integration)
-camel-jaxb: Camel JAXB :: Main (Camel JAXB Integration)
-camel-jms: Camel JMS :: Main (Camel JMS Integration)
-camel-jmx: Camel JMX :: Main (Camel JMX Integration)
-camel-jpa: Camel JPA :: Main (Camel JPA Integration)
-camel-mail: Camel Mail :: Main (Camel Mail Integration)
-camel-other: Camel Other :: Main (Integration of all other supported components)
-camel-undertow: Camel Undertow :: Main (WildFly Swarm Camel Integration)
+bootstrap: Bootstrap (Bootstrap)
+camel-cdi: Camel CDI (Camel)
+camel-core: Camel Core :: Main (Camel)
+camel-cxf: Camel CXF (Camel)
+camel-ejb: Camel EJB (Camel)
+camel-jaxb: Camel JAXB (Camel)
+camel-jms: Camel JMS (Camel)
+camel-jmx: Camel JMX (Camel)
+camel-jpa: Camel JPA (Camel)
+camel-mail: Camel Mail (Camel)
+camel-other: Camel Other (Camel)
+camel-undertow: Camel Undertow (Camel)
 cdi: CDI (CDI with Weld)
-connector: WildFly Swarm: Connector (WildFly Swarm: Connector)
-container: WildFly Swarm: Container (WildFly Swarm: Container)
+cdi-ext: CDI Extensions (CDI Extensions)
+connector: Connector (Connector)
+container: Container (Container)
 datasources: Datasources (Datasources for installing database drivers, etc)
-ee: WildFly Swarm: EE (WildFly Swarm: EE)
+ee: EE (EE)
 ejb: EJB (Use EJBs in your application)
 ejb-remote: EJB Remote (Access EJBs in remote containers)
+h2: H2 (H2 driver and datasource)
 hibernate-search: Hibernate Search (Hibernate Search transparently indexes your objects and offers fast regular, full-text and geolocation search. Ease of use and easy clustering are core.)
 hibernate-validator: Hibernate Validator (Validation annotations going beyond Bean Validation)
 hystrix: Hystrix (Latency and Fault Tolerance, such as Circuit Breaker, with Hystrix from Netflix OSS)
 infinispan: Infinispan (Distributed in-memory key/value store)
-io: WildFly Swarm: IO (WildFly Swarm: IO)
+io: IO (IO)
 javafx: JavaFX (For using JavaFX classes in your application.)
 jaxrs: JAX-RS (RESTful Web Services with RESTEasy)
 jaxrs-cdi: JAX-RS with CDI (Provide CDI injection into RESTful services)
@@ -184,12 +190,12 @@ jaxrs-jsonp: JAX-RS with JSON-P (Enable JSON-P interchange format for RESTful se
 jaxrs-multipart: JAX-RS with Multipart (Multipart support for RESTful services)
 jaxrs-validator: JAX-RS with Validation (Validation support for RESTful services)
 jca: JCA (Java EE Connector Architecture)
+jdr: JBoss Diagnostic Reporting (Enables the gathering of diagnostic data for use in remote analysis of error conditions. Although the data is in a simple format and could be useful to anyone, primarily useful for JBoss EAP subscribers who would provide the data to Red Hat when requesting support)
 jgroups: JGroups (Reliable messaging for creating a cluster)
+jgroups-module: JGroups replacement module (JGroups replacement module)
 jmx: JMX (Expose resources as MBeans)
 jolokia: Jolokia (Deploys the jolokia.war to activate JMX-HTTP bridge as an alternative to JSR-160 connectors)
 jpa: JPA (Java Persistence API with Hibernate and H2 datasource)
-jpa-mysql: MySQL JPA (Java Persistence API with Hibernate and MySQL datasource)
-jpa-postgresql: PostgreSQL JPA (Java Persistence API with Hibernate and PostgreSQL datasource)
 jsf: JSF (Java Server Faces for developing UIs)
 keycloak: Keycloak (Securing your RESTful services)
 keycloak-server: Keycloak Server (Running Keycloak in an uber jar)
@@ -197,26 +203,32 @@ logging: Logging (Customizing the Logging for WildFly)
 logstash: Logstash (Write log entries to Logstash for use in ELK stack)
 mail: Mail (Java Mail API for messaging)
 management: Management (Enables WildFly management capabilities)
+management-console: Management Console (UI to manage a running WildFly/Swarm server)
 messaging: Messaging (JMS Messaging with ActiveMQ)
+microprofile: MicroProfile (Implementation of MicroProfile.io)
+mod_cluster: Modcluster (Modcluster support)
 monitor: Monitor (Health endpoints for your application)
 msc: MSC (WildFly Swarm: MSC)
+mysql: MySQL (MySQL driver and datasource)
 naming: Naming (WildFly Swarm: Naming)
+postgresql: PostgreSQL (PostgreSQL driver and datasource)
 remoting: Remoting (Connecting to remote containers)
+request-controller: Request Controller (Request Controller)
 resource-adapters: Resource Adapters (Resource Adapters deployed with .rar files)
 ribbon: Ribbon (Client side load balancing with Netflix Ribbon)
 ribbon-secured: Ribbon Secured (Provides security token propagation across invocations when using Netflix Ribbon and Keycloak)
-security: Security (WildFly Swarm: Security)
-spring: Spring (Develop Spring applications)
-spring-rest: Spring WebMVC (RESTful services with Spring WebMVC)
+security: Security (Security)
+spring: Spring WebMVC (RESTful services with Spring WebMVC)
 swagger: Swagger (Generate swagger.json for all JAX-RS endpoints in your application)
 swagger-webapp: Swagger Webapp (UI for Swagger to visualize the generated swagger.json)
-topology: Topology (WildFly Swarm: Topology)
+topology: Topology (Topology)
 topology-consul: Hashicorp Consul (Service Discovery with Hashicorp Consul)
 topology-jgroups: JGroups (Utilizes JGroups as a Service Registry that is discoverable)
 topology-openshift: OpenShift (Service Discovery with OpenShift)
 topology-webapp: Topology UI (Server-Sent Events of instances being added/removed from cluster)
 transactions: Transactions (JTA distributed transactions with Narayana)
 undertow: Undertow (Servlet Container with Undertow)
+vertx: Vert.x (Deploys the Vert.x JCA Adapter)
 webservices: Web Services (Web Services with CXF)
 ----
 
