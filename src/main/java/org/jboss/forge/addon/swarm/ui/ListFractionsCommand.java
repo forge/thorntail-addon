@@ -45,9 +45,12 @@ public class ListFractionsCommand extends AbstractWildFlySwarmCommand
       PrintStream out = output.out();
       for (FractionDescriptor fraction : WildFlySwarmFacet.getAllFractionDescriptors())
       {
-         String msg = String.format("%s: %s (%s)", fraction.getArtifactId(), fraction.getName(),
-                  fraction.getDescription());
-         out.println(msg);
+         if (!fraction.isInternal())
+         {
+            String msg = String.format("%s: %s (%s)", fraction.getArtifactId(), fraction.getName(),
+                     fraction.getDescription());
+            out.println(msg);
+         }
       }
       return Results.success();
    }
