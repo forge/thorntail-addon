@@ -40,15 +40,16 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
                .setLabel("Fraction List")
                .setDescription("Fraction list");
 
-      if (builder.getUIContext().getProvider().isGUI())
+      UIContext uiContext = builder.getUIContext();
+      if (uiContext.getProvider().isGUI())
       {
-         fractionElements.setItemLabelConverter((f) -> String.format("%s - %s", f.getName(), f.getDescription()));
+         fractionElements.setItemLabelConverter(FractionDescriptor::getName);
       }
       else
       {
          fractionElements.setItemLabelConverter(FractionDescriptor::getArtifactId);
       }
-      Project project = Projects.getSelectedProject(getProjectFactory(), builder.getUIContext());
+      Project project = Projects.getSelectedProject(getProjectFactory(), uiContext);
       final Collection<FractionDescriptor> fractions;
       if (project != null && project.hasFacet(WildFlySwarmFacet.class))
       {

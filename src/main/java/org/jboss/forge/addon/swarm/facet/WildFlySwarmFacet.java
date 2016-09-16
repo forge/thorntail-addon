@@ -116,7 +116,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
       return getFractionList().getFractionDescriptors()
                .stream()
-               .filter((descriptor) -> !alreadyInstalled(descriptor.getArtifactId(), dependencies))
+               .filter(d -> !d.isInternal() && !alreadyInstalled(d.getArtifactId(), dependencies))
                .sorted((o1, o2) -> o1.getArtifactId().compareTo(o2.getArtifactId()))
                .collect(Collectors.toList());
    }
@@ -128,13 +128,13 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
       return getFractionList().getFractionDescriptors()
                .stream()
-               .filter((descriptor) -> alreadyInstalled(descriptor.getArtifactId(), dependencies))
+               .filter(d -> alreadyInstalled(d.getArtifactId(), dependencies))
                .collect(Collectors.toList());
    }
 
    private static org.wildfly.swarm.tools.FractionList getFractionList()
    {
-      return org.wildfly.swarm.fractionlist.FractionList.get();
+      return FractionList.get();
    }
 
    public static Collection<FractionDescriptor> getAllFractionDescriptors()
