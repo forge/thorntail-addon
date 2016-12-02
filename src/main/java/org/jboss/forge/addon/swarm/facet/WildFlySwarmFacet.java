@@ -12,6 +12,7 @@ import org.jboss.forge.addon.dependencies.builder.CoordinateBuilder;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
+import org.jboss.forge.addon.javaee.facets.JavaEE7Facet;
 import org.jboss.forge.addon.maven.plugins.Configuration;
 import org.jboss.forge.addon.maven.plugins.ConfigurationBuilder;
 import org.jboss.forge.addon.maven.plugins.ExecutionBuilder;
@@ -37,6 +38,7 @@ import org.wildfly.swarm.tools.FractionUsageAnalyzer;
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
 @FacetConstraint(MavenFacet.class)
+@FacetConstraint(JavaEE7Facet.class)
 public class WildFlySwarmFacet extends AbstractFacet<Project> implements ProjectFacet
 {
    private WildFlySwarmConfiguration configuration = WildFlySwarmConfigurationBuilder.create();

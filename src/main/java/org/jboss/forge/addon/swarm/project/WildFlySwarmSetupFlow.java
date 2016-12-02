@@ -7,6 +7,8 @@
 
 package org.jboss.forge.addon.swarm.project;
 
+import org.jboss.forge.addon.swarm.ui.AddFractionCommand;
+import org.jboss.forge.addon.swarm.ui.CreateRestEndpointStep;
 import org.jboss.forge.addon.swarm.ui.SetupCommand;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.context.UINavigationContext;
@@ -26,7 +28,11 @@ public class WildFlySwarmSetupFlow implements UIWizardStep
    @Override
    public NavigationResult next(UINavigationContext context) throws Exception
    {
-      return NavigationResultBuilder.create().add(SetupCommand.class).build();
+      NavigationResultBuilder builder = NavigationResultBuilder.create();
+      builder.add(SetupCommand.class);
+      builder.add(AddFractionCommand.class);
+      builder.add(CreateRestEndpointStep.class);
+      return builder.build();
    }
 
    @Override
