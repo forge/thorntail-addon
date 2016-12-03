@@ -1,7 +1,7 @@
 :idprefix: id_ 
 :source-highlighter: pygments
 
-== Wildfly Swarm addon for JBoss Forge
+== WildFly Swarm addon for JBoss Forge
 image:https://forge.ci.cloudbees.com/buildStatus/icon?job=wildfly-swarm-addon["Build Status", link="https://forge.ci.cloudbees.com/job/wildfly-swarm-addon"]
 image:http://img.shields.io/:license-EPL-blue.svg["License", link="https://www.eclipse.org/legal/epl-v10.html"]
 image:https://maven-badges.herokuapp.com/maven-central/org.jboss.forge.addon/wildfly-swarm/badge.svg["Maven Central", link="https://maven-badges.herokuapp.com/maven-central/org.jboss.forge.addon/wildfly-swarm"]
