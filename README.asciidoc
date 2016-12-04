@@ -156,7 +156,6 @@ This will list all the available fractions
 [source,shell]
 ----
 [MyEndpoint.java]$ wildfly-swarm-list-fractions 
-archaius: null (null)
 arquillian-daemon: Arquillian Daemon (Arquillian Daemon)
 batch-jberet: Batch (Java EE Batch with JBeret)
 bean-validation: Bean Validation (Define constraints on object models with annotations)
