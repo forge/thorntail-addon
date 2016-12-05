@@ -7,6 +7,8 @@
 
 package org.jboss.forge.addon.swarm.project;
 
+import java.util.Arrays;
+
 import org.jboss.forge.addon.swarm.ui.AddFractionCommand;
 import org.jboss.forge.addon.swarm.ui.CreateRestEndpointStep;
 import org.jboss.forge.addon.swarm.ui.SetupCommand;
@@ -16,6 +18,7 @@ import org.jboss.forge.addon.ui.result.NavigationResult;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.result.navigation.NavigationResultBuilder;
+import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 /**
@@ -29,8 +32,9 @@ public class WildFlySwarmSetupFlow implements UIWizardStep
    public NavigationResult next(UINavigationContext context) throws Exception
    {
       NavigationResultBuilder builder = NavigationResultBuilder.create();
-      builder.add(SetupCommand.class);
-      builder.add(AddFractionCommand.class);
+      builder.add(Metadata.forCommand(SetupCommand.class).name("WildFly Swarm: Setup")
+               .description("Setup WildFly Swarm in your web application"),
+               Arrays.asList(SetupCommand.class, AddFractionCommand.class));
       builder.add(CreateRestEndpointStep.class);
       return builder.build();
    }
