@@ -19,6 +19,7 @@ import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.output.UIOutput;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
+import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 
 /**
@@ -31,8 +32,9 @@ public class RunCommand extends AbstractWildFlySwarmCommand
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly-Swarm: Run")
-               .description("Run the project using the 'wildfly-swarm:run' maven plugin");
+      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly Swarm: Run")
+               .description("Run the project using the 'wildfly-swarm:run' maven plugin")
+               .category(Categories.create("WildFly Swarm"));
    }
 
    @Override
@@ -56,7 +58,8 @@ public class RunCommand extends AbstractWildFlySwarmCommand
       return Results.success();
    }
 
-   @Override public boolean isEnabled(UIContext context)
+   @Override
+   public boolean isEnabled(UIContext context)
    {
       UIProvider provider = context.getProvider();
       return super.isEnabled(context) && !provider.isGUI() && !provider.isEmbedded();

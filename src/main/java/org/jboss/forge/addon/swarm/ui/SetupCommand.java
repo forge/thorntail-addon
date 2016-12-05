@@ -14,6 +14,7 @@ import org.jboss.forge.addon.ui.input.UIInput;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
+import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
 
@@ -63,8 +64,9 @@ public class SetupCommand extends AbstractWildFlySwarmCommand
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly-Swarm: Setup")
-               .description("Setup WildFly Swarm in your web application");
+      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly Swarm: Setup")
+               .description("Setup WildFly Swarm in your web application")
+               .category(Categories.create("WildFly Swarm"));
    }
 
    @Override

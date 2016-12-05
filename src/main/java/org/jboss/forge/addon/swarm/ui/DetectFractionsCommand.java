@@ -27,6 +27,7 @@ import org.jboss.forge.addon.ui.output.UIOutput;
 import org.jboss.forge.addon.ui.progress.UIProgressMonitor;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
+import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.wildfly.swarm.tools.FractionDescriptor;
 import org.wildfly.swarm.tools.FractionUsageAnalyzer;
@@ -45,8 +46,9 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly-Swarm: Detect Fractions")
-               .description("Detect the needed fractions for the current project");
+      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly Swarm: Detect Fractions")
+               .description("Detect the needed fractions for the current project")
+               .category(Categories.create("WildFly Swarm"));
    }
 
    @Override

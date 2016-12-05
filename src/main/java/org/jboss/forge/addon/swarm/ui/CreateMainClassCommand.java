@@ -46,8 +46,8 @@ public class CreateMainClassCommand extends AbstractJavaSourceCommand<JavaClassS
    public UICommandMetadata getMetadata(UIContext context)
    {
       return Metadata.forCommand(getClass())
-               .category(Categories.create("WildFly-Swarm"))
-               .name("WildFly-Swarm: New " + getType())
+               .category(Categories.create("WildFly Swarm"))
+               .name("WildFly Swarm: New " + getType())
                .description("Creates a new " + getType() + " to run WildFly Swarm");
    }
 
