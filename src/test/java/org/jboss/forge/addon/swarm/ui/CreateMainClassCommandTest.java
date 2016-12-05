@@ -78,8 +78,8 @@ public class CreateMainClassCommandTest
          // Checks the command metadata
          assertTrue(controller.getCommand() instanceof CreateMainClassCommand);
          UICommandMetadata metadata = controller.getMetadata();
-         assertEquals("WildFly-Swarm: New Main Class", metadata.getName());
-         assertEquals("WildFly-Swarm", metadata.getCategory().getName());
+         assertEquals("WildFly Swarm: New Main Class", metadata.getName());
+         assertEquals("WildFly Swarm", metadata.getCategory().getName());
          assertNull(metadata.getCategory().getSubCategory());
       }
    }

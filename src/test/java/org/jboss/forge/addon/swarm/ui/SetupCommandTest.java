@@ -73,8 +73,8 @@ public class SetupCommandTest
          // Checks the command metadata
          assertTrue(controller.getCommand() instanceof SetupCommand);
          UICommandMetadata metadata = controller.getMetadata();
-         assertEquals("WildFly-Swarm: Setup", metadata.getName());
-         assertEquals("WildFly-Swarm", metadata.getCategory().getName());
+         assertEquals("WildFly Swarm: Setup", metadata.getName());
+         assertEquals("WildFly Swarm", metadata.getCategory().getName());
          assertNull(metadata.getCategory().getSubCategory());
          assertEquals(3, controller.getInputs().size());
          assertFalse(controller.hasInput("dummy"));
