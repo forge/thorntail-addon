@@ -41,18 +41,8 @@ addon-install-from-git --url https://github.com/forge/wildfly-swarm-addon.git
 
 
 == Features
-Setup command:: 
-Just type the following command if you're in shell. It should read Wildfly-Swarm: Setup if you're in a GUI environment:  
-+
-[source,java]
-----
-wildfly-swarm-setup
-----
-+
-And that's it! The wildfly swarm maven plugin will be installed. 
-
 WildFly Swarm Project type:: 
-If you are creating a new project, you can choose the `wildfly-swarm` project type directly and avoid the `wildfly-swarm-setup` command
+If you are creating a new project, you can choose the `wildfly-swarm` project type directly
 
 [source,shell]
 ----
@@ -62,8 +52,18 @@ If you are creating a new project, you can choose the `wildfly-swarm` project ty
 ***SUCCESS*** WildFly Swarm is now set up! Enjoy!
 ----
 
+Setup command:: 
+If you're working in an existing project (or you forgot to choose `wildfly-swarm` in the command above) just type `wildfly-swarm-setup` if you're in shell. It should read WildFly-Swarm: Setup if you're in a GUI environment:  
++
+[source,java]
+----
+wildfly-swarm-setup
+----
++
+And that's it! The wildfly swarm maven plugin will be installed. 
+
 Add Fraction::
-You can install Wildfly Swarm Fractions by using the command `Wildfly-Swarm: Add Fraction`: 
+You can install Wildfly Swarm Fractions by using the command `wildfly-swarm-add-fraction`: 
 +
 [source,java]
 ----
