@@ -15,6 +15,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <version.forge>3.4.0.Final</version.forge>
       <version.wildlfy.swarm>2016.12.1</version.wildlfy.swarm>
+      <version.arquillian>1.1.11.Final</version.arquillian>
    </properties>
    <dependencyManagement>
       <dependencies>
@@ -48,6 +49,16 @@
          <artifactId>simple</artifactId>
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.arquillian.junit</groupId>
+         <artifactId>arquillian-junit-core</artifactId>
+         <version>${version.arquillian}</version>
+      </dependency>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>4.12</version>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.furnace.test</groupId>

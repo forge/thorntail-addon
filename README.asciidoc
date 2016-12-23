@@ -262,6 +262,33 @@ public class Main {
 }
 ----
 
+Create Test Class::
+Creates a Java Test Class and adds Arquillian WildFly Swarm dependency.
+This test uses the `@DefaultDeployment` deployment approach and in case of specifying the flag `asClient` it also enriches your test with current URL.
+
+[source, shell]
+----
+wildfly-swarm-new-test --target-package org.example.rest --named HelloWorldEndpointTest
+***SUCCESS*** Test Class org.example.rest.HelloWorldEndpointTest was created
+[HelloSwarm]$ cd src/test/java/org/example/rest/HElloWorldEndpointTest.java
+[HelloWorldEndpointTest.java]$ cat -c .
+package org.example.rest;
+
+import org.junit.runner.RunWith;
+import org.jboss.arquillian.junit.Arquillian;
+import org.wildfly.swarm.arquillian.DefaultDeployment;
+import org.junit.Test;
+
+@RunWith(Arquillian.class)
+@DefaultDeployment
+public class HElloWorldEndpointTest {
+
+	@Test
+	public void should_start_service() {
+	}
+}
+----
+
 Run:: 
 Builds and executes the current swarmed project (in command line mode only so far) and will block the UI until Ctrl+C is pressed.
 
