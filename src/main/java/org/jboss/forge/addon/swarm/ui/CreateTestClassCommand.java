@@ -196,7 +196,7 @@ public class CreateTestClassCommand extends AbstractWildFlySwarmCommand {
 
       if (mainClass.hasValue())
       {
-            defaultDeploymentAnnotation.setLiteralValue("main", mainClass.getValue());
+            defaultDeploymentAnnotation.setLiteralValue("main", mainClass.getValue() + ".class");
       }
 
       if (archiveType.hasValue())

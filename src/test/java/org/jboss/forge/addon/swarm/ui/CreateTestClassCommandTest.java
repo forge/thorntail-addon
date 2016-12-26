@@ -206,4 +206,55 @@ public class CreateTestClassCommandTest {
 
    }
 
+   @Test
+   public void should_set_mainclass_test() throws Exception
+   {
+      assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
+      try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
+              project.getRoot()))
+      {
+         controller.initialize();
+         controller.setValueFor("targetPackage", "org.example");
+         controller.setValueFor("named", "HelloWorldTest");
+         controller.setValueFor("archiveType", "WAR");
+         controller.setValueFor("mainClass", "org.example.Main");
+
+         assertThat(controller.isValid(), is(true));
+         final AtomicBoolean flag = new AtomicBoolean();
+         controller.getContext().addCommandExecutionListener(new AbstractCommandExecutionListener()
+         {
+            @Override
+            public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
+            {
+               if (result.getMessage().equals("Test Class org.example.HelloWorldTest was created"))
+               {
+                  flag.set(true);
+               }
+            }
+         });
+         controller.execute();
+         assertThat(flag.get(), is(true));
+      }
+
+      JavaResource javaResource = project.getFacet(JavaSourceFacet.class).getTestJavaResource("org.example.HelloWorldTest");
+      assertThat(javaResource.exists(), is(true));
+      JavaClassSource testClass = Roaster.parse(JavaClassSource.class, javaResource.getContents());
+      assertThat(testClass.getAnnotation(RunWith.class), is((notNullValue())));
+
+      final AnnotationSource<JavaClassSource> defaultDeployment = testClass.getAnnotation("DefaultDeployment");
+      assertThat(defaultDeployment, is((notNullValue())));
+      final String testable = defaultDeployment.getLiteralValue("type");
+      assertThat(testable, is("DefaultDeployment.Type.WAR"));
+
+      final String main = defaultDeployment.getLiteralValue("main");
+      assertThat(main, is("org.example.Main"));
+
+      System.out.println(javaResource.getContents());
+
+      final MethodSource<JavaClassSource> testMethod = testClass.getMethod("should_start_service");
+      assertThat(testMethod, is(notNullValue()));
+      assertThat(testMethod.getAnnotation(Test.class), is(notNullValue()));
+
+   }
+
 }
