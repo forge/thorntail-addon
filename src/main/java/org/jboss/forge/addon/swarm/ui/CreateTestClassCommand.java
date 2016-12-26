@@ -1,13 +1,11 @@
 package org.jboss.forge.addon.swarm.ui;
 
-import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.addon.dependencies.Dependency;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.parser.java.converters.PackageRootConverter;
 import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.projects.facets.ClassLoaderFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
@@ -30,12 +28,9 @@ import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.util.Types;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.List;
 
@@ -174,16 +169,21 @@ public class CreateTestClassCommand extends AbstractWildFlySwarmCommand {
 
    private void addTestMethod(JavaClassSource test) {
 
+      test.addImport("org.junit.Test");
+
       MethodSource<JavaClassSource> testMethod = test.addMethod()
               .setPublic()
               .setReturnTypeVoid()
               .setName("should_start_service")
               .setBody("");
-      testMethod.addAnnotation(Test.class);
+      testMethod.addAnnotation("Test");
    }
 
    private void addArquillianRunner(JavaClassSource test) {
-      test.addAnnotation(RunWith.class).setClassValue(Arquillian.class);
+      test.addImport("org.junit.runner.RunWith");
+      test.addImport("org.jboss.arquillian.junit.Arquillian");
+
+      test.addAnnotation("RunWith").setLiteralValue("Arquillian.class");
    }
 
    private void addDefaultDeploymentAnnotation(JavaClassSource test, Project project) throws ClassNotFoundException, IOException {
@@ -196,11 +196,7 @@ public class CreateTestClassCommand extends AbstractWildFlySwarmCommand {
 
       if (mainClass.hasValue())
       {
-         ClassLoaderFacet facet = project.getFacet(ClassLoaderFacet.class);
-         try (URLClassLoader classLoader = facet.getClassLoader()) {
-            Class<?> clazz = classLoader.loadClass(mainClass.getValue());
-            defaultDeploymentAnnotation.setClassValue("main", clazz);
-         }
+            defaultDeploymentAnnotation.setLiteralValue("main", mainClass.getValue());
       }
 
       if (archiveType.hasValue())
