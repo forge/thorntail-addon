@@ -270,7 +270,7 @@ This test uses the `@DefaultDeployment` deployment approach and in case of speci
 ----
 wildfly-swarm-new-test --target-package org.example.rest --named HelloWorldEndpointTest
 ***SUCCESS*** Test Class org.example.rest.HelloWorldEndpointTest was created
-[HelloSwarm]$ cd src/test/java/org/example/rest/HElloWorldEndpointTest.java
+[HelloSwarm]$ cd src/test/java/org/example/rest/HelloWorldEndpointTest.java
 [HelloWorldEndpointTest.java]$ cat -c .
 package org.example.rest;
 
@@ -281,7 +281,7 @@ import org.junit.Test;
 
 @RunWith(Arquillian.class)
 @DefaultDeployment
-public class HElloWorldEndpointTest {
+public class HelloWorldEndpointTest {
 
 	@Test
 	public void should_start_service() {
