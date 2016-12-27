@@ -28,6 +28,13 @@ public interface WildFlySwarmConfiguration
    public static final String MAIN_CLASS_CONFIGURATION_ELEMENT = "mainClass";
    public static final String MAIN_CLASS_DEFAULT_VALUE = "org.wildfly.swarm.Swarm";
 
+   public static final String TEST_NAME_CONFIGURATION_ELEMENT = "testName";
+
+   public static final String TEST_AS_CLIENT_FLAG_CONFIGURATION_ELEMENT = "asClient";
+
+   public static final String TEST_TYPE_CONFIGURATION_ELEMENT = "archiveType";
+   public static final String TEST_TYPE_DEFAULT_VALUE = "JAR";
+
    /**
     * @return the HTTP port for this microservice
     */
