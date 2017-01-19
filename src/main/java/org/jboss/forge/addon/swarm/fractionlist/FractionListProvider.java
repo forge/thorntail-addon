@@ -7,20 +7,15 @@
 
 package org.jboss.forge.addon.swarm.fractionlist;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 import org.jboss.forge.addon.configuration.Configuration;
 import org.jboss.forge.addon.configuration.ConfigurationFactory;
 import org.jboss.forge.addon.dependencies.Coordinate;
 import org.jboss.forge.addon.dependencies.Dependency;
-import org.jboss.forge.addon.dependencies.DependencyException;
 import org.jboss.forge.addon.dependencies.DependencyQuery;
 import org.jboss.forge.addon.dependencies.DependencyResolver;
 import org.jboss.forge.addon.dependencies.builder.CoordinateBuilder;
@@ -61,34 +56,8 @@ public class FractionListProvider extends AbstractEventListener
       }
    }
 
-   @Override
-   protected void handleThisPreShutdown()
-   {
-      if (fractionList instanceof DynamicFractionList)
-      {
-         try
-         {
-            ((DynamicFractionList) fractionList).close();
-         }
-         catch (IOException ignore)
-         {
-            // Ignore this exception
-         }
-      }
-   }
-
    public void setFractionListVersion(String version, boolean permanent)
    {
-      if (this.fractionList instanceof DynamicFractionList)
-      {
-         try
-         {
-            ((DynamicFractionList) this.fractionList).close();
-         }
-         catch (IOException ignored)
-         {
-         }
-      }
       if (permanent)
       {
          getConfiguration().setProperty(SWARM_VERSION_PROPERTY, version);
@@ -97,39 +66,27 @@ public class FractionListProvider extends AbstractEventListener
       DependencyQuery query = DependencyQueryBuilder
                .create(CoordinateBuilder.create(FRACTION_LIST_COORDINATE).setVersion(version));
       Dependency artifact = resolver.resolveArtifact(query);
-      Set<Dependency> dependencies = resolver.resolveDependencies(query);
-      List<URL> urls = new ArrayList<>();
-      try
+      try (JarFile jarFile = new JarFile(artifact.getArtifact().getUnderlyingResourceObject());
+               InputStream fractionListStream = jarFile.getInputStream(jarFile
+                        .getEntry("fraction-list.json"));
+               InputStream packagesSpecsStream = jarFile.getInputStream(jarFile
+                        .getEntry("org/wildfly/swarm/fractionlist/fraction-packages.properties")))
       {
-         urls.add(toURL(artifact));
-         dependencies.stream()
-                  .map(this::toURL)
-                  .filter(Objects::nonNull)
-                  .forEach(urls::add);
-         this.fractionList = new DynamicFractionList(version, urls.toArray(new URL[urls.size()]));
+         this.fractionList = new JSONFractionList(version, fractionListStream, packagesSpecsStream);
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         throw new RuntimeException("Error while reading WF Swarm metadata", e);
       }
-   }
 
-   private URL toURL(Dependency dep)
-   {
-      try
-      {
-         return dep.getArtifact().getUnderlyingResourceObject().toURI().toURL();
-      }
-      catch (MalformedURLException | DependencyException e)
-      {
-         return null;
-      }
    }
 
    public List<String> getSwarmVersions()
    {
       DependencyResolver resolver = getDependencyResolver();
-      return resolver.resolveVersions(DependencyQueryBuilder.create(FRACTION_LIST_COORDINATE)).stream()
+      return resolver.resolveVersions(DependencyQueryBuilder
+               .create(FRACTION_LIST_COORDINATE))
+               .stream()
                .map(Coordinate::getVersion).collect(Collectors.toList());
 
    }
@@ -145,9 +102,9 @@ public class FractionListProvider extends AbstractEventListener
 
    public String getWildflySwarmVersion()
    {
-      if (this.fractionList instanceof DynamicFractionList)
+      if (this.fractionList instanceof JSONFractionList)
       {
-         return ((DynamicFractionList) this.fractionList).getWildFlySwarmVersion();
+         return ((JSONFractionList) this.fractionList).getVersion();
       }
       return Versions.getImplementationVersionFor(getFractionList().getClass()).toString();
    }
