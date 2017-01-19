@@ -2,6 +2,7 @@ org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet
 org.jboss.forge.addon.swarm.project.WildFlySwarmProjectType
 org.jboss.forge.addon.swarm.project.WildFlySwarmSetupFlow
 org.jboss.forge.addon.swarm.ui.AddFractionCommand
+org.jboss.forge.addon.swarm.ui.ChangeVersionCommand
 org.jboss.forge.addon.swarm.ui.CreateMainClassCommand
 org.jboss.forge.addon.swarm.ui.CreateRestEndpointStep
 org.jboss.forge.addon.swarm.ui.DetectFractionsCommand

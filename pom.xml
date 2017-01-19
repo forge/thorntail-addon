@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <parent>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-parent</artifactId>
@@ -36,12 +37,11 @@
       <dependency>
          <groupId>org.wildfly.swarm</groupId>
          <artifactId>fraction-list</artifactId>
-         <exclusions>
-            <exclusion>
-               <artifactId>jboss-javax-sql-api_7.0_spec</artifactId>
-               <groupId>org.jboss.spec.javax.sql</groupId>
-            </exclusion>
-         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.furnace</groupId>
+         <artifactId>furnace-proxy</artifactId>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.furnace.container</groupId>

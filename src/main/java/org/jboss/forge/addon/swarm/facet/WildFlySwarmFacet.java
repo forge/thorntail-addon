@@ -26,8 +26,7 @@ import org.jboss.forge.addon.projects.ProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
-import org.jboss.forge.furnace.versions.Versions;
-import org.wildfly.swarm.fractionlist.FractionList;
+import org.jboss.forge.addon.swarm.fractionlist.FractionListProvider;
 import org.wildfly.swarm.tools.FractionDescriptor;
 import org.wildfly.swarm.tools.FractionUsageAnalyzer;
 
@@ -137,7 +136,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
 
    private static org.wildfly.swarm.tools.FractionList getFractionList()
    {
-      return FractionList.get();
+      return FractionListProvider.get().getFractionList();
    }
 
    public static Collection<FractionDescriptor> getAllFractionDescriptors()
@@ -199,7 +198,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
 
    private String getWildflySwarmVersion()
    {
-      return Versions.getImplementationVersionFor(org.wildfly.swarm.fractionlist.FractionList.class).toString();
+      return FractionListProvider.get().getWildflySwarmVersion();
    }
 
    private boolean alreadyInstalled(String artifactId, List<org.apache.maven.model.Dependency> dependencies)

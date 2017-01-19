@@ -60,7 +60,7 @@ If you're working in an existing project (or you forgot to choose `wildfly-swarm
 wildfly-swarm-setup
 ----
 +
-And that's it! The wildfly swarm maven plugin will be installed. 
+And that's it! The `wildfly-swarm-maven` plugin will be installed. 
 
 Add Fraction::
 You can install Wildfly Swarm Fractions by using the command `wildfly-swarm-add-fraction`: 
@@ -239,6 +239,12 @@ vertx: Vert.x (Deploys the Vert.x JCA Adapter)
 webservices: Web Services (Web Services with CXF)
 
 ----
+
+Change Version::
+
+Changes the WildFly Swarm version in the addon. Subsequent project creation using the `project-new` command would use the version specified by this command instead. The `permanent` flag will add a `swarm.version` property in your `~/.forge/config.properties` file and will use that version permanently.
+
+IMPORTANT: This command does not perform any change to the current project.   
 
 Create Main Class:: 
 Creates a Java Class with a main() method containing some basic code to boot Swarm and configure it in the swarm maven plugin.
