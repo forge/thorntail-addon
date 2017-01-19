@@ -8,14 +8,20 @@
 package org.jboss.forge.addon.swarm.fractionlist;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jboss.forge.addon.configuration.Configuration;
 import org.jboss.forge.addon.configuration.ConfigurationFactory;
 import org.jboss.forge.addon.dependencies.Coordinate;
 import org.jboss.forge.addon.dependencies.Dependency;
+import org.jboss.forge.addon.dependencies.DependencyException;
+import org.jboss.forge.addon.dependencies.DependencyQuery;
 import org.jboss.forge.addon.dependencies.DependencyResolver;
 import org.jboss.forge.addon.dependencies.builder.CoordinateBuilder;
 import org.jboss.forge.addon.dependencies.builder.DependencyQueryBuilder;
@@ -88,16 +94,35 @@ public class FractionListProvider extends AbstractEventListener
          getConfiguration().setProperty(SWARM_VERSION_PROPERTY, version);
       }
       DependencyResolver resolver = getDependencyResolver();
-      Dependency artifact = resolver.resolveArtifact(
-               DependencyQueryBuilder.create(CoordinateBuilder.create(FRACTION_LIST_COORDINATE).setVersion(version)));
+      DependencyQuery query = DependencyQueryBuilder
+               .create(CoordinateBuilder.create(FRACTION_LIST_COORDINATE).setVersion(version));
+      Dependency artifact = resolver.resolveArtifact(query);
+      Set<Dependency> dependencies = resolver.resolveDependencies(query);
+      List<URL> urls = new ArrayList<>();
       try
       {
-         URL jar = artifact.getArtifact().getUnderlyingResourceObject().toURI().toURL();
-         this.fractionList = new DynamicFractionList(version, jar);
+         urls.add(toURL(artifact));
+         dependencies.stream()
+                  .map(this::toURL)
+                  .filter(Objects::nonNull)
+                  .forEach(urls::add);
+         this.fractionList = new DynamicFractionList(version, urls.toArray(new URL[urls.size()]));
       }
       catch (Exception e)
       {
          e.printStackTrace();
+      }
+   }
+
+   private URL toURL(Dependency dep)
+   {
+      try
+      {
+         return dep.getArtifact().getUnderlyingResourceObject().toURI().toURL();
+      }
+      catch (MalformedURLException | DependencyException e)
+      {
+         return null;
       }
    }
 
