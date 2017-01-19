@@ -27,16 +27,17 @@ public class DynamicFractionList implements FractionList
    private final FractionList fractionList;
    private final String version;
 
-   public DynamicFractionList(String version, URL jar) throws Exception
+   public DynamicFractionList(String version, URL... jars) throws Exception
    {
       this.version = version;
-      this.urlClassLoader = URLClassLoader.newInstance(new URL[] { jar });
+      this.urlClassLoader = URLClassLoader.newInstance(jars);
       Class<?> targetFractionListClass = this.urlClassLoader.loadClass("org.wildfly.swarm.fractionlist.FractionList");
       Object targetFractionList = targetFractionListClass.getMethod("get").invoke(null);
+      // That won't work for FractionDescriptor class, since it is not proxyable
       this.fractionList = (FractionList) ClassLoaderAdapterBuilder
                .callingLoader(getClass().getClassLoader())
                .delegateLoader(this.urlClassLoader)
-               .enhance(targetFractionList, FractionList.class);
+               .enhance(targetFractionList);
    }
 
    @Override
