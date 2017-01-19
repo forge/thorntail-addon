@@ -8,6 +8,8 @@
 package org.jboss.forge.addon.swarm.fractionlist;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.wildfly.swarm.tools.FractionDescriptor;
 
 /**
  *
@@ -37,10 +40,13 @@ public class FractionListProviderTest
       List<String> swarmVersions = provider.getSwarmVersions();
       assertThat(swarmVersions.isEmpty(), equalTo(false));
 
-      provider.setFractionListVersion(swarmVersions.get(0), false);
-      assertThat(provider.getWildflySwarmVersion(), equalTo(swarmVersions.get(0)));
+      provider.setFractionListVersion("2016.12.1", false);
+      assertThat(provider.getFractionList().getFractionDescriptors(), everyItem(instanceOf(FractionDescriptor.class)));
+
+      assertThat(provider.getWildflySwarmVersion(), equalTo("2016.12.1"));
 
       provider.setFractionListVersion(version, false);
+      assertThat(provider.getFractionList().getFractionDescriptors(), everyItem(instanceOf(FractionDescriptor.class)));
       assertThat(provider.getWildflySwarmVersion(), equalTo(version));
    }
 
