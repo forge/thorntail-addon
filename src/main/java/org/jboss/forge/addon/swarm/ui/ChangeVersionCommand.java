@@ -59,4 +59,9 @@ public class ChangeVersionCommand extends AbstractWildFlySwarmCommand
       return Results.success("Changed to WildFly Swarm version: " + fractionListProvider.getWildflySwarmVersion());
    }
 
+   @Override
+   protected boolean isProjectRequired()
+   {
+      return false;
+   }
 }
