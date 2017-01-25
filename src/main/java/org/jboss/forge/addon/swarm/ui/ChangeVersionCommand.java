@@ -20,8 +20,14 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
 
 /**
+ * Changes the supported WF Swarm version.
+ * 
+ * The supported fractions and version used when creating a project using project-new are affected
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @see ListFractionsCommand
+ * @see AddFractionCommand
+ * @see FractionListProvider
  */
 public class ChangeVersionCommand extends AbstractWildFlySwarmCommand
 {
@@ -32,7 +38,7 @@ public class ChangeVersionCommand extends AbstractWildFlySwarmCommand
    public UICommandMetadata getMetadata(UIContext context)
    {
       return Metadata.from(super.getMetadata(context), ChangeVersionCommand.class)
-               .name("WildFly Swarm: Change Version").description("Change the supported WildFly Version");
+               .name("WildFly Swarm: Change Version").description("Change the supported WildFly Swarm version");
    }
 
    @Override
