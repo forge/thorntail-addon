@@ -9,6 +9,7 @@ package org.jboss.forge.addon.swarm.ui;
 
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
@@ -46,7 +47,10 @@ public class CreateRestEndpointStep extends AbstractWildFlySwarmCommand implemen
          JavaClassSource restEndpoint = Roaster.create(JavaClassSource.class)
                   .setPackage(facet.getBasePackage() + ".rest")
                   .setName("HelloWorldEndpoint");
-
+         if (hasCDI(installedFractions))
+         {
+            restEndpoint.addAnnotation(ApplicationScoped.class);
+         }
          restEndpoint.addAnnotation(Path.class).setStringValue("/hello");
          MethodSource<JavaClassSource> method = restEndpoint.addMethod().setPublic().setReturnType(Response.class)
                   .setName("doGet")
@@ -67,4 +71,15 @@ public class CreateRestEndpointStep extends AbstractWildFlySwarmCommand implemen
       return dependencies.stream()
                .anyMatch(d -> d.getArtifactId().contains("jaxrs") || d.getArtifactId().contains("microprofile"));
    }
+
+   private boolean hasCDI(List<FractionDescriptor> dependencies)
+   {
+      if (dependencies == null || dependencies.size() == 0)
+      {
+         return true;
+      }
+      return dependencies.stream()
+               .anyMatch(d -> d.getArtifactId().contains("cdi") || d.getArtifactId().contains("microprofile"));
+   }
+
 }
