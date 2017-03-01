@@ -8,7 +8,7 @@
 package org.jboss.forge.addon.swarm.ui;
 
 import java.io.File;
-import java.util.Set;
+import java.util.Collection;
 
 import org.apache.maven.model.Build;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
@@ -29,8 +29,8 @@ import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
-import org.wildfly.swarm.tools.FractionDescriptor;
-import org.wildfly.swarm.tools.FractionUsageAnalyzer;
+import org.wildfly.swarm.fractions.FractionDescriptor;
+import org.wildfly.swarm.fractions.FractionUsageAnalyzer;
 
 /**
  *
@@ -108,7 +108,7 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
       }
       FractionUsageAnalyzer fua = WildFlySwarmFacet.getFractionUsageAnalyzer();
       fua.source(value.getUnderlyingResourceObject());
-      Set<FractionDescriptor> detectedFractions = fua.detectNeededFractions();
+      Collection<FractionDescriptor> detectedFractions = fua.detectNeededFractions();
       output.info(output.out(), "Detected fractions: " + detectedFractions);
       progressMonitor.worked(1);
       if (depend.getValue() && detectedFractions.size() > 0)

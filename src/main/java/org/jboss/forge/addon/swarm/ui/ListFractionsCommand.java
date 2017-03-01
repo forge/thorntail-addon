@@ -22,7 +22,7 @@ import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
-import org.wildfly.swarm.tools.FractionDescriptor;
+import org.wildfly.swarm.fractions.FractionDescriptor;
 
 /**
  *

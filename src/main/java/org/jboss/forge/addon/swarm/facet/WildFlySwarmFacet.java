@@ -27,9 +27,9 @@ import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
 import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
 import org.jboss.forge.furnace.versions.Versions;
-import org.wildfly.swarm.fractionlist.FractionList;
-import org.wildfly.swarm.tools.FractionDescriptor;
-import org.wildfly.swarm.tools.FractionUsageAnalyzer;
+import org.wildfly.swarm.fractions.FractionDescriptor;
+import org.wildfly.swarm.fractions.FractionList;
+import org.wildfly.swarm.fractions.FractionUsageAnalyzer;
 
 /**
  * The WildFly Swarm Facet
@@ -117,7 +117,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
-      return getFractionList().getFractionDescriptors()
+      return FractionList.get().getFractionDescriptors()
                .stream()
                .filter(d -> !d.isInternal() && !alreadyInstalled(d.getArtifactId(), dependencies))
                .sorted((o1, o2) -> o1.getArtifactId().compareTo(o2.getArtifactId()))
@@ -129,25 +129,20 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       List<org.apache.maven.model.Dependency> dependencies = pom.getDependencies();
-      return getFractionList().getFractionDescriptors()
+      return FractionList.get().getFractionDescriptors()
                .stream()
                .filter(d -> alreadyInstalled(d.getArtifactId(), dependencies))
                .collect(Collectors.toList());
    }
 
-   private static org.wildfly.swarm.tools.FractionList getFractionList()
-   {
-      return FractionList.get();
-   }
-
    public static Collection<FractionDescriptor> getAllFractionDescriptors()
    {
-      return getFractionList().getFractionDescriptors();
+      return FractionList.get().getFractionDescriptors();
    }
 
    public static FractionUsageAnalyzer getFractionUsageAnalyzer()
    {
-      return new FractionUsageAnalyzer(getFractionList());
+      return new FractionUsageAnalyzer(FractionList.get());
    }
 
    private void addSwarmVersionProperty()
@@ -199,7 +194,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
 
    private String getWildflySwarmVersion()
    {
-      return Versions.getImplementationVersionFor(org.wildfly.swarm.fractionlist.FractionList.class).toString();
+      return Versions.getImplementationVersionFor(FractionList.class).toString();
    }
 
    private boolean alreadyInstalled(String artifactId, List<org.apache.maven.model.Dependency> dependencies)

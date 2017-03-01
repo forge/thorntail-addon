@@ -25,7 +25,7 @@ import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
-import org.wildfly.swarm.tools.FractionDescriptor;
+import org.wildfly.swarm.fractions.FractionDescriptor;
 
 /**
  * Creates a sample REST endpoint
