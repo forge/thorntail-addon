@@ -14,7 +14,7 @@
       <maven.compiler.target>1.8</maven.compiler.target>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <version.forge>3.5.1.Final</version.forge>
-      <version.wildlfy.swarm>2017.3.2</version.wildlfy.swarm>
+      <version.wildlfy.swarm>2017.3.3</version.wildlfy.swarm>
    </properties>
    <dependencyManagement>
       <dependencies>
