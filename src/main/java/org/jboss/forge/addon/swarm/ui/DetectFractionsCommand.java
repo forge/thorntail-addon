@@ -16,6 +16,7 @@ import org.jboss.forge.addon.maven.projects.MavenFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.resource.DirectoryResource;
+import org.jboss.forge.addon.resource.FileResource;
 import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -91,7 +92,9 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
    {
       UIProgressMonitor progressMonitor = executionContext.getProgressMonitor();
       UIOutput output = executionContext.getUIContext().getProvider().getOutput();
+      FractionUsageAnalyzer analyzer = WildFlySwarmFacet.getFractionUsageAnalyzer();
       DirectoryResource value = inputDir.getValue();
+      analyzer.source(value.getUnderlyingResourceObject());
       Project project = getSelectedProject(executionContext);
       int total = 1;
       if (build.getValue())
@@ -103,12 +106,12 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
       {
          PackagingFacet packaging = project.getFacet(PackagingFacet.class);
          progressMonitor.setTaskName("Building the project...");
-         packaging.createBuilder().build(output.out(), output.err());
+         FileResource<?> finalArtifact = packaging.createBuilder().build(output.out(), output.err())
+                  .as(FileResource.class);
+         analyzer.source(finalArtifact.getUnderlyingResourceObject());
          progressMonitor.worked(1);
       }
-      FractionUsageAnalyzer fua = WildFlySwarmFacet.getFractionUsageAnalyzer();
-      fua.source(value.getUnderlyingResourceObject());
-      Collection<FractionDescriptor> detectedFractions = fua.detectNeededFractions();
+      Collection<FractionDescriptor> detectedFractions = analyzer.detectNeededFractions();
       output.info(output.out(), "Detected fractions: " + detectedFractions);
       progressMonitor.worked(1);
       if (depend.getValue() && detectedFractions.size() > 0)
