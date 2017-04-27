@@ -21,22 +21,22 @@ import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
  */
 public abstract class AbstractWildFlySwarmCommand extends AbstractProjectCommand
 {
-   @Override
-   public UICommandMetadata getMetadata(UIContext context)
-   {
-      return Metadata.forCommand(getClass()).category(Categories.create("WildFly-Swarm"));
-   }
+    @Override
+    public UICommandMetadata getMetadata(UIContext context)
+    {
+        return Metadata.forCommand(getClass()).category(Categories.create("WildFly Swarm"));
+    }
 
-   @Override
-   protected ProjectFactory getProjectFactory()
-   {
-      return SimpleContainer.getServices(getClass().getClassLoader(), ProjectFactory.class).get();
-   }
+    @Override
+    protected ProjectFactory getProjectFactory()
+    {
+        return SimpleContainer.getServices(getClass().getClassLoader(), ProjectFactory.class).get();
+    }
 
-   @Override
-   protected boolean isProjectRequired()
-   {
-      return true;
-   }
+    @Override
+    protected boolean isProjectRequired()
+    {
+        return true;
+    }
 
 }

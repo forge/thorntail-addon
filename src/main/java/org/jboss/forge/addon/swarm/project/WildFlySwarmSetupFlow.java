@@ -10,7 +10,7 @@ package org.jboss.forge.addon.swarm.project;
 import java.util.Arrays;
 
 import org.jboss.forge.addon.swarm.ui.AddFractionCommand;
-import org.jboss.forge.addon.swarm.ui.CreateRestEndpointStep;
+import org.jboss.forge.addon.swarm.ui.SetupFractionsStep;
 import org.jboss.forge.addon.swarm.ui.SetupCommand;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.context.UINavigationContext;
@@ -35,7 +35,7 @@ public class WildFlySwarmSetupFlow implements UIWizardStep
       builder.add(Metadata.forCommand(SetupCommand.class).name("WildFly Swarm: Setup")
                .description("Setup WildFly Swarm in your web application"),
                Arrays.asList(SetupCommand.class, AddFractionCommand.class));
-      builder.add(CreateRestEndpointStep.class);
+      builder.add(SetupFractionsStep.class);
       return builder.build();
    }
 

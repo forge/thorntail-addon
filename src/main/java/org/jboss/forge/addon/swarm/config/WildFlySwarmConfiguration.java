@@ -7,6 +7,8 @@
 
 package org.jboss.forge.addon.swarm.config;
 
+import java.util.Map;
+
 import org.jboss.forge.addon.maven.plugins.Configuration;
 
 /**
@@ -16,47 +18,52 @@ import org.jboss.forge.addon.maven.plugins.Configuration;
  */
 public interface WildFlySwarmConfiguration
 {
-   public static final String HTTP_PORT_PROPERTY = "swarm.http.port";
-   public static final Integer HTTP_PORT_DEFAULT_VALUE = 8080;
+    public static final String HTTP_PORT_PROPERTY = "swarm.http.port";
+    public static final Integer HTTP_PORT_DEFAULT_VALUE = 8080;
 
-   public static final String CONTEXT_PATH_PROPERTY = "swarm.context.path";
-   public static final String CONTEXT_PATH_DEFAULT_VALUE = "";
+    public static final String CONTEXT_PATH_PROPERTY = "swarm.context.path";
+    public static final String CONTEXT_PATH_DEFAULT_VALUE = "";
 
-   public static final String PORT_OFFSET_PROPERTY = "swarm.port.offset";
-   public static final Integer PORT_OFFSET_DEFAULT_VALUE = 0;
+    public static final String PORT_OFFSET_PROPERTY = "swarm.port.offset";
+    public static final Integer PORT_OFFSET_DEFAULT_VALUE = 0;
 
-   public static final String MAIN_CLASS_CONFIGURATION_ELEMENT = "mainClass";
-   public static final String MAIN_CLASS_DEFAULT_VALUE = "org.wildfly.swarm.Swarm";
+    public static final String MAIN_CLASS_CONFIGURATION_ELEMENT = "mainClass";
+    public static final String MAIN_CLASS_DEFAULT_VALUE = "org.wildfly.swarm.Swarm";
 
-   public static final String TEST_NAME_CONFIGURATION_ELEMENT = "testName";
+    public static final String TEST_NAME_CONFIGURATION_ELEMENT = "testName";
 
-   public static final String TEST_AS_CLIENT_FLAG_CONFIGURATION_ELEMENT = "asClient";
+    public static final String TEST_AS_CLIENT_FLAG_CONFIGURATION_ELEMENT = "asClient";
 
-   public static final String TEST_TYPE_CONFIGURATION_ELEMENT = "archiveType";
-   public static final String TEST_TYPE_DEFAULT_VALUE = "JAR";
+    public static final String TEST_TYPE_CONFIGURATION_ELEMENT = "archiveType";
+    public static final String TEST_TYPE_DEFAULT_VALUE = "JAR";
 
-   /**
-    * @return the HTTP port for this microservice
-    */
-   Integer getHttpPort();
+    /**
+     * @return the HTTP port for this microservice
+     */
+    Integer getHttpPort();
 
-   /**
-    * @return the context path for this microservice
-    */
-   String getContextPath();
+    /**
+     * @return the context path for this microservice
+     */
+    String getContextPath();
 
-   /**
-    * @return the port offset for this microservice
-    */
-   Integer getPortOffset();
+    /**
+     * @return the port offset for this microservice
+     */
+    Integer getPortOffset();
 
-   /**
-    * @return the main class for this microservice
-    */
-   String getMainClass();
+    /**
+     * @return the main class for this microservice
+     */
+    String getMainClass();
 
-   /**
-    * @param configuration apply this configuration to the given {@link Configuration}
-    */
-   void apply(Configuration configuration);
+    /**
+     * @return an unmodifiable {@link Map} of system properties for this microservice
+     */
+    Map<String, String> getProperties();
+
+    /**
+     * @param configuration apply this configuration to the given {@link Configuration}
+     */
+    void apply(Configuration configuration);
 }
