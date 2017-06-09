@@ -107,7 +107,7 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
          PackagingFacet packaging = project.getFacet(PackagingFacet.class);
          progressMonitor.setTaskName("Building the project...");
          FileResource<?> finalArtifact = packaging.createBuilder().build(output.out(), output.err())
-                  .as(FileResource.class);
+                  .reify(FileResource.class);
          analyzer.source(finalArtifact.getUnderlyingResourceObject());
          progressMonitor.worked(1);
       }
