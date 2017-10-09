@@ -1,5 +1,14 @@
 package org.jboss.forge.addon.swarm.ui;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.parser.java.resources.JavaResource;
@@ -25,14 +34,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-
 @RunWith(Arquillian.class)
-public class CreateTestClassCommandTest {
+public class CreateTestClassCommandTest
+{
 
    private ProjectFactory projectFactory;
    private UITestHarness uiTestHarness;
@@ -63,7 +67,7 @@ public class CreateTestClassCommandTest {
    public void checkCommandMetadata() throws Exception
    {
       try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
-              project.getRoot()))
+               project.getRoot()))
       {
          controller.initialize();
 
@@ -80,7 +84,7 @@ public class CreateTestClassCommandTest {
    {
       assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
       try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
-              project.getRoot()))
+               project.getRoot()))
       {
          controller.initialize();
          controller.setValueFor("targetPackage", "org.example");
@@ -102,7 +106,8 @@ public class CreateTestClassCommandTest {
          controller.execute();
          assertThat(flag.get(), is(true));
       }
-      JavaResource javaResource = project.getFacet(JavaSourceFacet.class).getTestJavaResource("org.example.HelloWorldTest");
+      JavaResource javaResource = project.getFacet(JavaSourceFacet.class)
+               .getTestJavaResource("org.example.HelloWorldTest");
       assertThat(javaResource.exists(), is(true));
       JavaClassSource testClass = Roaster.parse(JavaClassSource.class, javaResource.getContents());
       assertThat(testClass.getAnnotation(RunWith.class), is((notNullValue())));
@@ -121,7 +126,7 @@ public class CreateTestClassCommandTest {
    {
       assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
       try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
-              project.getRoot()))
+               project.getRoot()))
       {
          controller.initialize();
          controller.setValueFor("targetPackage", "org.example");
@@ -145,7 +150,8 @@ public class CreateTestClassCommandTest {
          assertThat(flag.get(), is(true));
       }
 
-      JavaResource javaResource = project.getFacet(JavaSourceFacet.class).getTestJavaResource("org.example.HelloWorldTest");
+      JavaResource javaResource = project.getFacet(JavaSourceFacet.class)
+               .getTestJavaResource("org.example.HelloWorldTest");
       assertThat(javaResource.exists(), is(true));
       JavaClassSource testClass = Roaster.parse(JavaClassSource.class, javaResource.getContents());
       assertThat(testClass.getAnnotation(RunWith.class), is((notNullValue())));
@@ -166,7 +172,7 @@ public class CreateTestClassCommandTest {
    {
       assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
       try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
-              project.getRoot()))
+               project.getRoot()))
       {
          controller.initialize();
          controller.setValueFor("targetPackage", "org.example");
@@ -190,7 +196,8 @@ public class CreateTestClassCommandTest {
          assertThat(flag.get(), is(true));
       }
 
-      JavaResource javaResource = project.getFacet(JavaSourceFacet.class).getTestJavaResource("org.example.HelloWorldTest");
+      JavaResource javaResource = project.getFacet(JavaSourceFacet.class)
+               .getTestJavaResource("org.example.HelloWorldTest");
       assertThat(javaResource.exists(), is(true));
       JavaClassSource testClass = Roaster.parse(JavaClassSource.class, javaResource.getContents());
       assertThat(testClass.getAnnotation(RunWith.class), is((notNullValue())));
@@ -211,7 +218,7 @@ public class CreateTestClassCommandTest {
    {
       assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
       try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
-              project.getRoot()))
+               project.getRoot()))
       {
          controller.initialize();
          controller.setValueFor("targetPackage", "org.example");
@@ -236,7 +243,8 @@ public class CreateTestClassCommandTest {
          assertThat(flag.get(), is(true));
       }
 
-      JavaResource javaResource = project.getFacet(JavaSourceFacet.class).getTestJavaResource("org.example.HelloWorldTest");
+      JavaResource javaResource = project.getFacet(JavaSourceFacet.class)
+               .getTestJavaResource("org.example.HelloWorldTest");
       assertThat(javaResource.exists(), is(true));
       JavaClassSource testClass = Roaster.parse(JavaClassSource.class, javaResource.getContents());
       assertThat(testClass.getAnnotation(RunWith.class), is((notNullValue())));
@@ -248,8 +256,6 @@ public class CreateTestClassCommandTest {
 
       final String main = defaultDeployment.getLiteralValue("main");
       assertThat(main, is("org.example.Main"));
-
-      System.out.println(javaResource.getContents());
 
       final MethodSource<JavaClassSource> testMethod = testClass.getMethod("should_start_service");
       assertThat(testMethod, is(notNullValue()));
