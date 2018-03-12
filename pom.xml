@@ -8,13 +8,13 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.forge.addon</groupId>
    <artifactId>wildfly-swarm</artifactId>
-   <version>2017.12.0-SNAPSHOT</version>
+   <version>2017.11.0-SNAPSHOT</version>
    <properties>
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <version.forge>3.7.2.Final</version.forge>
-      <version.wildlfy.swarm>2017.11.0</version.wildlfy.swarm>
+      <version.forge>3.8.1.Final</version.forge>
+      <version.wildlfy.swarm>2018.3.3</version.wildlfy.swarm>
    </properties>
    <dependencyManagement>
       <dependencies>
