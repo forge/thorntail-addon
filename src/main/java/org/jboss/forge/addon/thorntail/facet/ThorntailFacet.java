@@ -1,6 +1,7 @@
-package org.jboss.forge.addon.swarm.facet;
+package org.jboss.forge.addon.thorntail.facet;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -24,40 +25,42 @@ import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
-import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
-import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
+
+import org.jboss.forge.addon.thorntail.config.ThorntailConfiguration;
+import org.jboss.forge.addon.thorntail.config.ThorntailConfigurationBuilder;
 import org.jboss.forge.furnace.versions.Versions;
 import org.wildfly.swarm.fractions.FractionDescriptor;
 import org.wildfly.swarm.fractions.FractionList;
 import org.wildfly.swarm.fractions.FractionUsageAnalyzer;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 /**
- * The WildFly Swarm Facet
+ * The Thorntail Facet
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
 @FacetConstraint(MavenFacet.class)
 @FacetConstraint(JavaEE7Facet.class)
-public class WildFlySwarmFacet extends AbstractFacet<Project> implements ProjectFacet
+public class ThorntailFacet extends AbstractFacet<Project> implements ProjectFacet
 {
-   private WildFlySwarmConfiguration configuration = WildFlySwarmConfigurationBuilder.create();
-
-   public static final String DEFAULT_FRACTION_GROUPID = "org.wildfly.swarm";
+   private ThorntailConfiguration configuration = ThorntailConfigurationBuilder.create();
 
    public static final Coordinate PLUGIN_COORDINATE = CoordinateBuilder
-            .create().setGroupId("org.wildfly.swarm")
-            .setArtifactId("wildfly-swarm-plugin")
-            .setVersion("${version.wildfly-swarm}");
+            .create().setGroupId("io.thorntail")
+            .setArtifactId("thorntail-maven-plugin")
+            .setVersion("${version.thorntail}");
 
    public static final Dependency BOM_DEPENDENCY = DependencyBuilder
-            .create().setGroupId("org.wildfly.swarm")
+            .create().setGroupId("io.thorntail")
             .setArtifactId("bom-all")
-            .setVersion("${version.wildfly-swarm}")
+            .setVersion("${version.thorntail}")
             .setPackaging("pom")
             .setScopeType("import");
 
-   private static final String WILDFLY_SWARM_VERSION_PROPERTY = "version.wildfly-swarm";
+   private static final String THORNTAIL_VERSION_PROPERTY = "version.thorntail";
 
    @Override
    public boolean install()
@@ -75,18 +78,18 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       return facet.hasPlugin(PLUGIN_COORDINATE);
    }
 
-   public WildFlySwarmConfiguration getConfiguration()
+   public ThorntailConfiguration getConfiguration()
    {
       if (configuration == null)
       {
          MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
          MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);
-         configuration = WildFlySwarmConfigurationBuilder.create(plugin.getConfig());
+         configuration = ThorntailConfigurationBuilder.create(plugin.getConfig());
       }
       return configuration;
    }
 
-   public WildFlySwarmFacet setConfiguration(WildFlySwarmConfiguration configuration)
+   public ThorntailFacet setConfiguration(ThorntailConfiguration configuration)
    {
       this.configuration = configuration;
       if (isInstalled())
@@ -120,8 +123,8 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       return FractionList.get().getFractionDescriptors()
                .stream()
                .filter(d -> !d.isInternal() && !alreadyInstalled(d.getArtifactId(), dependencies))
-               .sorted((o1, o2) -> o1.getArtifactId().compareTo(o2.getArtifactId()))
-               .collect(Collectors.toList());
+               .sorted(comparing(FractionDescriptor::getArtifactId))
+               .collect(toList());
    }
 
    public List<FractionDescriptor> getInstalledFractions()
@@ -132,7 +135,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       return FractionList.get().getFractionDescriptors()
                .stream()
                .filter(d -> alreadyInstalled(d.getArtifactId(), dependencies))
-               .collect(Collectors.toList());
+               .collect(toList());
    }
 
    public static Collection<FractionDescriptor> getAllFractionDescriptors()
@@ -150,7 +153,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       MavenFacet maven = getFaceted().getFacet(MavenFacet.class);
       Model pom = maven.getModel();
       Properties properties = pom.getProperties();
-      properties.setProperty(WILDFLY_SWARM_VERSION_PROPERTY, getWildflySwarmVersion());
+      properties.setProperty(THORNTAIL_VERSION_PROPERTY, getWildflySwarmVersion());
       maven.setModel(pom);
    }
 
@@ -180,7 +183,7 @@ public class WildFlySwarmFacet extends AbstractFacet<Project> implements Project
       pluginFacet.addPlugin(plugin);
    }
 
-   private void updatePluginConfiguration(WildFlySwarmConfiguration configuration)
+   private void updatePluginConfiguration(ThorntailConfiguration configuration)
    {
       MavenPluginFacet facet = getFaceted().getFacet(MavenPluginFacet.class);
       MavenPlugin plugin = facet.getPlugin(PLUGIN_COORDINATE);

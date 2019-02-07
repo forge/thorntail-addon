@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.forge.addon.swarm.ui;
+package org.jboss.forge.addon.thorntail.ui;
 
 import java.io.File;
 import java.util.Collection;
@@ -17,7 +17,7 @@ import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.resource.FileResource;
-import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.thorntail.facet.ThorntailFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -37,8 +37,8 @@ import org.wildfly.swarm.fractions.FractionUsageAnalyzer;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@FacetConstraint({ WildFlySwarmFacet.class, MavenFacet.class, PackagingFacet.class })
-public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
+@FacetConstraint({ ThorntailFacet.class, MavenFacet.class, PackagingFacet.class })
+public class DetectFractionsCommand extends AbstractThorntailCommand
 {
    private UIInput<DirectoryResource> inputDir;
    private UIInput<Boolean> build;
@@ -47,9 +47,9 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly Swarm: Detect Fractions")
+      return Metadata.from(super.getMetadata(context), getClass()).name("Thorntail: Detect Fractions")
                .description("Detect the needed fractions for the current project")
-               .category(Categories.create("WildFly Swarm"));
+               .category(Categories.create("Thorntail"));
    }
 
    @Override
@@ -92,7 +92,7 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
    {
       UIProgressMonitor progressMonitor = executionContext.getProgressMonitor();
       UIOutput output = executionContext.getUIContext().getProvider().getOutput();
-      FractionUsageAnalyzer analyzer = WildFlySwarmFacet.getFractionUsageAnalyzer();
+      FractionUsageAnalyzer analyzer = ThorntailFacet.getFractionUsageAnalyzer();
       DirectoryResource value = inputDir.getValue();
       analyzer.source(value.getUnderlyingResourceObject());
       Project project = getSelectedProject(executionContext);
@@ -117,7 +117,7 @@ public class DetectFractionsCommand extends AbstractWildFlySwarmCommand
       if (depend.getValue() && detectedFractions.size() > 0)
       {
          progressMonitor.setTaskName("Adding missing fractions as project dependencies...");
-         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
+         ThorntailFacet facet = project.getFacet(ThorntailFacet.class);
          detectedFractions.removeAll(facet.getInstalledFractions());
          // detectedFractions.remove(fractionList.getFractionDescriptor(Swarm.DEFAULT_FRACTION_GROUPID, "container"));
          if (detectedFractions.isEmpty())

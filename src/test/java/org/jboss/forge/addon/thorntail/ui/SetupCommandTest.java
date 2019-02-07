@@ -1,4 +1,4 @@
-package org.jboss.forge.addon.swarm.ui;
+package org.jboss.forge.addon.thorntail.ui;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
@@ -18,7 +18,7 @@ import org.jboss.forge.addon.maven.projects.MavenPluginFacet;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.shell.test.ShellTest;
-import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.thorntail.facet.ThorntailFacet;
 import org.jboss.forge.addon.ui.command.AbstractCommandExecutionListener;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -73,8 +73,8 @@ public class SetupCommandTest
          // Checks the command metadata
          assertTrue(controller.getCommand() instanceof SetupCommand);
          UICommandMetadata metadata = controller.getMetadata();
-         assertEquals("WildFly Swarm: Setup", metadata.getName());
-         assertEquals("WildFly Swarm", metadata.getCategory().getName());
+         assertEquals("Thorntail: Setup", metadata.getName());
+         assertEquals("Thorntail", metadata.getCategory().getName());
          assertNull(metadata.getCategory().getSubCategory());
          assertEquals(3, controller.getInputs().size());
          assertFalse(controller.hasInput("dummy"));
@@ -88,14 +88,14 @@ public class SetupCommandTest
    public void checkCommandShell() throws Exception
    {
       shellTest.getShell().setCurrentResource(project.getRoot());
-      Result result = shellTest.execute(("wildfly-swarm-setup"), 10, TimeUnit.SECONDS);
+      Result result = shellTest.execute(("thorntail-setup"), 10, TimeUnit.SECONDS);
 
       Assert.assertThat(result, not(instanceOf(Failed.class)));
-      Assert.assertTrue(project.hasFacet(WildFlySwarmFacet.class));
+      Assert.assertTrue(project.hasFacet(ThorntailFacet.class));
    }
 
    @Test
-   public void testWildflySwarmSetup() throws Exception
+   public void testThorntailSetup() throws Exception
    {
       try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
@@ -108,7 +108,7 @@ public class SetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("WildFly Swarm is now set up! Enjoy!"))
+               if (result.getMessage().equals("Thorntail is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
@@ -116,19 +116,19 @@ public class SetupCommandTest
          });
          controller.execute();
          Assert.assertTrue(flag.get());
-         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
+         ThorntailFacet facet = project.getFacet(ThorntailFacet.class);
          Assert.assertTrue(facet.isInstalled());
 
-         MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
-         Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
-         Assert.assertEquals(1, swarmPlugin.getExecutions().size());
-         Assert.assertEquals(0, swarmPlugin.getConfig().listConfigurationElements().size());
+         MavenPluginAdapter thorntailPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
+                  .getEffectivePlugin(ThorntailFacet.PLUGIN_COORDINATE);
+         Assert.assertEquals("thorntail-maven-plugin", thorntailPlugin.getCoordinate().getArtifactId());
+         Assert.assertEquals(1, thorntailPlugin.getExecutions().size());
+         Assert.assertEquals(0, thorntailPlugin.getConfig().listConfigurationElements().size());
       }
    }
 
    @Test
-   public void testWildflySwarmSetupWithParameters() throws Exception
+   public void testThorntailSetupWithParameters() throws Exception
    {
       try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
@@ -145,7 +145,7 @@ public class SetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("WildFly Swarm is now set up! Enjoy!"))
+               if (result.getMessage().equals("Thorntail is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
@@ -153,14 +153,14 @@ public class SetupCommandTest
          });
          controller.execute();
          Assert.assertTrue(flag.get());
-         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
+         ThorntailFacet facet = project.getFacet(ThorntailFacet.class);
          Assert.assertTrue(facet.isInstalled());
 
-         MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
-         Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
-         Assert.assertEquals(1, swarmPlugin.getExecutions().size());
-         Configuration config = swarmPlugin.getConfig();
+         MavenPluginAdapter thorntailPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
+                  .getEffectivePlugin(ThorntailFacet.PLUGIN_COORDINATE);
+         Assert.assertEquals("thorntail-maven-plugin", thorntailPlugin.getCoordinate().getArtifactId());
+         Assert.assertEquals(1, thorntailPlugin.getExecutions().size());
+         Configuration config = thorntailPlugin.getConfig();
          ConfigurationElement configurationProps = config.getConfigurationElement("properties");
          Assert.assertEquals(3, configurationProps.getChildren().size());
          Assert.assertEquals("4242", configurationProps.getChildByName("swarm.http.port").getText());
@@ -170,7 +170,7 @@ public class SetupCommandTest
    }
 
    @Test
-   public void testWildflySwarmSetupWithNullParameters() throws Exception
+   public void testThorntailSetupWithNullParameters() throws Exception
    {
       try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
@@ -187,7 +187,7 @@ public class SetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("WildFly Swarm is now set up! Enjoy!"))
+               if (result.getMessage().equals("Thorntail is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
@@ -195,19 +195,19 @@ public class SetupCommandTest
          });
          controller.execute();
          Assert.assertTrue(flag.get());
-         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
+         ThorntailFacet facet = project.getFacet(ThorntailFacet.class);
          Assert.assertTrue(facet.isInstalled());
 
-         MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
-         Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
-         Assert.assertEquals(1, swarmPlugin.getExecutions().size());
-         Assert.assertEquals(0, swarmPlugin.getConfig().listConfigurationElements().size());
+         MavenPluginAdapter thorntailPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
+                  .getEffectivePlugin(ThorntailFacet.PLUGIN_COORDINATE);
+         Assert.assertEquals("thorntail-maven-plugin", thorntailPlugin.getCoordinate().getArtifactId());
+         Assert.assertEquals(1, thorntailPlugin.getExecutions().size());
+         Assert.assertEquals(0, thorntailPlugin.getConfig().listConfigurationElements().size());
       }
    }
 
    @Test
-   public void testWildflySwarmSetupWithZeroParameters() throws Exception
+   public void testThorntailSetupWithZeroParameters() throws Exception
    {
       try (CommandController controller = uiTestHarness.createCommandController(SetupCommand.class,
                project.getRoot()))
@@ -223,7 +223,7 @@ public class SetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("WildFly Swarm is now set up! Enjoy!"))
+               if (result.getMessage().equals("Thorntail is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
@@ -231,14 +231,14 @@ public class SetupCommandTest
          });
          controller.execute();
          Assert.assertTrue(flag.get());
-         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
+         ThorntailFacet facet = project.getFacet(ThorntailFacet.class);
          Assert.assertTrue(facet.isInstalled());
 
-         MavenPluginAdapter swarmPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
-                  .getEffectivePlugin(WildFlySwarmFacet.PLUGIN_COORDINATE);
-         Assert.assertEquals("wildfly-swarm-plugin", swarmPlugin.getCoordinate().getArtifactId());
-         Assert.assertEquals(1, swarmPlugin.getExecutions().size());
-         Assert.assertEquals(0, swarmPlugin.getConfig().listConfigurationElements().size());
+         MavenPluginAdapter thorntailPlugin = (MavenPluginAdapter) project.getFacet(MavenPluginFacet.class)
+                  .getEffectivePlugin(ThorntailFacet.PLUGIN_COORDINATE);
+         Assert.assertEquals("thorntail-maven-plugin", thorntailPlugin.getCoordinate().getArtifactId());
+         Assert.assertEquals(1, thorntailPlugin.getExecutions().size());
+         Assert.assertEquals(0, thorntailPlugin.getConfig().listConfigurationElements().size());
       }
    }
 }

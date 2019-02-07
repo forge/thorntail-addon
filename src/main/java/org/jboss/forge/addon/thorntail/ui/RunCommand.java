@@ -5,13 +5,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.forge.addon.swarm.ui;
+package org.jboss.forge.addon.thorntail.ui;
 
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.building.BuildException;
 import org.jboss.forge.addon.projects.facets.PackagingFacet;
-import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.thorntail.facet.ThorntailFacet;
 import org.jboss.forge.addon.ui.UIProvider;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -26,26 +26,26 @@ import org.jboss.forge.addon.ui.util.Metadata;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@FacetConstraint(WildFlySwarmFacet.class)
-public class RunCommand extends AbstractWildFlySwarmCommand
+@FacetConstraint(ThorntailFacet.class)
+public class RunCommand extends AbstractThorntailCommand
 {
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly Swarm: Run")
-               .description("Run the project using the 'wildfly-swarm:run' maven plugin")
-               .category(Categories.create("WildFly Swarm"));
+      return Metadata.from(super.getMetadata(context), getClass()).name("Thorntail: Run")
+               .description("Run the project using the 'thorntail:run' maven plugin")
+               .category(Categories.create("Thorntail"));
    }
 
    @Override
-   public Result execute(UIExecutionContext context) throws Exception
+   public Result execute(UIExecutionContext context)
    {
       Project project = getSelectedProject(context);
       UIOutput output = context.getUIContext().getProvider().getOutput();
       PackagingFacet packagingFacet = project.getFacet(PackagingFacet.class);
       try
       {
-         packagingFacet.createBuilder().addArguments("wildfly-swarm:run").runTests(false).build(output.out(),
+         packagingFacet.createBuilder().addArguments("thorntail:run").runTests(false).build(output.out(),
                   output.err());
       }
       catch (BuildException ie)

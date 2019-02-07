@@ -5,13 +5,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.forge.addon.swarm.project;
+package org.jboss.forge.addon.thorntail.project;
 
 import java.util.Arrays;
 
-import org.jboss.forge.addon.swarm.ui.AddFractionCommand;
-import org.jboss.forge.addon.swarm.ui.SetupFractionsStep;
-import org.jboss.forge.addon.swarm.ui.SetupCommand;
+import org.jboss.forge.addon.thorntail.ui.AddFractionCommand;
+import org.jboss.forge.addon.thorntail.ui.SetupFractionsStep;
+import org.jboss.forge.addon.thorntail.ui.SetupCommand;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.context.UINavigationContext;
 import org.jboss.forge.addon.ui.result.NavigationResult;
@@ -25,22 +25,22 @@ import org.jboss.forge.addon.ui.wizard.UIWizardStep;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class WildFlySwarmSetupFlow implements UIWizardStep
+public class ThorntailSetupFlow implements UIWizardStep
 {
 
    @Override
    public NavigationResult next(UINavigationContext context) throws Exception
    {
       NavigationResultBuilder builder = NavigationResultBuilder.create();
-      builder.add(Metadata.forCommand(SetupCommand.class).name("WildFly Swarm: Setup")
-               .description("Setup WildFly Swarm in your web application"),
+      builder.add(Metadata.forCommand(SetupCommand.class).name("Thorntail: Setup")
+               .description("Setup Thorntail in your web application"),
                Arrays.asList(SetupCommand.class, AddFractionCommand.class));
       builder.add(SetupFractionsStep.class);
       return builder.build();
    }
 
    @Override
-   public Result execute(UIExecutionContext context) throws Exception
+   public Result execute(UIExecutionContext context)
    {
       return Results.success();
    }

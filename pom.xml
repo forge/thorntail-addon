@@ -7,14 +7,14 @@
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.forge.addon</groupId>
-   <artifactId>wildfly-swarm</artifactId>
-   <version>2018.5.1-SNAPSHOT</version>
+   <artifactId>thorntail</artifactId>
+   <version>2.3.0-SNAPSHOT</version>
    <properties>
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <version.forge>3.8.1.Final</version.forge>
-      <version.wildlfy.swarm>2018.5.0</version.wildlfy.swarm>
+      <version.forge>3.9.2.Final</version.forge>
+      <version.thorntail>2.3.0.Final</version.thorntail>
    </properties>
    <dependencyManagement>
       <dependencies>
@@ -26,15 +26,15 @@
             <scope>import</scope>
          </dependency>
          <dependency>
-            <groupId>org.wildfly.swarm</groupId>
+            <groupId>io.thorntail</groupId>
             <artifactId>fraction-metadata</artifactId>
-            <version>${version.wildlfy.swarm}</version>
+            <version>${version.thorntail}</version>
          </dependency>
       </dependencies>
    </dependencyManagement>
    <dependencies>
       <dependency>
-         <groupId>org.wildfly.swarm</groupId>
+         <groupId>io.thorntail</groupId>
          <artifactId>fraction-metadata</artifactId>
       </dependency>
       <dependency>
@@ -94,7 +94,7 @@
    </dependencies>
 
    <build>
-      <finalName>wildfly-swarm-addon</finalName>
+      <finalName>thorntail-addon</finalName>
       <plugins>
          <plugin>
             <artifactId>maven-jar-plugin</artifactId>
@@ -136,9 +136,9 @@
    </build>
 
    <scm>
-      <connection>scm:git:git://github.com/forge/wildfly-swarm-addon.git</connection>
-      <developerConnection>scm:git:git@github.com:forge/wildfly-swarm-addon.git</developerConnection>
-      <url>http://github.com/forge/wildfly-swarm-addon</url>
+      <connection>scm:git:git://github.com/forge/thorntail-addon.git</connection>
+      <developerConnection>scm:git:git@github.com:forge/thorntail-addon.git</developerConnection>
+      <url>http://github.com/forge/thorntail-addon</url>
       <tag>HEAD</tag>
    </scm>
 

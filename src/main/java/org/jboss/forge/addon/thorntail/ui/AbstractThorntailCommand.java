@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.forge.addon.swarm.ui;
+package org.jboss.forge.addon.thorntail.ui;
 
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
@@ -19,12 +19,12 @@ import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public abstract class AbstractWildFlySwarmCommand extends AbstractProjectCommand
+public abstract class AbstractThorntailCommand extends AbstractProjectCommand
 {
     @Override
     public UICommandMetadata getMetadata(UIContext context)
     {
-        return Metadata.forCommand(getClass()).category(Categories.create("WildFly Swarm"));
+        return Metadata.forCommand(getClass()).category(Categories.create("Thorntail"));
     }
 
     @Override

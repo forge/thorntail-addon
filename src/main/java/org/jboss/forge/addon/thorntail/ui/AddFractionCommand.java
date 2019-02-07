@@ -1,4 +1,4 @@
-package org.jboss.forge.addon.swarm.ui;
+package org.jboss.forge.addon.thorntail.ui;
 
 import java.util.Collection;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.Projects;
-import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.thorntail.facet.ThorntailFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -20,15 +20,15 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.util.Lists;
 import org.wildfly.swarm.fractions.FractionDescriptor;
 
-@FacetConstraint(WildFlySwarmFacet.class)
-public class AddFractionCommand extends AbstractWildFlySwarmCommand
+@FacetConstraint(ThorntailFacet.class)
+public class AddFractionCommand extends AbstractThorntailCommand
 {
     private UISelectMany<FractionDescriptor> fractionElements;
 
     @Override
     public UICommandMetadata getMetadata(UIContext context)
     {
-        return Metadata.from(super.getMetadata(context), getClass()).name("WildFly Swarm: Add Fraction")
+        return Metadata.from(super.getMetadata(context), getClass()).name("Thorntail: Add Fraction")
                     .description("Add one or more fractions. Installed fractions have been filtered out.");
     }
 
@@ -51,13 +51,13 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
         }
         Project project = Projects.getSelectedProject(getProjectFactory(), uiContext);
         final Collection<FractionDescriptor> fractions;
-        if (project != null && project.hasFacet(WildFlySwarmFacet.class))
+        if (project != null && project.hasFacet(ThorntailFacet.class))
         {
-            fractions = project.getFacet(WildFlySwarmFacet.class).getFractions();
+            fractions = project.getFacet(ThorntailFacet.class).getFractions();
         }
         else
         {
-            fractions = WildFlySwarmFacet.getAllFractionDescriptors();
+            fractions = ThorntailFacet.getAllFractionDescriptors();
         }
         final List<FractionDescriptor> nonInternalfractions = fractions.stream()
                     .filter(f -> !f.isInternal())
@@ -71,14 +71,14 @@ public class AddFractionCommand extends AbstractWildFlySwarmCommand
     public Result execute(UIExecutionContext context) throws Exception
     {
         Project project = getSelectedProject(context);
-        WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
+        ThorntailFacet facet = project.getFacet(ThorntailFacet.class);
         if (fractionElements.hasValue())
         {
             List<FractionDescriptor> fractions = Lists.toList(fractionElements.getValue());
             facet.installFractions(fractions);
             List<String> artifactIds = fractions.stream().map(FractionDescriptor::getArtifactId)
                         .collect(Collectors.toList());
-            return Results.success("Wildfly Swarm Fractions '"
+            return Results.success("Thorntail Fractions '"
                         + artifactIds
                         + "' were successfully added to the project descriptor");
         }

@@ -1,11 +1,11 @@
-package org.jboss.forge.addon.swarm.ui;
+package org.jboss.forge.addon.thorntail.ui;
 
 import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.Projects;
-import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
-import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
-import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.thorntail.config.ThorntailConfiguration;
+import org.jboss.forge.addon.thorntail.config.ThorntailConfigurationBuilder;
+import org.jboss.forge.addon.thorntail.facet.ThorntailFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -19,40 +19,40 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
 
 /**
- * The Wildfly-Swarm: Setup command
+ * The Thorntail: Setup command
  * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:antonio.goncalves@gmail.com">Antonio Goncalves</a>
  */
-public class SetupCommand extends AbstractWildFlySwarmCommand
+public class SetupCommand extends AbstractThorntailCommand
 {
    private UIInput<Integer> httpPort;
    private UIInput<String> contextPath;
    private UIInput<Integer> portOffset;
 
    @Override
-   public void initializeUI(UIBuilder builder) throws Exception
+   public void initializeUI(UIBuilder builder)
    {
       InputComponentFactory inputFactory = builder.getInputComponentFactory();
 
       httpPort = inputFactory.createInput("httpPort", Integer.class)
-               .setLabel("HTTP Port").setDescription("HTTP Port Wildfly will listen to")
-               .setDefaultValue(WildFlySwarmConfiguration.HTTP_PORT_DEFAULT_VALUE);
+               .setLabel("HTTP Port").setDescription("HTTP Port Thorntail will listen to")
+               .setDefaultValue(ThorntailConfiguration.HTTP_PORT_DEFAULT_VALUE);
 
       contextPath = inputFactory.createInput("contextPath", String.class)
                .setLabel("Context Path").setDescription("The context path of the web application")
-               .setDefaultValue(WildFlySwarmConfiguration.CONTEXT_PATH_DEFAULT_VALUE);
+               .setDefaultValue(ThorntailConfiguration.CONTEXT_PATH_DEFAULT_VALUE);
 
       portOffset = inputFactory.createInput("portOffset", Integer.class)
                .setLabel("HTTP Port Offset").setDescription("HTTP Port Offset")
-               .setDefaultValue(WildFlySwarmConfiguration.PORT_OFFSET_DEFAULT_VALUE);
+               .setDefaultValue(ThorntailConfiguration.PORT_OFFSET_DEFAULT_VALUE);
 
       Project project = Projects.getSelectedProject(getProjectFactory(), builder.getUIContext());
       if (project != null)
       {
-         project.getFacetAsOptional(WildFlySwarmFacet.class)
+         project.getFacetAsOptional(ThorntailFacet.class)
                   .ifPresent((facet) -> {
-                     WildFlySwarmConfiguration config = facet.getConfiguration();
+                      ThorntailConfiguration config = facet.getConfiguration();
                      httpPort.setDefaultValue(config.getHttpPort());
                      contextPath.setDefaultValue(config.getContextPath());
                      portOffset.setDefaultValue(config.getPortOffset());
@@ -64,29 +64,29 @@ public class SetupCommand extends AbstractWildFlySwarmCommand
    @Override
    public UICommandMetadata getMetadata(UIContext context)
    {
-      return Metadata.from(super.getMetadata(context), getClass()).name("WildFly Swarm: Setup")
-               .description("Setup WildFly Swarm in your web application")
-               .category(Categories.create("WildFly Swarm"));
+      return Metadata.from(super.getMetadata(context), getClass()).name("Thorntail: Setup")
+               .description("Setup Thorntail in your web application")
+               .category(Categories.create("Thorntail"));
    }
 
    @Override
-   public Result execute(UIExecutionContext context) throws Exception
+   public Result execute(UIExecutionContext context)
    {
       Project project = getSelectedProject(context);
-      WildFlySwarmConfigurationBuilder builder = WildFlySwarmConfigurationBuilder.create();
+      ThorntailConfigurationBuilder builder = ThorntailConfigurationBuilder.create();
       builder.contextPath(contextPath.getValue()).httpPort(httpPort.getValue()).portOffset(portOffset.getValue());
       FacetFactory facetFactory = SimpleContainer.getServices(getClass().getClassLoader(), FacetFactory.class).get();
-      if (project.hasFacet(WildFlySwarmFacet.class))
+      if (project.hasFacet(ThorntailFacet.class))
       {
-         WildFlySwarmFacet facet = project.getFacet(WildFlySwarmFacet.class);
+         ThorntailFacet facet = project.getFacet(ThorntailFacet.class);
          facet.setConfiguration(builder);
       }
       else
       {
-         WildFlySwarmFacet facet = facetFactory.create(project, WildFlySwarmFacet.class);
+         ThorntailFacet facet = facetFactory.create(project, ThorntailFacet.class);
          facet.setConfiguration(builder);
          facetFactory.install(project, facet);
       }
-      return Results.success("WildFly Swarm is now set up! Enjoy!");
+      return Results.success("Thorntail is now set up! Enjoy!");
    }
 }
