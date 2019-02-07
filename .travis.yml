@@ -1,0 +1,9 @@
+language: java
+jdk:
+  - oraclejdk8
+  - openjdk11
+cache:
+  directories:
+  - $HOME/.m2
+notifications:
+  irc: chat.freenode.net#forge
