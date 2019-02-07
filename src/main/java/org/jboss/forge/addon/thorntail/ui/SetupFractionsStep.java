@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.forge.addon.swarm.ui;
+package org.jboss.forge.addon.thorntail.ui;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +17,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jboss.forge.addon.maven.plugins.Configuration;
 import org.jboss.forge.addon.parser.java.facets.JavaSourceFacet;
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.swarm.config.WildFlySwarmConfiguration;
-import org.jboss.forge.addon.swarm.config.WildFlySwarmConfigurationBuilder;
-import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.thorntail.config.ThorntailConfiguration;
+import org.jboss.forge.addon.thorntail.config.ThorntailConfigurationBuilder;
+import org.jboss.forge.addon.thorntail.facet.ThorntailFacet;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
@@ -36,15 +37,15 @@ import org.wildfly.swarm.fractions.FractionDescriptor;
  * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class SetupFractionsStep extends AbstractWildFlySwarmCommand implements UIWizardStep
+public class SetupFractionsStep extends AbstractThorntailCommand implements UIWizardStep
 {
 
     @Override
-    public Result execute(UIExecutionContext context) throws Exception
+    public Result execute(UIExecutionContext context)
     {
         Project project = getSelectedProject(context);
-        WildFlySwarmFacet wildFlySwarm = project.getFacet(WildFlySwarmFacet.class);
-        List<FractionDescriptor> installedFractions = wildFlySwarm.getInstalledFractions();
+        ThorntailFacet thorntail = project.getFacet(ThorntailFacet.class);
+        List<FractionDescriptor> installedFractions = thorntail.getInstalledFractions();
         if (enableJAXRS(installedFractions))
         {
             JavaSourceFacet facet = project.getFacet(JavaSourceFacet.class);
@@ -65,12 +66,12 @@ public class SetupFractionsStep extends AbstractWildFlySwarmCommand implements U
         }
         if (hasTopologyJgroups(installedFractions))
         {
-            WildFlySwarmConfiguration config = wildFlySwarm.getConfiguration();
+            ThorntailConfiguration config = thorntail.getConfiguration();
             Map<String, String> props = new TreeMap<>(config.getProperties());
             props.put("swarm.bind.address", "127.0.0.1");
             props.put("java.net.preferIPv4Stack", "true");
             props.put("jboss.node.name", "${project.artifactId}");
-            wildFlySwarm.setConfiguration(WildFlySwarmConfigurationBuilder.create(config).properties(props));
+            thorntail.setConfiguration(ThorntailConfigurationBuilder.create((Configuration) config).properties(props));
         }
         return Results.success();
     }

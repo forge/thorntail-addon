@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.forge.addon.swarm.project;
+package org.jboss.forge.addon.thorntail.project;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.jboss.forge.addon.ui.wizard.UIWizardStep;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class WildFlySwarmProjectType extends AbstractProjectType
+public class ThorntailProjectType extends AbstractProjectType
 {
    @Override
    public boolean supports(Stack stack)
@@ -55,7 +55,7 @@ public class WildFlySwarmProjectType extends AbstractProjectType
    @Override
    public String getType()
    {
-      return "WildFly Swarm";
+      return "Thorntail";
    }
 
    @Override
@@ -67,13 +67,13 @@ public class WildFlySwarmProjectType extends AbstractProjectType
    @Override
    public Class<? extends UIWizardStep> getSetupFlow()
    {
-      return WildFlySwarmSetupFlow.class;
+      return ThorntailSetupFlow.class;
    }
 
    @Override
    public String toString()
    {
-      return "wildfly-swarm";
+      return "thorntail";
    }
 
 }

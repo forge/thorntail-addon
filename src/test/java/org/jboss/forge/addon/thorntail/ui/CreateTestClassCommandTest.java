@@ -1,4 +1,4 @@
-package org.jboss.forge.addon.swarm.ui;
+package org.jboss.forge.addon.thorntail.ui;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -15,7 +15,7 @@ import org.jboss.forge.addon.parser.java.resources.JavaResource;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.shell.test.ShellTest;
-import org.jboss.forge.addon.swarm.facet.WildFlySwarmFacet;
+import org.jboss.forge.addon.thorntail.facet.ThorntailFacet;
 import org.jboss.forge.addon.ui.command.AbstractCommandExecutionListener;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -45,13 +45,13 @@ public class CreateTestClassCommandTest
    private Project project;
 
    @Before
-   public void setUp() throws Exception
+   public void setUp()
    {
       AddonRegistry addonRegistry = Furnace.instance(getClass().getClassLoader()).getAddonRegistry();
       projectFactory = addonRegistry.getServices(ProjectFactory.class).get();
       uiTestHarness = addonRegistry.getServices(UITestHarness.class).get();
       shellTest = addonRegistry.getServices(ShellTest.class).get();
-      project = projectFactory.createTempProject(Arrays.asList(JavaSourceFacet.class, WildFlySwarmFacet.class));
+      project = projectFactory.createTempProject(Arrays.asList(JavaSourceFacet.class, ThorntailFacet.class));
    }
 
    @After
@@ -73,8 +73,8 @@ public class CreateTestClassCommandTest
 
          UICommandMetadata metadata = controller.getMetadata();
          assertThat(controller.getCommand(), is(instanceOf(CreateTestClassCommand.class)));
-         assertThat(metadata.getName(), is("WildFly Swarm: New Test"));
-         assertThat(metadata.getCategory().getName(), is("WildFly Swarm"));
+         assertThat(metadata.getName(), is("Thorntail: New Test"));
+         assertThat(metadata.getCategory().getName(), is("Thorntail"));
          assertThat(metadata.getCategory().getSubCategory(), is(nullValue()));
       }
    }
@@ -82,7 +82,7 @@ public class CreateTestClassCommandTest
    @Test
    public void should_create_incontainer_test() throws Exception
    {
-      assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
+      assertThat(project.hasFacet(ThorntailFacet.class), is(true));
       try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
                project.getRoot()))
       {
@@ -124,7 +124,7 @@ public class CreateTestClassCommandTest
    @Test
    public void should_create_asclient_test() throws Exception
    {
-      assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
+      assertThat(project.hasFacet(ThorntailFacet.class), is(true));
       try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
                project.getRoot()))
       {
@@ -170,7 +170,7 @@ public class CreateTestClassCommandTest
    @Test
    public void should_set_archivetype_test() throws Exception
    {
-      assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
+      assertThat(project.hasFacet(ThorntailFacet.class), is(true));
       try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
                project.getRoot()))
       {
@@ -213,54 +213,5 @@ public class CreateTestClassCommandTest
 
    }
 
-   @Test
-   public void should_set_mainclass_test() throws Exception
-   {
-      assertThat(project.hasFacet(WildFlySwarmFacet.class), is(true));
-      try (CommandController controller = uiTestHarness.createCommandController(CreateTestClassCommand.class,
-               project.getRoot()))
-      {
-         controller.initialize();
-         controller.setValueFor("targetPackage", "org.example");
-         controller.setValueFor("named", "HelloWorldTest");
-         controller.setValueFor("archiveType", "WAR");
-         controller.setValueFor("mainClass", "org.example.Main");
-
-         assertThat(controller.isValid(), is(true));
-         final AtomicBoolean flag = new AtomicBoolean();
-         controller.getContext().addCommandExecutionListener(new AbstractCommandExecutionListener()
-         {
-            @Override
-            public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
-            {
-               if (result.getMessage().equals("Test Class org.example.HelloWorldTest was created"))
-               {
-                  flag.set(true);
-               }
-            }
-         });
-         controller.execute();
-         assertThat(flag.get(), is(true));
-      }
-
-      JavaResource javaResource = project.getFacet(JavaSourceFacet.class)
-               .getTestJavaResource("org.example.HelloWorldTest");
-      assertThat(javaResource.exists(), is(true));
-      JavaClassSource testClass = Roaster.parse(JavaClassSource.class, javaResource.getContents());
-      assertThat(testClass.getAnnotation(RunWith.class), is((notNullValue())));
-
-      final AnnotationSource<JavaClassSource> defaultDeployment = testClass.getAnnotation("DefaultDeployment");
-      assertThat(defaultDeployment, is((notNullValue())));
-      final String testable = defaultDeployment.getLiteralValue("type");
-      assertThat(testable, is("DefaultDeployment.Type.WAR"));
-
-      final String main = defaultDeployment.getLiteralValue("main");
-      assertThat(main, is("org.example.Main"));
-
-      final MethodSource<JavaClassSource> testMethod = testClass.getMethod("should_start_service");
-      assertThat(testMethod, is(notNullValue()));
-      assertThat(testMethod.getAnnotation(Test.class), is(notNullValue()));
-
-   }
 
 }

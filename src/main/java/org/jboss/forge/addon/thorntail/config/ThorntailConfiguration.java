@@ -5,18 +5,18 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.forge.addon.swarm.config;
+package org.jboss.forge.addon.thorntail.config;
 
 import java.util.Map;
 
 import org.jboss.forge.addon.maven.plugins.Configuration;
 
 /**
- * The configuration for the Wildfly Swarm plugin
+ * The configuration for the Thorntail plugin
  * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public interface WildFlySwarmConfiguration
+public interface ThorntailConfiguration
 {
     public static final String HTTP_PORT_PROPERTY = "swarm.http.port";
     public static final Integer HTTP_PORT_DEFAULT_VALUE = 8080;
@@ -26,9 +26,6 @@ public interface WildFlySwarmConfiguration
 
     public static final String PORT_OFFSET_PROPERTY = "swarm.port.offset";
     public static final Integer PORT_OFFSET_DEFAULT_VALUE = 0;
-
-    public static final String MAIN_CLASS_CONFIGURATION_ELEMENT = "mainClass";
-    public static final String MAIN_CLASS_DEFAULT_VALUE = "org.wildfly.swarm.Swarm";
 
     public static final String TEST_NAME_CONFIGURATION_ELEMENT = "testName";
 
@@ -51,11 +48,6 @@ public interface WildFlySwarmConfiguration
      * @return the port offset for this microservice
      */
     Integer getPortOffset();
-
-    /**
-     * @return the main class for this microservice
-     */
-    String getMainClass();
 
     /**
      * @return an unmodifiable {@link Map} of system properties for this microservice

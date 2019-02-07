@@ -5,59 +5,46 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.forge.addon.swarm.config;
+package org.jboss.forge.addon.thorntail.config;
+
+import org.jboss.forge.addon.maven.plugins.Configuration;
+import org.jboss.forge.addon.maven.plugins.ConfigurationElement;
+import org.jboss.forge.addon.maven.plugins.ConfigurationElementBuilder;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import org.jboss.forge.addon.maven.plugins.Configuration;
-import org.jboss.forge.addon.maven.plugins.ConfigurationElement;
-import org.jboss.forge.addon.maven.plugins.ConfigurationElementBuilder;
-import org.jboss.forge.furnace.util.Strings;
-
 /**
- * A builder for {@link WildFlySwarmConfiguration}
- * 
+ * A builder for {@link ThorntailConfiguration}
+ *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfiguration
+public class ThorntailConfigurationBuilder implements ThorntailConfiguration
 {
-    private String mainClass = WildFlySwarmConfiguration.MAIN_CLASS_DEFAULT_VALUE;
+
     private Map<String, String> properties = new TreeMap<>();
 
-    public static WildFlySwarmConfigurationBuilder create()
+    public static ThorntailConfigurationBuilder create()
     {
-        return new WildFlySwarmConfigurationBuilder();
+        return new ThorntailConfigurationBuilder();
     }
 
-    public static WildFlySwarmConfigurationBuilder create(WildFlySwarmConfiguration config)
+    public static ThorntailConfigurationBuilder create(ThorntailConfigurationBuilder config)
     {
-        WildFlySwarmConfigurationBuilder builder = new WildFlySwarmConfigurationBuilder();
-        builder.mainClass(config.getMainClass()).properties(config.getProperties());
+        ThorntailConfigurationBuilder builder = new ThorntailConfigurationBuilder();
+        builder.properties(config.getProperties());
         return builder;
     }
 
     /**
-     * Create a {@link WildFlySwarmConfigurationBuilder} from a {@link Configuration} object
+     * Create a {@link ThorntailConfigurationBuilder} from a {@link Configuration} object
      */
-    public static WildFlySwarmConfigurationBuilder create(Configuration config)
+    public static ThorntailConfigurationBuilder create(Configuration config)
     {
-        WildFlySwarmConfigurationBuilder builder = new WildFlySwarmConfigurationBuilder();
-        ConfigurationElement mainClassElem = null;
-        try
-        {
-            mainClassElem = config.getConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
-        }
-        catch (RuntimeException e)
-        {
-            // Do nothing
-        }
-        if (mainClassElem != null)
-        {
-            builder.mainClass(mainClassElem.getText());
-        }
+        ThorntailConfigurationBuilder builder = new ThorntailConfigurationBuilder();
+
         ConfigurationElement propertiesElem = null;
         try
         {
@@ -79,11 +66,11 @@ public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfigurati
         return builder;
     }
 
-    private WildFlySwarmConfigurationBuilder()
+    private ThorntailConfigurationBuilder()
     {
     }
 
-    public WildFlySwarmConfigurationBuilder httpPort(Integer httpPort)
+    public ThorntailConfigurationBuilder httpPort(Integer httpPort)
     {
         Objects.requireNonNull(httpPort, "HTTP Port should not be null");
         if (HTTP_PORT_DEFAULT_VALUE.equals(httpPort) || httpPort.intValue() == 0)
@@ -97,7 +84,7 @@ public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfigurati
         return this;
     }
 
-    public WildFlySwarmConfigurationBuilder portOffset(Integer portOffset)
+    public ThorntailConfigurationBuilder portOffset(Integer portOffset)
     {
         Objects.requireNonNull(portOffset, "Port offset should not be null");
         if (PORT_OFFSET_DEFAULT_VALUE.equals(portOffset))
@@ -111,7 +98,7 @@ public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfigurati
         return this;
     }
 
-    public WildFlySwarmConfigurationBuilder contextPath(String contextPath)
+    public ThorntailConfigurationBuilder contextPath(String contextPath)
     {
         Objects.requireNonNull(contextPath, "Context Path should not be null");
         if (CONTEXT_PATH_DEFAULT_VALUE.equals(contextPath) || "/".equals(contextPath))
@@ -125,14 +112,7 @@ public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfigurati
         return this;
     }
 
-    public WildFlySwarmConfigurationBuilder mainClass(String mainClass)
-    {
-        Objects.requireNonNull(properties, "Main class should not be null");
-        this.mainClass = mainClass;
-        return this;
-    }
-
-    public WildFlySwarmConfigurationBuilder properties(Map<String, String> properties)
+    public ThorntailConfigurationBuilder properties(Map<String, String> properties)
     {
         Objects.requireNonNull(properties, "Properties should not be null");
         this.properties = new TreeMap<>(properties);
@@ -158,12 +138,6 @@ public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfigurati
     }
 
     @Override
-    public String getMainClass()
-    {
-        return this.mainClass;
-    }
-
-    @Override
     public Map<String, String> getProperties()
     {
         return Collections.unmodifiableMap(this.properties);
@@ -172,14 +146,6 @@ public class WildFlySwarmConfigurationBuilder implements WildFlySwarmConfigurati
     @Override
     public void apply(Configuration config)
     {
-        // Main Class
-        config.removeConfigurationElement(MAIN_CLASS_CONFIGURATION_ELEMENT);
-        if (!Strings.isNullOrEmpty(getMainClass()) && !MAIN_CLASS_DEFAULT_VALUE.equals(getMainClass()))
-        {
-            config.addConfigurationElement(ConfigurationElementBuilder.create()
-                        .setName(MAIN_CLASS_CONFIGURATION_ELEMENT).setText(getMainClass()));
-        }
-
         // Properties
         ConfigurationElementBuilder properties = ConfigurationElementBuilder.create().setName("properties");
         this.properties.forEach((key, value) -> properties.addChild(key).setText(value));
