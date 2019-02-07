@@ -1,8 +1,8 @@
 :idprefix: id_ 
 :source-highlighter: pygments
 
-== WildFly Swarm addon for JBoss Forge
-image:https://forge.ci.cloudbees.com/buildStatus/icon?job=wildfly-swarm-addon["Build Status", link="https://forge.ci.cloudbees.com/job/wildfly-swarm-addon"]
+== Thorntail addon for JBoss Forge
+image:https://travis-ci.org/forge/thorntail-addon.svg?branch=master["Build Status", link="https://travis-ci.org/forge/thorntail-addon"]
 image:http://img.shields.io/:license-EPL-blue.svg["License", link="https://www.eclipse.org/legal/epl-v10.html"]
 image:https://maven-badges.herokuapp.com/maven-central/org.jboss.forge.addon/wildfly-swarm/badge.svg["Maven Central", link="https://maven-badges.herokuapp.com/maven-central/org.jboss.forge.addon/wildfly-swarm"]
 
@@ -18,7 +18,7 @@ From Forge CLI:
 
 [source,shell]
 ----
-addon-install-from-git --url https://github.com/forge/wildfly-swarm-addon.git
+addon-install-from-git --url https://github.com/forge/thorntail-addon.git
 ----
 
 === Depends on
@@ -41,41 +41,47 @@ addon-install-from-git --url https://github.com/forge/wildfly-swarm-addon.git
 
 
 == Features
-WildFly Swarm Project type:: 
-If you are creating a new project, you can choose the `wildfly-swarm` project type directly
+Thorntail Project type::
+If you are creating a new project, you can choose the `thorntail` project type directly
 
 [source,shell]
 ----
-[tmp]$ project-new --named demo --type wildfly-swarm --stack JAVA_EE_7 
+[tmp]$ project-new --named demo --type thorntail --stack JAVA_EE_7
 ***SUCCESS*** Project named 'demo' has been created.
 ***SUCCESS*** Stack 'Java EE 7' installed in project
-***SUCCESS*** WildFly Swarm is now set up! Enjoy!
+***SUCCESS*** Thorntail is now set up! Enjoy!
 ----
 
 Setup command:: 
-If you're working in an existing project (or you forgot to choose `wildfly-swarm` in the command above) just type `wildfly-swarm-setup` if you're in shell. It should read WildFly-Swarm: Setup if you're in a GUI environment:  
+If you're working in an existing project (or you forgot to choose `thorntail` in the command above) just type `wildfly-swarm-setup` if you're in shell. It should read Thorntail: Setup if you're in a GUI environment:
 +
 [source,java]
 ----
-wildfly-swarm-setup
+thorntail-setup
 ----
 +
-And that's it! The `wildfly-swarm-maven` plugin will be installed. 
+And that's it! The `thorntail-maven-plugin` will be installed.
 
 Add Fraction::
-You can install Wildfly Swarm Fractions by using the command `wildfly-swarm-add-fraction`: 
+You can install Thorntail Fractions by using the command `thorntail-add-fraction`:
 +
 [source,java]
 ----
-[demo]$ wildfly-swarm-add-fraction --fractions 
-archaius             camel-jaxb           cdi-ext              hystrix              jaxrs-validator      keycloak             microprofile         remoting             topology-consul      
-arquillian-daemon    camel-jms            datasources          infinispan           jca                  keycloak-server      mod_cluster          resource-adapters    topology-jgroups     
-batch-jberet         camel-jmx            drools-server        javafx               jdr                  logging              monitor              ribbon               topology-openshift   
-bean-validation      camel-jpa            ejb                  jaxrs                jgroups              logstash             mysql                ribbon-secured       topology-webapp      
-camel-cdi            camel-mail           ejb-remote           jaxrs-cdi            jmx                  mail                 netflix-guava        servo                transactions         
-camel-core           camel-other          h2                   jaxrs-jaxb           jolokia              management           netflix-rxjava       spring               undertow             
-camel-cxf            camel-undertow       hibernate-search     jaxrs-jsonp          jpa                  management-console   netflix-rxnetty      swagger              vertx                
-camel-ejb            cdi                  hibernate-validator  jaxrs-multipart      jsf                  messaging            postgresql           swagger-webapp       webservices          
+[demo]$ thorntail-add-fraction --fractions
+asciidoctorj                  fluentd                       jaxrs-validator               keycloak-server               microprofile-opentracing      spring
+batch-jberet                  flyway                        jca                           logging                       microprofile-restclient       swagger
+bean-validation               full                          jdr                           logstash                      mod_cluster                   swagger-webapp
+cassandra                     hibernate-search              jgroups                       mail                          mongodb                       topology-consul
+cdi                           hibernate-validator           jmx                           management                    monitor                       topology-jgroups
+cdi-config                    hystrix                       jolokia                       management-console            mvc                           topology-openshift
+cdi-jaxrsapi                  infinispan                    jose                          messaging                     neo4j                         topology-webapp
+cli                           jaeger                        jpa                           microprofile                  opentracing                   transactions
+datasources                   javafx                        jpa-eclipselink               microprofile-config           orientdb                      undertow
+drools-server                 jaxrs                         jpa-spatial                   microprofile-fault-tolerance  remoting                      vertx
+ee-security                   jaxrs-jaxb                    jsf                           microprofile-health           resource-adapters             web
+ejb                           jaxrs-jsonb                   jsonb                         microprofile-jwt              ribbon                        webservices
+ejb-remote                    jaxrs-jsonp                   jsonp                         microprofile-metrics          ribbon-secured                zipkin-jaxrs
+elytron                       jaxrs-multipart               keycloak                      microprofile-openapi          ribbon-secured-client
 
 ----
 +
@@ -90,63 +96,8 @@ This will run a fraction analyzer algorithm and list the missing fractions. You 
 ***SUCCESS*** JAX-RS has been installed.
 ***SUCCESS*** REST org.demo.rest.MyEndpoint was created
 
-[MyEndpoint.java]$ wildfly-swarm-detect-fractions --depend --build 
-***INFO*** Detecting fractions 	[1/3] ...
-***INFO*** Building the project... 	[1/3] ...
-[INFO] Scanning for projects...
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building newdemo 1.0.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ newdemo ---
-[INFO] Deleting /tmp/newdemo/target
-[INFO] 
-[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ newdemo ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 0 resource
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ newdemo ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 2 source files to /tmp/newdemo/target/classes
-[INFO] 
-[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ newdemo ---
-[INFO] Not copying test resources
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ newdemo ---
-[INFO] Not compiling test sources
-[INFO] 
-[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ newdemo ---
-[INFO] Tests are skipped.
-[INFO] 
-[INFO] --- maven-war-plugin:2.6:war (default-war) @ newdemo ---
-[INFO] Packaging webapp
-[INFO] Assembling webapp [newdemo] in [/tmp/newdemo/target/newdemo]
-[INFO] Processing war project
-[INFO] Copying webapp resources [/tmp/newdemo/src/main/webapp]
-[INFO] Webapp assembled in [35 msecs]
-[INFO] Building war: /tmp/newdemo/target/newdemo.war
-[INFO] 
-[INFO] --- wildfly-swarm-plugin:2016.9:package (default) @ newdemo ---
-[INFO] Scanning for needed WildFly Swarm fractions with mode: when_missing
-[INFO] Detected fractions: jaxrs:2016.9
-[INFO] Adding fractions: container:2016.9, ee:2016.9, io:2016.9, jaxrs:2016.9, logging:2016.9, naming:2016.9, request-controller:2016.9, security:2016.9, undertow:2016.9
-[INFO] Repackaging .war: /tmp/newdemo/target/newdemo.war
-[INFO] 
-[INFO] --- maven-install-plugin:2.4:install (default-install) @ newdemo ---
-[INFO] Installing /tmp/newdemo/target/newdemo.war to /home/ggastald/.m2/repository/org/newdemo/newdemo/1.0.0-SNAPSHOT/newdemo-1.0.0-SNAPSHOT.war
-[INFO] Installing /tmp/newdemo/pom.xml to /home/ggastald/.m2/repository/org/newdemo/newdemo/1.0.0-SNAPSHOT/newdemo-1.0.0-SNAPSHOT.pom
-[INFO] Installing /tmp/newdemo/target/newdemo-swarm.jar to /home/ggastald/.m2/repository/org/newdemo/newdemo/1.0.0-SNAPSHOT/newdemo-1.0.0-SNAPSHOT-swarm.jar
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 3.801 s
-[INFO] Finished at: 2016-09-06T15:37:52-03:00
-[INFO] Final Memory: 61M/809M
-[INFO] ------------------------------------------------------------------------
-***INFO*** Detected fractions: [org.wildfly.swarm:jaxrs:2016.9]
-***INFO*** Adding missing fractions as project dependencies... 	[3/3] ...
-***INFO*** Installing the following dependencies: [org.wildfly.swarm:jaxrs:2016.9]
+[MyEndpoint.java]$ thorntail-detect-fractions --depend --build
+
 
 ----
 
@@ -155,51 +106,48 @@ This will list all the available fractions
 
 [source,shell]
 ----
-[MyEndpoint.java]$ wildfly-swarm-list-fractions 
-arquillian-daemon: Arquillian Daemon (Arquillian Daemon)
+[MyEndpoint.java]$ thorntail-list-fractions
+asciidoctorj: AsciidoctorJ (AsciidoctorJ is the official library for running Asciidoctor on the JVM. Using AsciidoctorJ, you can convert AsciiDoc content or analyze the structure of a parsed AsciiDoc document from Java and other JVM languages.)
 batch-jberet: Batch (Java EE Batch with JBeret)
 bean-validation: Bean Validation (Define constraints on object models with annotations)
-camel-cdi: Camel CDI (Camel)
-camel-core: Camel (Camel)
-camel-cxf: Camel CXF (Camel)
-camel-ejb: Camel EJB (Camel)
-camel-jaxb: Camel JAXB (Camel)
-camel-jms: Camel JMS (Camel)
-camel-jmx: Camel JMX (Camel)
-camel-jpa: Camel JPA (Camel)
-camel-mail: Camel Mail (Camel)
-camel-other: Camel Other (Camel)
-camel-undertow: Camel Undertow (Camel)
+cassandra: Cassandra (Cassandra integration)
 cdi: CDI (CDI with Weld)
-cdi-ext: CDI Extensions (CDI Extensions)
-connector: Connector (Connector)
-container: Container (Container)
+cdi-config: CDI Configuration (CDI Configuration)
+cdi-jaxrsapi: CDI JAX-RS API Enhancements (Generates implementation of external service from interface which can then be injected to call that service.)
+cli: JBoss CLI (JBoss CLI)
 datasources: Datasources (Datasources for installing database drivers, etc)
 drools-server: Drools Server (Drools Server)
-ee: EE (EE)
+ee-security: EE Security (EE Security API support)
 ejb: EJB (Use EJBs in your application)
 ejb-remote: EJB Remote (Access EJBs in remote containers)
-h2: H2 (H2 driver and datasource)
+elytron: Elytron (Elytron)
+fluentd: Fluentd (Write log entries to Fluentd)
+flyway: Flyway (Evolve your Database Schema easily and reliably across all your instances)
+full: Full (Equivalent to Full Platform)
 hibernate-search: Hibernate Search (Hibernate Search transparently indexes your objects and offers fast regular, full-text and geolocation search. Ease of use and easy clustering are core.)
 hibernate-validator: Hibernate Validator (Validation annotations going beyond Bean Validation)
 hystrix: Hystrix (Latency and Fault Tolerance, such as Circuit Breaker, with Hystrix from Netflix OSS)
 infinispan: Infinispan (Distributed in-memory key/value store)
-io: IO (IO)
+jaeger: Jaeger (Jaeger integration, including the OpenTracing fraction)
 javafx: JavaFX (For using JavaFX classes in your application.)
 jaxrs: JAX-RS (RESTful Web Services with RESTEasy)
-jaxrs-cdi: JAX-RS with CDI (Provide CDI injection into RESTful services)
 jaxrs-jaxb: JAX-RS with JAXB (Add JAXB binding support for RESTful services)
+jaxrs-jsonb: JAX-RS with JSON-B (Enable JSON-B interchange format for RESTful services)
 jaxrs-jsonp: JAX-RS with JSON-P (Enable JSON-P interchange format for RESTful services)
 jaxrs-multipart: JAX-RS with Multipart (Multipart support for RESTful services)
 jaxrs-validator: JAX-RS with Validation (Validation support for RESTful services)
 jca: JCA (Java EE Connector Architecture)
 jdr: JBoss Diagnostic Reporting (Enables the gathering of diagnostic data for use in remote analysis of error conditions. Although the data is in a simple format and could be useful to anyone, primarily useful for JBoss EAP subscribers who would provide the data to Red Hat when requesting support)
 jgroups: JGroups (Reliable messaging for creating a cluster)
-jgroups-module: JGroups replacement module (JGroups replacement module)
 jmx: JMX (Expose resources as MBeans)
 jolokia: Jolokia (Deploys the jolokia.war to activate JMX-HTTP bridge as an alternative to JSR-160 connectors)
+jose: JOSE Signing and Encryption Support (Supports JWS signing and JWE encryption)
 jpa: JPA (Java Persistence API with Hibernate and H2 datasource)
+jpa-eclipselink: JPA EclipseLink (Java Persistence API with EclipseLink)
+jpa-spatial: JPA Spatial Extensions (Java Persistence API with Spatial Extensions)
 jsf: JSF (Java Server Faces for developing UIs)
+jsonb: JSON-B (JSON-B)
+jsonp: JSON-P (JSON-P)
 keycloak: Keycloak (Securing your RESTful services)
 keycloak-server: Keycloak Server (Running Keycloak in an uber jar)
 logging: Logging (Customizing the Logging for WildFly)
@@ -209,72 +157,56 @@ management: Management (Enables WildFly management capabilities)
 management-console: Management Console (UI to manage a running WildFly/Swarm server)
 messaging: Messaging (JMS Messaging with ActiveMQ)
 microprofile: MicroProfile (Implementation of MicroProfile.io)
+microprofile-config: MicroProfile Config (WildFly: Swarm Fraction for Eclipse MicroProfile Config)
+microprofile-fault-tolerance: MicroProfile Fault Tolerance (WildFly: Swarm Fraction for Eclipse MicroProfile Fault Tolerance)
+microprofile-health: MicroProfile Health (Health endpoints for your application)
+microprofile-jwt: MicroProfile JWT RBAC Auth (An implementation of the MP-JWT authentication and authorization)
+microprofile-metrics: MicroProfile Metrics (Metrics export for MicroProfile)
+microprofile-openapi: MicroProfile OpenAPI (An implementation of the MP-OpenAPI specification first introduced in MP 1.3)
+microprofile-opentracing: MicroProfile OpenTracing (OpenTracing integration for Microprofile)
+microprofile-restclient: MicroProfile Rest Client (Build Parent to bring in required dependencies)
 mod_cluster: Modcluster (Modcluster support)
+mongodb: MongoDB (MongoDB integration)
 monitor: Monitor (Health endpoints for your application)
-msc: MSC (WildFly Swarm: MSC)
-mysql: MySQL (MySQL driver and datasource)
-naming: Naming (WildFly Swarm: Naming)
-netflix-guava: null (null)
-netflix-rxjava: null (null)
-netflix-rxnetty: null (null)
-postgresql: PostgreSQL (PostgreSQL driver and datasource)
+mvc: MVC (MVC 1.0 with Ozark for developing Web UIs)
+neo4j: Neo4j (Neo4j integration)
+opentracing: OpenTracing (OpenTracing integration via TraceResolver and GlobalTracer)
+orientdb: OrientDB (OrientDB integration)
 remoting: Remoting (Connecting to remote containers)
-request-controller: Request Controller (Request Controller)
 resource-adapters: Resource Adapters (Resource Adapters deployed with .rar files)
 ribbon: Ribbon (Client side load balancing with Netflix Ribbon)
 ribbon-secured: Ribbon Secured (Provides security token propagation across invocations when using Netflix Ribbon and Keycloak)
-security: Security (Security)
-servo: null (null)
+ribbon-secured-client: Ribbon Secured Client (Ribbon Secured Client)
 spring: Spring WebMVC (RESTful services with Spring WebMVC)
 swagger: Swagger (Generate swagger.json for all JAX-RS endpoints in your application)
 swagger-webapp: Swagger Webapp (UI for Swagger to visualize the generated swagger.json)
-topology: Topology (Topology)
 topology-consul: Hashicorp Consul (Service Discovery with Hashicorp Consul)
-topology-jgroups: JGroups (Utilizes JGroups as a Service Registry that is discoverable)
+topology-jgroups: JGroups Topology (Utilizes JGroups as a Service Registry that is discoverable)
 topology-openshift: OpenShift (Service Discovery with OpenShift)
 topology-webapp: Topology UI (Server-Sent Events of instances being added/removed from cluster)
 transactions: Transactions (JTA distributed transactions with Narayana)
 undertow: Undertow (Servlet Container with Undertow)
 vertx: Vert.x (Deploys the Vert.x JCA Adapter)
+web: Web (Equivalent to Web Profile)
 webservices: Web Services (Web Services with CXF)
+zipkin-jaxrs: Zipkin - JAXRS Support (Enables the zipkin instrumentation for JAX-RS resources)
+
 
 ----
 
 Change Version::
 
-Changes the WildFly Swarm version in the addon. Subsequent project creation using the `project-new` command would use the version specified by this command instead. The `permanent` flag will add a `swarm.version` property in your `~/.forge/config.properties` file and will use that version permanently.
+Changes the Thorntail version in the addon. Subsequent project creation using the `project-new` command would use the version specified by this command instead. The `permanent` flag will add a `thorntail.version` property in your `~/.forge/config.properties` file and will use that version permanently.
 
 IMPORTANT: This command does not perform any change to the current project.   
 
-Create Main Class:: 
-Creates a Java Class with a main() method containing some basic code to boot Swarm and configure it in the swarm maven plugin.
-
-[source,shell]
-----
-[MyEndpoint.java]$ wildfly-swarm-new-main-class 
-***SUCCESS*** Main Class org.demo.Main was created
-[Main.java]$ cat -c .
-package org.demo;
-
-import org.wildfly.swarm.Swarm;
-
-public class Main {
-
-	public static void main(String[] args) throws Exception {
-		Swarm swarm = new Swarm();
-		swarm.start();
-		swarm.deploy();
-	}
-}
-----
-
 Create Test Class::
-Creates a Java Test Class and adds Arquillian WildFly Swarm dependency.
+Creates a Java Test Class and adds Arquillian Thorntail dependency.
 This test uses the `@DefaultDeployment` deployment approach and in case of specifying the flag `asClient` it also enriches your test with current URL.
 
 [source, shell]
 ----
-wildfly-swarm-new-test --target-package org.example.rest --named HelloWorldEndpointTest
+thorntail-new-test --target-package org.example.rest --named HelloWorldEndpointTest
 ***SUCCESS*** Test Class org.example.rest.HelloWorldEndpointTest was created
 [HelloSwarm]$ cd src/test/java/org/example/rest/HelloWorldEndpointTest.java
 [HelloWorldEndpointTest.java]$ cat -c .
@@ -296,91 +228,9 @@ public class HelloWorldEndpointTest {
 ----
 
 Run:: 
-Builds and executes the current swarmed project (in command line mode only so far) and will block the UI until Ctrl+C is pressed.
+Builds and executes the current project (in command line mode only so far) and will block the UI until Ctrl+C is pressed.
 
 [source,shell]
 ----
-[Main.java]$ wildfly-swarm-run 
-[INFO] Scanning for projects...
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
-[INFO] Building newdemo 1.0.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] >>> wildfly-swarm-plugin:2016.9:run (default-cli) > package @ newdemo >>>
-[INFO] 
-[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ newdemo ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 0 resource
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ newdemo ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 2 source files to /tmp/newdemo/target/classes
-[INFO] 
-[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ newdemo ---
-[INFO] Not copying test resources
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ newdemo ---
-[INFO] Not compiling test sources
-[INFO] 
-[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ newdemo ---
-[INFO] Tests are skipped.
-[INFO] 
-[INFO] --- maven-war-plugin:2.6:war (default-war) @ newdemo ---
-[INFO] Packaging webapp
-[INFO] Assembling webapp [newdemo] in [/tmp/newdemo/target/newdemo]
-[INFO] Processing war project
-[INFO] Copying webapp resources [/tmp/newdemo/src/main/webapp]
-[INFO] Webapp assembled in [35 msecs]
-[INFO] Building war: /tmp/newdemo/target/newdemo.war
-[INFO] 
-[INFO] --- wildfly-swarm-plugin:2016.9:package (default) @ newdemo ---
-[INFO] Scanning for needed WildFly Swarm fractions with mode: when_missing
-[INFO] Detected fractions: jaxrs:2016.9
-[INFO] Adding fractions: container:2016.9, ee:2016.9, io:2016.9, jaxrs:2016.9, logging:2016.9, naming:2016.9, request-controller:2016.9, security:2016.9, undertow:2016.9
-[INFO] Repackaging .war: /tmp/newdemo/target/newdemo.war
-[INFO] 
-[INFO] <<< wildfly-swarm-plugin:2016.9:run (default-cli) < package @ newdemo <<<
-[INFO] 
-[INFO] --- wildfly-swarm-plugin:2016.9:run (default-cli) @ newdemo ---
-[INFO] Starting .war
-[INFO] Scanning for needed WildFly Swarm fractions with mode: when_missing
-[INFO] Detected fractions: jaxrs:2016.9
-[INFO] Using fractions: container:2016.9, ee:2016.9, io:2016.9, jaxrs:2016.9, logging:2016.9, naming:2016.9, request-controller:2016.9, security:2016.9, undertow:2016.9
-Dependencies not bundled, will resolve from local M2REPO
-15:35:32,470 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:                Container - STABLE          org.wildfly.swarm:container:2016.9
-15:35:32,487 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:                  Logging - STABLE          org.wildfly.swarm:logging:2016.9
-15:35:32,487 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:                       IO - STABLE          org.wildfly.swarm:io:2016.9
-15:35:32,488 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:                   Naming - STABLE          org.wildfly.swarm:naming:2016.9
-15:35:32,488 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:       Request Controller - STABLE          org.wildfly.swarm:request-controller:2016.9
-15:35:32,488 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:                       EE - STABLE          org.wildfly.swarm:ee:2016.9
-15:35:32,488 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:                 Security - STABLE          org.wildfly.swarm:security:2016.9
-15:35:32,489 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:                 Undertow - STABLE          org.wildfly.swarm:undertow:2016.9
-15:35:32,489 INFO  [org.wildfly.swarm] (main) WFSWARM0018: Installed fraction:                   JAX-RS - STABLE          org.wildfly.swarm:jaxrs:2016.9
-15:35:32,521 INFO  [org.jboss.weld.Version] (main) WELD-000900: 3.0.0 (Alpha16)
-15:35:32,544 INFO  [org.jboss.weld.Bootstrap] (main) WELD-ENV-000020: Using jandex for bean discovery
-15:35:32,739 INFO  [org.jboss.weld.Bootstrap] (main) WELD-000101: Transactional services not available. Injection of @Inject UserTransaction not available. Transactional observers will be invoked synchronously.
-15:35:32,787 WARN  [org.jboss.weld.Interceptor] (main) WELD-001700: Interceptor annotation class javax.ejb.PostActivate not found, interception based on it is not enabled
-15:35:32,788 WARN  [org.jboss.weld.Interceptor] (main) WELD-001700: Interceptor annotation class javax.ejb.PrePassivate not found, interception based on it is not enabled
-15:35:33,402 INFO  [org.jboss.weld.Bootstrap] (main) WELD-ENV-002003: Weld SE container STATIC_INSTANCE initialized
-15:35:33,919 INFO  [org.jboss.msc] (main) JBoss MSC version 1.2.6.Final
-15:35:34,004 INFO  [org.jboss.as] (MSC service thread 1-6) WFLYSRV0049: WildFly Swarm 2016.9 (WildFly Core 2.2.0.Final) starting
-15:35:34,034 INFO  [org.wildfly.swarm] (MSC service thread 1-6) WFSWARM0029: Install MSC service for command line args: []
-2016-09-06 15:35:34,492 INFO  [org.jboss.as.security] (ServerService Thread Pool -- 12) WFLYSEC0002: Activating Security Subsystem
-2016-09-06 15:35:34,494 INFO  [org.jboss.as.security] (MSC service thread 1-4) WFLYSEC0001: Current PicketBox version=4.9.6.Final
-2016-09-06 15:35:34,499 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-7) WFLYUT0003: Undertow 1.4.0.Final starting
-2016-09-06 15:35:34,500 INFO  [org.jboss.as.naming] (ServerService Thread Pool -- 14) WFLYNAM0001: Activating Naming Subsystem
-2016-09-06 15:35:34,528 INFO  [org.wildfly.extension.io] (ServerService Thread Pool -- 16) WFLYIO001: Worker 'default' has auto-configured to 8 core threads with 64 task threads based on your 4 available processors
-2016-09-06 15:35:34,599 INFO  [org.jboss.as.naming] (MSC service thread 1-1) WFLYNAM0003: Starting Naming Service
-2016-09-06 15:35:34,650 INFO  [org.xnio] (MSC service thread 1-8) XNIO version 3.4.0.Final
-2016-09-06 15:35:34,664 INFO  [org.xnio.nio] (MSC service thread 1-8) XNIO NIO Implementation Version 3.4.0.Final
-2016-09-06 15:35:34,731 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-8) WFLYUT0012: Started server default-server.
-2016-09-06 15:35:34,808 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-8) WFLYUT0006: Undertow HTTP listener default listening on [0:0:0:0:0:0:0:0]:8080
-2016-09-06 15:35:34,913 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: WildFly Swarm 2016.9 (WildFly Core 2.2.0.Final) started in 1036ms - Started 68 of 76 services (15 services are lazy, passive or on-demand)
-2016-09-06 15:35:35,448 INFO  [org.wildfly.swarm.runtime.deployer] (main) deploying newdemo.war
-2016-09-06 15:35:35,486 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-6) WFLYSRV0027: Starting deployment of "newdemo.war" (runtime-name: "newdemo.war")
-2016-09-06 15:35:35,854 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-6) WFLYUT0018: Host default-host starting
-2016-09-06 15:35:36,116 INFO  [org.jboss.resteasy.resteasy_jaxrs.i18n] (ServerService Thread Pool -- 6) RESTEASY002225: Deploying javax.ws.rs.core.Application: class org.newdemo.rest.RestApplication
-2016-09-06 15:35:36,136 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 6) WFLYUT0021: Registered web context: /
-2016-09-06 15:35:36,162 INFO  [org.jboss.as.server] (main) WFLYSRV0010: Deployed "newdemo.war" (runtime-name : "newdemo.war")
+[Main.java]$ thorntail-run
 ----
