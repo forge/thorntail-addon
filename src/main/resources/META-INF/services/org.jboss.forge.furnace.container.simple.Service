@@ -1,6 +1,6 @@
-org.jboss.forge.addon.thorntail.facet.WildFlySwarmFacet
-org.jboss.forge.addon.thorntail.project.WildFlySwarmProjectType
-org.jboss.forge.addon.thorntail.project.WildFlySwarmSetupFlow
+org.jboss.forge.addon.thorntail.facet.ThorntailFacet
+org.jboss.forge.addon.thorntail.project.ThorntailProjectType
+org.jboss.forge.addon.thorntail.project.ThorntailSetupFlow
 org.jboss.forge.addon.thorntail.ui.AddFractionCommand
 org.jboss.forge.addon.thorntail.ui.CreateMainClassCommand
 org.jboss.forge.addon.thorntail.ui.SetupFractionsStep

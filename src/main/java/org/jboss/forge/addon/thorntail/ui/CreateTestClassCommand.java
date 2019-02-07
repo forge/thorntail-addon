@@ -56,7 +56,6 @@ public class CreateTestClassCommand extends AbstractThorntailCommand {
 
     // Optional fields
     private UIInput<Boolean> asClient;
-    private UIInput<String> mainClass;
     private UISelectOne<String> archiveType;
 
     @Override
@@ -67,9 +66,9 @@ public class CreateTestClassCommand extends AbstractThorntailCommand {
 
     @Override
     public UICommandMetadata getMetadata(UIContext context) {
-        return Metadata.from(super.getMetadata(context), getClass()).name("WildFly Swarm: New Test")
+        return Metadata.from(super.getMetadata(context), getClass()).name("Thorntail: New Test")
                 .description("Create new Arquillian test for WildFly Swarm")
-                .category(Categories.create("WildFly Swarm"));
+                .category(Categories.create("Thorntail"));
     }
 
     @Override
@@ -106,7 +105,6 @@ public class CreateTestClassCommand extends AbstractThorntailCommand {
         builder.add(targetPackage)
                 .add(named)
                 .add(asClient)
-                .add(mainClass)
                 .add(archiveType);
     }
 
@@ -183,10 +181,6 @@ public class CreateTestClassCommand extends AbstractThorntailCommand {
         final AnnotationSource<JavaClassSource> defaultDeploymentAnnotation = test.addAnnotation("DefaultDeployment");
         if (asClient.hasValue()) {
             defaultDeploymentAnnotation.setLiteralValue("testable", "false");
-        }
-
-        if (mainClass.hasValue()) {
-            defaultDeploymentAnnotation.setLiteralValue("main", mainClass.getValue() + ".class");
         }
 
         if (archiveType.hasValue()) {

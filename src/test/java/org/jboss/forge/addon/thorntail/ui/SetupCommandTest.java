@@ -223,7 +223,7 @@ public class SetupCommandTest
             @Override
             public void postCommandExecuted(UICommand command, UIExecutionContext context, Result result)
             {
-               if (result.getMessage().equals("Thorntial is now set up! Enjoy!"))
+               if (result.getMessage().equals("Thorntail is now set up! Enjoy!"))
                {
                   flag.set(true);
                }
