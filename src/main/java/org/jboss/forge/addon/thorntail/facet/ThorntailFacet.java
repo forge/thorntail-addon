@@ -1,6 +1,7 @@
 package org.jboss.forge.addon.thorntail.facet;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -32,6 +33,9 @@ import org.wildfly.swarm.fractions.FractionDescriptor;
 import org.wildfly.swarm.fractions.FractionList;
 import org.wildfly.swarm.fractions.FractionUsageAnalyzer;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 /**
  * The Thorntail Facet
  *
@@ -43,8 +47,6 @@ import org.wildfly.swarm.fractions.FractionUsageAnalyzer;
 public class ThorntailFacet extends AbstractFacet<Project> implements ProjectFacet
 {
    private ThorntailConfiguration configuration = ThorntailConfigurationBuilder.create();
-
-   public static final String DEFAULT_FRACTION_GROUPID = "io.thorntail";
 
    public static final Coordinate PLUGIN_COORDINATE = CoordinateBuilder
             .create().setGroupId("io.thorntail")
@@ -121,8 +123,8 @@ public class ThorntailFacet extends AbstractFacet<Project> implements ProjectFac
       return FractionList.get().getFractionDescriptors()
                .stream()
                .filter(d -> !d.isInternal() && !alreadyInstalled(d.getArtifactId(), dependencies))
-               .sorted((o1, o2) -> o1.getArtifactId().compareTo(o2.getArtifactId()))
-               .collect(Collectors.toList());
+               .sorted(comparing(FractionDescriptor::getArtifactId))
+               .collect(toList());
    }
 
    public List<FractionDescriptor> getInstalledFractions()
@@ -133,7 +135,7 @@ public class ThorntailFacet extends AbstractFacet<Project> implements ProjectFac
       return FractionList.get().getFractionDescriptors()
                .stream()
                .filter(d -> alreadyInstalled(d.getArtifactId(), dependencies))
-               .collect(Collectors.toList());
+               .collect(toList());
    }
 
    public static Collection<FractionDescriptor> getAllFractionDescriptors()

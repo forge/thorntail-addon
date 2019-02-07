@@ -27,12 +27,9 @@ public interface ThorntailConfiguration
     String PORT_OFFSET_PROPERTY = "swarm.port.offset";
     Integer PORT_OFFSET_DEFAULT_VALUE = 0;
 
-    String TEST_NAME_CONFIGURATION_ELEMENT = "testName";
-
     String TEST_AS_CLIENT_FLAG_CONFIGURATION_ELEMENT = "asClient";
 
     String TEST_TYPE_CONFIGURATION_ELEMENT = "archiveType";
-    String TEST_TYPE_DEFAULT_VALUE = "JAR";
 
     /**
      * @return the HTTP port for this microservice
