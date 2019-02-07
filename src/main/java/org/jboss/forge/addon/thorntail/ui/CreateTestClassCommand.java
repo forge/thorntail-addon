@@ -44,7 +44,7 @@ import java.util.List;
 public class CreateTestClassCommand extends AbstractThorntailCommand {
 
     public static final Dependency SWARM_ARQUILLIAN_DEPENDENCY = DependencyBuilder
-            .create().setGroupId("org.wildfly.thorntail")
+            .create().setGroupId("io.thorntail")
             .setArtifactId("arquillian")
             .setScopeType("test");
 
