@@ -177,7 +177,7 @@ public class CreateTestClassCommand extends AbstractThorntailCommand {
     }
 
     private void addDefaultDeploymentAnnotation(JavaClassSource test, Project project) throws ClassNotFoundException, IOException {
-        test.addImport("org.wildfly.thorntail.arquillian.DefaultDeployment");
+        test.addImport("io.thorntail.arquillian.DefaultDeployment");
         final AnnotationSource<JavaClassSource> defaultDeploymentAnnotation = test.addAnnotation("DefaultDeployment");
         if (asClient.hasValue()) {
             defaultDeploymentAnnotation.setLiteralValue("testable", "false");
@@ -196,7 +196,7 @@ public class CreateTestClassCommand extends AbstractThorntailCommand {
         return dependencyFacet.getDependencies().stream()
                 .map(dependency -> dependency.getCoordinate())
                 .anyMatch(coordinate ->
-                        "org.wildfly.thorntail".equals(coordinate.getGroupId()) &&
+                        "io.thorntail".equals(coordinate.getGroupId()) &&
                                 "arquillian".equals(coordinate.getArtifactId()));
     }
 
