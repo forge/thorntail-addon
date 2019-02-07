@@ -36,7 +36,7 @@ public class ThorntailConfigurationBuilderTest
    }
 
    @Test
-   public void testConfigurationReadProperties() throws Exception
+   public void testConfigurationReadProperties()
    {
       ConfigurationImpl config = new ConfigurationImpl();
       ConfigurationElementBuilder properties = ConfigurationElementBuilder.create().setName("properties");
@@ -51,7 +51,7 @@ public class ThorntailConfigurationBuilderTest
    }
 
    @Test
-   public void testConfigurationWriteProperties() throws Exception
+   public void testConfigurationWriteProperties()
    {
       ConfigurationImpl config = new ConfigurationImpl();
       ThorntailConfigurationBuilder thorntailConfig = ThorntailConfigurationBuilder.create();

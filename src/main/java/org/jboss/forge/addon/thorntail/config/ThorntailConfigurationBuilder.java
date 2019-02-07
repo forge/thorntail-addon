@@ -31,7 +31,7 @@ public class ThorntailConfigurationBuilder implements ThorntailConfiguration
         return new ThorntailConfigurationBuilder();
     }
 
-    public static ThorntailConfigurationBuilder create(ThorntailConfigurationBuilder config)
+    public static ThorntailConfigurationBuilder create(ThorntailConfiguration config)
     {
         ThorntailConfigurationBuilder builder = new ThorntailConfigurationBuilder();
         builder.properties(config.getProperties());

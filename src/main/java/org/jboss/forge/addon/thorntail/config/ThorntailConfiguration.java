@@ -18,21 +18,21 @@ import org.jboss.forge.addon.maven.plugins.Configuration;
  */
 public interface ThorntailConfiguration
 {
-    public static final String HTTP_PORT_PROPERTY = "swarm.http.port";
-    public static final Integer HTTP_PORT_DEFAULT_VALUE = 8080;
+    String HTTP_PORT_PROPERTY = "swarm.http.port";
+    Integer HTTP_PORT_DEFAULT_VALUE = 8080;
 
-    public static final String CONTEXT_PATH_PROPERTY = "swarm.context.path";
-    public static final String CONTEXT_PATH_DEFAULT_VALUE = "";
+    String CONTEXT_PATH_PROPERTY = "swarm.context.path";
+    String CONTEXT_PATH_DEFAULT_VALUE = "";
 
-    public static final String PORT_OFFSET_PROPERTY = "swarm.port.offset";
-    public static final Integer PORT_OFFSET_DEFAULT_VALUE = 0;
+    String PORT_OFFSET_PROPERTY = "swarm.port.offset";
+    Integer PORT_OFFSET_DEFAULT_VALUE = 0;
 
-    public static final String TEST_NAME_CONFIGURATION_ELEMENT = "testName";
+    String TEST_NAME_CONFIGURATION_ELEMENT = "testName";
 
-    public static final String TEST_AS_CLIENT_FLAG_CONFIGURATION_ELEMENT = "asClient";
+    String TEST_AS_CLIENT_FLAG_CONFIGURATION_ELEMENT = "asClient";
 
-    public static final String TEST_TYPE_CONFIGURATION_ELEMENT = "archiveType";
-    public static final String TEST_TYPE_DEFAULT_VALUE = "JAR";
+    String TEST_TYPE_CONFIGURATION_ELEMENT = "archiveType";
+    String TEST_TYPE_DEFAULT_VALUE = "JAR";
 
     /**
      * @return the HTTP port for this microservice

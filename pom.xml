@@ -27,10 +27,8 @@
          </dependency>
          <dependency>
             <groupId>io.thorntail</groupId>
-            <artifactId>bom-all</artifactId>
+            <artifactId>fraction-metadata</artifactId>
             <version>${version.thorntail}</version>
-            <scope>import</scope>
-            <type>pom</type>
          </dependency>
       </dependencies>
    </dependencyManagement>
